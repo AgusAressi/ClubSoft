@@ -15,7 +15,7 @@
     
 </head>
 <body>
-
+    @if (SignInManager.IsSignedIn(User)){
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
         <div class="bg-white" id="sidebar-wrapper" style="background: linear-gradient(90deg, rgba(8,9,10,1) 0%, rgba(17,19,21,1) 50%, rgba(33,37,41,1) 100%) !important;">
@@ -43,14 +43,15 @@
                     </div>
                 </div>
             </nav>
-            <!-- Page content-->
+        </div>
+    </div>
+     }
+    <!-- Page content-->
             <div class="container-fluid">
                 <main role="main" class="mt-3 pb-3">
                     @RenderBody()
                 </main>
             </div>
-        </div>
-    </div>
     
         @*
          <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -77,11 +78,11 @@
             </div>
         </nav> *@
 
-    <footer class="footer text-muted">
+    @* <footer class="footer text-muted">
         <div class="container text-end">
             &copy; 2024 - ClubSoft - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

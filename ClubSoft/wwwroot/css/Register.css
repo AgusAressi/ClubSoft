@@ -1,0 +1,21 @@
+.fo1{
+  
+    padding: 15px 15px 15px;
+    background-color: rgba(136, 126, 126, 0.983);
+    border-radius: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 70vh;
+    height: 85vh;
+    padding-top: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    
+  
+  }
+  body{
+    background: rgb(19,24,24);
+    background: linear-gradient(0deg, rgba(19,24,24,1) 10%, rgba(228,223,211,1) 100%);
+  }
