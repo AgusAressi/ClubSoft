@@ -4781,8 +4781,8 @@ textarea.form-control-lg {
 }
 
 .list-group {
-  --bs-list-group-color: #000000;
-  --bs-list-group-bg: #00000000;
+  --bs-list-group-color: #30a8f3;
+  --bs-list-group-bg: #1792e400;
   --bs-list-group-border-color: rgba(131, 131, 131, 0);
   --bs-list-group-border-width: 1px;
   --bs-list-group-border-radius: 10px;
