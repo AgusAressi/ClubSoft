@@ -10,10 +10,11 @@
 
 <div class=" row" style="height: 100px;">
     <div class=" col-md-4 imgcolumna">
+        
     
     </div> 
     <div class=" col-md-8 posiciondiv">
-        <form class="fo1" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form class="fo1 " id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h1 class="text-center">¡BIENVENIDO!</h1>
             <hr />
             <p class="text-center">Esta cuenta es personal y te permitirá obtener control de tu equipo.</p>
@@ -33,7 +34,7 @@
                 <label asp-for="Input.ConfirmPassword">Confirma Tu Contraseña</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">ENVIAR</button>
+            <button id="registerSubmit" type="submit" class="w-50  btn btn-lg btn-success">ENVIAR</button>
         </form>
     </div>
    

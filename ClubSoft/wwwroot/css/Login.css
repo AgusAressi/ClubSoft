@@ -2,9 +2,9 @@
 .fo1{
   
     padding: 15px 15px 15px;
-    background-color: rgba(171, 162, 162, 0.592);
+    background-color: rgba(171, 162, 162, 0.337);
     border-radius: 10px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     width: 70vh;
     height: 85vh;
     padding-top: 40px;
@@ -12,23 +12,26 @@
      top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 10px;
+    
     
   
   }
-  .re1{
-  
-    padding: 15px 15px 15px;
-    background-color: rgba(171, 162, 162, 0.592);
+  .formulariorecupero{
+    
+     padding: 15px 15px 15px;
+     background-color: rgba(171, 162, 162, 0.337);
     border-radius: 10px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: larger;
-    width: 70vh;
-    height: 85vh;
-    padding-top: 40px;
-    position: absolute;
-    top: 50%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+      position: absolute;  
+     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 10px; 
+    width: 80vh;
+    height: 40vh;
+    
+   
+    
+     
     
   }
