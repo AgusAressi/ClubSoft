@@ -25,17 +25,28 @@
     height: 100%;
 } */
 
+
 .posiciondiv{
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 40px;
+  padding-top: 30px;
 }
 .imgcolumna{
    background-image: url(../img/fondoregister.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center; 
+  background-position: center; 
+  height: 100vh;
  
+}
+
+body {
+  background-image: url(../img/fondoregister.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0;
+  padding: 0; 
 }
