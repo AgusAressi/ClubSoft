@@ -8,22 +8,12 @@
 <h1>@ViewData["Title"]</h1>
 
 
-<<<<<<< HEAD
-<div class=" row" style="height: 100px;">
-    <div class=" col-md-4 imgcolumna">
-        
-    
-    </div> 
-    <div class=" col-md-8 posiciondiv">
-        <form class="fo1 " id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-=======
 <div class= "row">
     <div class= "col-md-4 ">
     
     </div> 
     <div class= "col-md-8 posiciondiv">
         <form class="fo1" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
->>>>>>> 309aa7ad8026014c48b8f8e4124772fcfac2d24a
             <h1 class="text-center">¡BIENVENIDO!</h1>
             <hr />
             <p class="text-center">Esta cuenta es personal y te permitirá obtener control de tu equipo.</p>
@@ -42,14 +32,9 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirma Tu Contraseña</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-<<<<<<< HEAD
-            </div>
-            <button id="registerSubmit" type="submit" class="w-50  btn btn-lg btn-success">ENVIAR</button>
-=======
            
             <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-primary pt-2">ENVIAR</button>
              </div>
->>>>>>> 309aa7ad8026014c48b8f8e4124772fcfac2d24a
         </form>
     </div>
    
