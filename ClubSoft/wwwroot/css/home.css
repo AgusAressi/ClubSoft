@@ -9,12 +9,12 @@
 }
 
 .imghome{
-    background-image: url(../img/imghome.jpg);
+    background-image: url(../img/imghome1.jpg);
 }
 
 .tituloquienessomos{
     font-size: 42px;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.701);
 }
 
 .borde{
