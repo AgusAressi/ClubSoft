@@ -33,33 +33,35 @@
                         asp-action="Privacy">Privacy</a>
                 </div>
             </div>
-            <!-- Page content wrapper-->
-            <div id="page-content-wrapper">
-                <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
-                    <div class="container-fluid">
-                        <button class="btn" id="sidebarToggle"><i class="fa-solid fa-angles-left"
-                                style="color: white;"></i></button>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation"><span
-                                class="navbar-toggler-icon"></span></button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                                <partial name="_LoginPartial" />
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <!-- Page content-->
-                <div>
-                    <main role="main">
-                        @RenderBody()
-                    </main>
-                </div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Socios" asp-action="Index">Socios</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </div>
-    }
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+                <div class="container-fluid">
+                    <button class="btn" id="sidebarToggle"><i class="fa-solid fa-angles-left" style="color: white;"></i></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page content-->
+            <div>
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+}
     <div>
         <main role="main">
             @RenderBody()
