@@ -1,49 +1,22 @@
 .fo1{
   
-    padding: 15px 15px 15px;
-    background-color: rgba(136, 126, 126, 0.458);
-    border-radius: 10px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-       width: 70vh; 
-    height: 85vh;  
-     /* padding-top: 40px; */
-     /* position: absolute;  */
-    /* top: 50%;
-    left: 50%;   */
-    /* transform: translate(-50%, -50%); */
-    border-radius: 10px;
-  align-items: center;
-  justify-content: center,
- 
-    
-    
+  padding: 15px 15px 15px;
+  background-color: rgba(215, 209, 209, 0.89);
+  border-radius: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 70vh;
+  height: 85vh;
+  padding-top: 40px;
+  position: absolute; 
+   top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   }
   
-  /* html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-} */
-
-
-.posiciondiv{
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 30px;
-}
-.imgcolumna{
-   background-image: url(../img/fondoregister.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center; 
-  height: 100vh;
- 
-}
 
 body {
-  background-image: url(../img/fondoregister.jpg);
+  background-image: url(../img/fondologin.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
