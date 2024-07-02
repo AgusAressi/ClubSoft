@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Localidades";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Localidades</h1>
+</div>
+
+<div class="row">
+    <h4>AGREGAR NUEVA LOCALIDAD</h4>
+    <div class="col-md-3">
+        <input type="text" class="form-control" id="Localidad" style="text-transform:uppercase"
+            placeholder="Ingrese la localidad">
+    </div>
+    <div class="col-md-3">
+        <input type="text" class="form-control" id="Provincia" style="text-transform:uppercase"
+            placeholder="Seleccione la provincia">
+    </div>
+    <div class="col-md-3">
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+    </div>
+</div>
+
+
+<div style="height: 100%;">
+  <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Provincia</th>
+          <th style="width: 70px"></th>
+          <th style="width: 70px"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody-Localidades">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+ 
+  @section Scripts{
+  <script src="~/js/Localidades.js"></script>
+}
