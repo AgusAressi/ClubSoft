@@ -2,16 +2,15 @@
 @model LoginModel
 
 <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
-
-@* @{
-    ViewData["Title"] = "Log in";
-} *@
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
  <div class="col fo1" >
-        <section class="">
+        <section class="text-center">
             <form id="account" method="post">
-                <h1 class="text-center">INICIAR SESIÓN</h1>
+                <img src="~/img/LogoClubSoft-sinfondo.png" style="width: 100px;" alt="logo" />
+                <h1 class="pt-2 titulocard">Iniciar Sesión</h1>
                 <hr />
-            
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
@@ -23,14 +22,14 @@
                     <label asp-for="Input.Password" class="form-label"> Ingresa Tu Contraseña</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="checkbox mb-3 text-center">
+                <div class="checkbox pt-1">
                     <label asp-for="Input.RememberMe" class="form-label">
                         <input class="form-check-input" asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
-                <div class="text-center">
-                    <button id="login-submit" type="submit" class="w-40 btn btn-lg btn-success">INGRESAR</button>
+                <div>
+                    <button id="login-submit" type="submit" class="btn-dark btn-lg m-2">Ingresar</button>
                 </div>
                 <div>
                     <br>

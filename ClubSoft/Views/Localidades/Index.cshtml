@@ -2,13 +2,13 @@
     ViewData["Title"] = "Localidades";
 }
 
-<div class="text-center">
+@* <div class="text-center">
     <h1 class="display-4">Localidades</h1>
-</div>
+</div> *@
 
 <div class="p-3">
   <div class="row">
-    <h4>AGREGAR NUEVA LOCALIDAD</h4>
+    <h4></i>Agregar Nueva Localidad<i class="fa-solid fa-plus ps-2"></i></h4>
     <input type="hidden" id="LocalidadID" value="0" />
     <div class="col-md-3">
       <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
@@ -44,7 +44,7 @@
       </select>
     </div>
     <div class="col-md-3">
-      <button type="button" onclick="GuardarRegistro()" class="btn btn-primary pt-2">Guardar</button>
+      <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
     </div>
   </div>
 </div>
@@ -53,7 +53,7 @@
 
 <div class="p-3" style="heigth: 100%;">
   <div class="card">
-    <h4 class="card-header">Localidades</h4>
+    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>LOCALIDADES</h3>
     <div class="card-body mb-5">
       <div class="table-responsive" style="height: 350px; overflow-y: auto;">
       <table class="table table-hover">

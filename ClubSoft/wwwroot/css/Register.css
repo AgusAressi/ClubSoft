@@ -1,25 +1,22 @@
-.fo1{
-  
-  padding: 15px 15px 15px;
+.fo1{ 
   background-color: rgba(215, 209, 209, 0.89);
   border-radius: 10px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   width: 70vh;
   height: 85vh;
-  padding-top: 40px;
+  padding: 5vh;
   position: absolute; 
-   top: 50%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  }
+}
+.titulocard{
+text-shadow: 3px 1px 1px rgba(0, 0, 0, 0.13);
+}
   
 
 body {
-  background-image: url(../img/fondologin.jpg);
+  background-image: url(../img/imghome1.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  margin: 0;
-  padding: 0; 
 }

@@ -2,21 +2,16 @@
 @model RegisterModel
 <link rel="stylesheet" href="~/css/Register.css" asp-append-version="true" />
 @{
-    ViewData["Title"] = "";
+    ViewData["Title"] = "Registro";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-
 <div class= "row">
-    @* <div class= "col-md-4 ">
-    
-    </div>  *@
-    <div class= " fo1">
+    <div class= "text-center fo1">
         <form class="" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h1 class="text-center">¡BIENVENIDO!</h1>
+            <img src="~/img/LogoClubSoft-sinfondo.png" style="width: 100px;" alt="logo" />
+            <h1 class="titulocard">¡Bienvenido!</h1>
             <hr />
-            <p class="text-center">Esta cuenta es personal y te permitirá obtener control de tu equipo.</p>
+            
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -28,16 +23,16 @@
                 <label asp-for="Input.Password">Ingresa Tu Contraseña</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3 text-center">
+            <div class="form-floating mb-3">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirma Tu Contraseña</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
            
              </div>
-             <div class="text-center">
-                <button id="registerSubmit" type="submit" class="w-50  btn btn-lg btn-success pt-2">ENVIAR</button>
-
+             <div>
+                <button id="registerSubmit" type="submit" class="w-50 btn-dark btn-lg m-2">ENVIAR</button>
              </div>
+             <h5 class="pt-3">Esta cuenta es personal y te permitirá obtener control de tu equipo.</h5>
               
         </form>
     </div>
