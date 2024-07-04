@@ -51,5 +51,42 @@ public class LocalidadesController : Controller
         }
         return Json(LocalidadesMostar);
     }
+    public JsonResult GuardarLocalidad(
+       int LocalidadID,
+       string? Nombre,
+       int ProvinciaID
+       
+       )
+    {
+        string resultado = "";
+        if (LocalidadID == 0)
+        {
+            var localidad = new Localidad
+            {
+                LocalidadID = LocalidadID,
+                Nombre = Nombre,
+                ProvinciaID = ProvinciaID
+            };
+            _context.Add(localidad);
+            _context.SaveChanges();
 
+            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
+        }
+        // else
+        // {
+        //     var editarEjercicioFisico = _context.EjerciciosFisicos.Where(e => e.EjercicioFisicoId == EjercicioFisicoId).SingleOrDefault();
+        //     if (editarEjercicioFisico != null)
+        //     {
+        //         editarEjercicioFisico.TipoEjercicioId = TipoEjercicioId;
+        //         editarEjercicioFisico.Inicio = Inicio;
+        //         editarEjercicioFisico.Fin = Fin;
+        //         editarEjercicioFisico.EstadoEmocionalInicio = EstadoEmocionalInicio;
+        //         editarEjercicioFisico.EstadoEmocionalFin = EstadoEmocionalFin;
+        //         editarEjercicioFisico.Observaciones = Observaciones;
+
+        //         _context.SaveChanges();
+        //     }
+        // }
+        return Json(resultado);
+    }
 }

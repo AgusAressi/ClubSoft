@@ -6,38 +6,74 @@
     <h1 class="display-4">Localidades</h1>
 </div>
 
-<div class="row">
+<div class="p-3">
+  <div class="row">
     <h4>AGREGAR NUEVA LOCALIDAD</h4>
+    <input type="hidden" id="LocalidadID" value="0" />
     <div class="col-md-3">
-        <input type="text" class="form-control" id="Localidad" style="text-transform:uppercase"
-            placeholder="Ingrese la localidad">
+      <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
+        placeholder="Ingrese la localidad">
     </div>
     <div class="col-md-3">
-        <input type="text" class="form-control" id="Provincia" style="text-transform:uppercase"
-            placeholder="Seleccione la provincia">
+      <select class="form-control" id="ProvinciaID">
+        <option value="0">SELECCIONE LA PROVINCIA</option>
+        <option value="1">Buenos Aires</option>
+        <option value="2">Ciudad Autonoma de Buenos Aires</option>
+        <option value="3">Catamarca</option>
+        <option value="4">Chaco</option>
+        <option value="5">Chubut</option>
+        <option value="6">Cordoba</option>
+        <option value="7">Corrientes</option>
+        <option value="8">Entre Rios</option>
+        <option value="9">Formosa</option>
+        <option value="10">Jujuy</option>
+        <option value="11">La Pampa</option>
+        <option value="12">La Rioja</option>
+        <option value="13">Mendoza</option>
+        <option value="14">Misiones</option>
+        <option value="15">Neuquen</option>
+        <option value="16">Rio Negro</option>
+        <option value="17">Salta</option>
+        <option value="18">San Juan</option>
+        <option value="19">San Luis</option>
+        <option value="20">Santa Cruz</option>
+        <option value="21">Santa Fe</option>
+        <option value="22">Santiago del Estero</option>
+        <option value="23">Tierra del Fuego</option>
+        <option value="24">Tucuman</option>
+      </select>
     </div>
     <div class="col-md-3">
-        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      <button type="button" onclick="GuardarRegistro()" class="btn btn-primary pt-2">Guardar</button>
     </div>
-</div>
-
-
-<div style="height: 100%;">
-  <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Provincia</th>
-          <th style="width: 70px"></th>
-          <th style="width: 70px"></th>
-        </tr>
-      </thead>
-      <tbody id="tbody-Localidades">
-      </tbody>
-    </table>
   </div>
 </div>
+
+
+
+<div class="p-3" style="heigth: 100%;">
+  <div class="card">
+    <h4 class="card-header">Localidades</h4>
+    <div class="card-body mb-5">
+      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Provincia</th>
+            <th style="width: 70px"></th>
+            <th style="width: 70px"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-Localidades">
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+  
+
 
  
   @section Scripts{

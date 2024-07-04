@@ -52,3 +52,28 @@ function ListadoLocalidades(){
     });
 }
 
+function GuardarRegistro(){
+
+    let localidadID = document.getElementById("LocalidadID").value;
+    let nombre = document.getElementById("LocalidadNombre").value;
+    let provinciaID = document.getElementById("ProvinciaID").value;
+    console.log(localidadID, nombre, provinciaID);
+    
+    $.ajax({
+        url: '../../Localidades/GuardarLocalidad',
+        data: { 
+            localidadID: localidadID,
+            nombre: nombre,
+            provinciaID: provinciaID
+            
+            },
+        type: 'POST',
+        dataType: 'json',   
+        success: function (resultado) {
+            ListadoLocalidades();
+        },
+        error: function (xhr, status) {
+            console.log('Disculpe, existió un problema al guardar el registro');
+        }
+    });    
+}
