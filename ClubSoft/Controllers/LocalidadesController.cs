@@ -72,21 +72,42 @@ public class LocalidadesController : Controller
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-        // else
-        // {
-        //     var editarEjercicioFisico = _context.EjerciciosFisicos.Where(e => e.EjercicioFisicoId == EjercicioFisicoId).SingleOrDefault();
-        //     if (editarEjercicioFisico != null)
-        //     {
-        //         editarEjercicioFisico.TipoEjercicioId = TipoEjercicioId;
-        //         editarEjercicioFisico.Inicio = Inicio;
-        //         editarEjercicioFisico.Fin = Fin;
-        //         editarEjercicioFisico.EstadoEmocionalInicio = EstadoEmocionalInicio;
-        //         editarEjercicioFisico.EstadoEmocionalFin = EstadoEmocionalFin;
-        //         editarEjercicioFisico.Observaciones = Observaciones;
-
-        //         _context.SaveChanges();
-        //     }
-        // }
+         else
+         {
+             var editarLocalidad = _context.Localidades.Where(e => e.LocalidadID == LocalidadID).SingleOrDefault();
+             if (editarLocalidad != null)
+             {
+                 editarLocalidad.LocalidadID = LocalidadID;
+                 editarLocalidad.Nombre = Nombre;
+                 editarLocalidad.ProvinciaID = ProvinciaID;
+                 _context.SaveChanges();
+             }
+         }
         return Json(resultado);
     }
+
+     public JsonResult TraerLocalidad(int? LocalidadID)
+    {
+        var localidadporID = _context.Localidades.ToList();
+        if (LocalidadID != null)
+        {
+            localidadporID = localidadporID.Where(e => e.LocalidadID == LocalidadID).ToList();
+        }
+
+        return Json(localidadporID.ToList());
+    }
+
+     public JsonResult EliminarLocalidad(int LocalidadID)
+   {
+    var localidad = _context.Localidades.Find(LocalidadID);
+    _context.Remove(localidad);
+    _context.SaveChanges();
+
+    return Json(true);
+   }
 }
+
+
+
+
+

@@ -3,20 +3,13 @@ window.onload = ListadoLocalidades();
 
 function ListadoLocalidades(){
     $.ajax({
-        // la URL para la petición
         url: '../../Localidades/ListadoLocalidades',
-        // la información a enviar
-        // (también es posible utilizar una cadena de datos)
         data: { 
          },
-        // especifica si será una petición POST o GET
         type: 'POST',
-        // el tipo de información que se espera de respuesta
         dataType: 'json',
-        // código a ejecutar si la petición es satisfactoria;
-        // la respuesta es pasada como argumento a la función
         success: function (LocalidadesMostar) {
-            
+            LimpiarInput();
             let contenidoTabla = ``;
 
             $.each(LocalidadesMostar, function (index, LocalidadesMostar) {  
@@ -31,7 +24,7 @@ function ListadoLocalidades(){
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarRegistro(${LocalidadesMostar.localidadID})">
+                    <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${LocalidadesMostar.localidadID})">
                     Eliminar
                     </button>
                     </td> 
@@ -57,7 +50,6 @@ function GuardarRegistro(){
     let localidadID = document.getElementById("LocalidadID").value;
     let nombre = document.getElementById("LocalidadNombre").value;
     let provinciaID = document.getElementById("ProvinciaID").value;
-    console.log(localidadID, nombre, provinciaID);
     
     $.ajax({
         url: '../../Localidades/GuardarLocalidad',
@@ -76,4 +68,51 @@ function GuardarRegistro(){
             console.log('Disculpe, existió un problema al guardar el registro');
         }
     });    
+}
+
+function AbrirEditar(LocalidadID){
+    
+    $.ajax({
+        url: '../../Localidades/TraerLocalidad',
+        data: { 
+            localidadID: LocalidadID,
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (localidadporID) { 
+            let localidad = localidadporID[0];
+
+            document.getElementById("LocalidadID").value = LocalidadID;
+            document.getElementById("LocalidadNombre").value = localidad.nombre,
+            document.getElementById("ProvinciaID").value = localidad.provinciaID
+        },
+
+        error: function (xhr, status) {
+            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
+        }
+    });
+}
+
+function EliminarLocalidad(LocalidadID){
+                
+    $.ajax({
+        url: '../../Localidades/EliminarLocalidad',
+        data: {
+            localidadID: LocalidadID,
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (resultado) {           
+            ListadoLocalidades();
+        },
+     error: function (xhr, status) {
+     console.log('Disculpe, existió un problema al eliminar el registro.');
+    }
+});
+}
+
+function LimpiarInput() {
+     document.getElementById("LocalidadID").value = 0;
+     document.getElementById("LocalidadNombre").value = "";
+     document.getElementById("ProvinciaID").value = 0;
 }
