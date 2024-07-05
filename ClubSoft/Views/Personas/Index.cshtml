@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Personas";
+}
+
+@* <div class="text-center">
+    <h1 class="display-4">Localidades</h1>
+</div> *@
+
+<div class="p-3">
+  <div class="row">
+    <h4></i>Agregar Nueva Persona<i class="fa-solid fa-plus ps-2"></i></h4>
+    @* <input type="hidden" id="LocalidadID" value="0" />
+    <div class="col-md-3">
+      <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
+        placeholder="">
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" id="ProvinciaID">
+        
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+    </div>
+  </div> *@
+     
+<!-- Button trigger modal -->
+<div class="mb-2">
+  <button type="button" onclick="ListadoEmpleados()" class="btn btn-primary">
+    Refrescar Tabla
+  </button>
+  <button type="button" class="btn btn-primary" onclick="NuevoEmpleado()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
+    Nueva Persona
+  </button>
+</div>
+  <div class="modal fade" id="ModalPersonas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitulo">Personas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <input type="hidden" id="PersonaID" value="0"/>
+
+            <label for="Nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="Nombre" style="text-transform: uppercase" placeholder="">
+          </div>
+
+         <label for="Apellido" class="form-label">Apellido</label>
+              <input type="text" id="Apellido" class="form-control"/>
+
+              <label for="Direccion" class="form-label">Direccion</label>
+            <input type="text" class="form-control" id="Direccion" style="text-transform: uppercase" placeholder="">
+
+              <label for="Dni" class="form-label">Dni</label>
+            <input type="text" class="form-control" id="Dni" style="text-transform: uppercase" placeholder="">
+
+              <label for="Localidad" class="form-label">Localidad</label>
+            <input type="text" class="form-control" id="Localidad" style="text-transform: uppercase" placeholder="">
+             
+              <label for="Provincia" class="form-label">Provincia</label>
+            <input type="text" class="form-control" id="Provincia" style="text-transform: uppercase" placeholder="">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<div class="p-3" style="heigth: 100%;">
+  <div class="card">
+    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PERSONAS</h3>
+    <div class="card-body mb-5">
+      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Direccion</th>
+            <th>Telefono</th>
+            <th>Dni</th>
+            <th>Localidad</th>
+            <th>Provincia</th>
+            <th style="width: 70px"></th>
+            <th style="width: 70px"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-Personas">
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+  
+
+
+ 
+  @section Scripts{
+  <script src="~/js/Personas.js"></script>
+}
