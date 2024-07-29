@@ -20,12 +20,12 @@ function ListadoLocalidades(){
                     <td>${LocalidadesMostar.nombreProvincia}</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-success" onclick="AbrirEditar(${LocalidadesMostar.localidadID})">
-                    Editar
+                    <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
                     <td class="text-center">
                     <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${LocalidadesMostar.localidadID})">
-                    Eliminar
+                    <i class="fa-solid fa-trash"></i>
                     </button>
                     </td> 
                 </tr>

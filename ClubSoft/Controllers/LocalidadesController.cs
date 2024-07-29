@@ -26,14 +26,6 @@ public class LocalidadesController : Controller
         List<Vistalocalidades> LocalidadesMostar = new List<Vistalocalidades>();
         var listadoLocalidades = _context.Localidades.ToList();
 
-        // if (Id != null)
-        // {
-        //     listadoLocalidades = listadoLocalidades.Where(l => l.LocalidadID == Id).ToList();
-        // }
-        // if (Id != 0)
-        // {
-        //     listadoLocalidades = listadoLocalidades.Where(l => l.ProvinciaID == Id).ToList();
-        // }
         var listadoProvincias = _context.Provincias.ToList();
          foreach (var localidad in listadoLocalidades)
         {

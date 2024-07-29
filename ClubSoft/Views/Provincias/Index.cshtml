@@ -6,6 +6,20 @@
   <h1 class="display-4">Provincias</h1>
 </div> *@
 
+<div class="p-3">
+  <div class="row">
+      <h4></i>Agregar Nueva Provincia<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+      <input type="hidden" id="ProvinciaID" value="0" />
+      <div class="col-md-3">
+        <input type="text" class="form-control" id="ProvinciaNombre" style="text-transform:uppercase"
+          placeholder="Ingrese la provincia">
+      </div>
+      <div class="col-md-3">
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      </div>
+  </div>
+</div>
+
 <div class="p-3" style="heigth: 100%;">
   <div class="card">
     <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PROVINCIAS</h3>
@@ -15,6 +29,8 @@
           <thead>
             <tr>
               <th style="position: sticky; top: 0; background-color: white;">Nombre</th>
+              <th style="width: 70px"></th>
+              <th style="width: 70px"></th>
             </tr>
           </thead>
           <tbody id="tbody-Provincias">
