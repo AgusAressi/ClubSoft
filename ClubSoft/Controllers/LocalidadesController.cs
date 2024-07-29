@@ -19,21 +19,20 @@ public class LocalidadesController : Controller
 
     public IActionResult Index()
     {
+
+        var provincias = _context.Provincias.ToList();
+
+        provincias.Add(new Provincia{ProvinciaID = 0, Nombre = "[SELECCIONE LA PROVINCIA]"});
+        ViewBag.ProvinciaID = new SelectList(provincias.OrderBy(c => c.Nombre), "ProvinciaID", "Nombre");
+
         return View();
+
     }
     public JsonResult ListadoLocalidades()
     {
         List<Vistalocalidades> LocalidadesMostar = new List<Vistalocalidades>();
         var listadoLocalidades = _context.Localidades.ToList();
 
-        // if (Id != null)
-        // {
-        //     listadoLocalidades = listadoLocalidades.Where(l => l.LocalidadID == Id).ToList();
-        // }
-        // if (Id != 0)
-        // {
-        //     listadoLocalidades = listadoLocalidades.Where(l => l.ProvinciaID == Id).ToList();
-        // }
         var listadoProvincias = _context.Provincias.ToList();
          foreach (var localidad in listadoLocalidades)
         {
