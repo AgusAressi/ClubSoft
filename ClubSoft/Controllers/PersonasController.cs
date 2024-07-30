@@ -4,6 +4,7 @@ using ClubSoft.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
+using static ClubSoft.Models.Persona;
 
 namespace ClubSoft.Controllers;
 
@@ -18,16 +19,49 @@ public class PersonasController : Controller
 
     public IActionResult Index()
     {
+        var localidades = _context.Localidades.ToList();
+
+        localidades.Add(new Localidad{LocalidadID = 0, Nombre = "[SELECCIONE LA LOCALIDAD...]"});
+        ViewBag.LocalidadID = new SelectList(localidades.OrderBy(c => c.Nombre), "LocalidadID", "Nombre");
+
         return View();
     }
 
- public JsonResult ListadoPersonas(int? PersonaID)
+ public JsonResult ListadoPersonas()
     {
-        var MostrarPersonas = _context.Personas.ToList();
-        if (PersonaID != null) {
-            MostrarPersonas = MostrarPersonas.Where(p=> p.PersonaID == PersonaID).ToList();
+        List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
+        var listadoPersonas = _context.Personas.ToList();
+        var listadoLocalidades = _context.Localidades.ToList();
+        var listadoProvincias = _context.Provincias.ToList();
+
+         foreach (var personas in listadoPersonas)
+        {
+            var localidades = listadoLocalidades.Where(t => t.LocalidadID == personas.LocalidadID).Single();
+            var provincias = listadoProvincias.Where(t => t.ProvinciaID == localidades.ProvinciaID).Single();
+            
+            var personaMostar = new VistaPersonas
+            {
+                PersonaID = personas.PersonaID,
+                Nombre = personas.Nombre,
+                Apellido = personas.Apellido,
+                Direccion = personas.Direccion,
+                Telefono = personas.Telefono,
+                DNI = personas.DNI,
+                LocalidadID = personas.LocalidadID,
+                NombreLocalidad = localidades.Nombre,
+                NombreProvincia = provincias.Nombre,
+                UsuarioID = personas.UsuarioID
+            };
+            MostrarPersonas.Add(personaMostar);
         }
         return Json(MostrarPersonas);
+        
+        
+        // var MostrarPersonas = _context.Personas.ToList();
+        // if (PersonaID != null) {
+        //     MostrarPersonas = MostrarPersonas.Where(p=> p.PersonaID == PersonaID).ToList();
+        // }
+        // return Json(MostrarPersonas);
     }
 
       public JsonResult GuardarRegistro(

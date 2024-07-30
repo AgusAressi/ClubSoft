@@ -8,26 +8,8 @@
 
 <div class="p-3">
   <div class="row">
-<<<<<<< HEAD
-    <h4></i>Agregar Nueva Persona<i class="fa-solid fa-plus ps-2"></i></h4>
+    <h4>Agregar Nueva Persona<i class="ms-2 fa-solid fa-square-plus"></i></h4>
    
-=======
-    <h4></i>Agregar Nueva Persona<i class="ms-2 fa-solid fa-square-plus"></i></h4>
-    @* <input type="hidden" id="LocalidadID" value="0" />
-    <div class="col-md-3">
-      <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
-        placeholder="">
-    </div>
-    <div class="col-md-3">
-      <select class="form-control" id="ProvinciaID">
-        
-      </select>
-    </div>
-    <div class="col-md-3">
-      <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
-    </div>
-  </div> *@
->>>>>>> 7686faa522748467f77ff5a53a4c0a4756025093
      
 <!-- Button trigger modal -->
 <div class="mb-2">
@@ -40,7 +22,7 @@
 </div>
 
 @* MODAL AGREGAR *@
- <div class="modal fade" id="ModalPersonas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade modal-lg" id="ModalPersonas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -49,41 +31,47 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="mb-3">
-            <input type="hidden" id="PersonaID" value="0"/>
-            <label for="Nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase" placeholder="">
-          </div>
+              <div class="row">
+                <input type="hidden" id="PersonaID" value="0" />
+                <div class="mb-3 col-md-6">
+                  <label for="Nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="Apellido" class="form-label">Apellido</label>
+                  <input type="text" class="form-control" id="PersonaApellido" placeholder="">
+                </div>
 
-          <div class="mb-3">
-            <label for="Apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="PersonaApellido" placeholder="">
-          </div>
+                <div class="mb-3">
+                  <label for="Direccion" class="form-label">Dirección</label>
+                  <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
 
-          <div class="mb-3">
-            <label for="Direccion" class="form-label">Direccion</label>
-            <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase" placeholder="">
-          </div>
+                <div class="mb-3">
+                  <label for="Telefono" class="form-label">Telefono</label>
+                  <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
 
-          <div class="mb-3">
-            <label for="Telefono" class="form-label">Telefono</label>
-            <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
-          </div>
+                <div class="mb-3">
+                  <label for="Dni" class="form-label">DNI</label>
+                  <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
 
-          <div class="mb-3">
-            <label for="Dni" class="form-label">Dni</label>
-            <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
-          </div>
+                <div class="mb-3">
+                  <label for="LocalidadID" class="form-label">Localidad</label>
+                  @Html.DropDownList("LocalidadID", null, htmlAttributes: new { @class = "form-control" })
+                </div>
 
-          <div class="mb-3">
-            <label for="LocalidadID" class="form-label">Localidad ID</label>
-            <input type="text" class="form-control" id="LocalidadID" style="text-transform: uppercase" placeholder="">
-          </div>
-
-          <div class="mb-3">
-            <label for="UsuarioID" class="form-label">Usuario ID</label>
-            <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase" placeholder="">
-          </div>
+                <div class="mb-3">
+                  <label for="UsuarioID" class="form-label">Usuario</label>
+                  <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
+              </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -107,9 +95,9 @@
           <tr>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Direccion</th>
+            <th>Dirección</th>
             <th>Telefono</th>
-            <th>Dni</th>
+            <th>DNI</th>
             <th>Localidad</th>
             <th>Usuario</th>
             <th style="width: 70px"></th>
