@@ -26,12 +26,12 @@ function ListadoPersonas(){
                     <td>${MostrarPersonas.usuarioID}</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-success" onclick="AbrirEditar(${MostrarPersonas.personaID})">
-                    Editar
+                    <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
                     <td class="text-center">
                     <button type="button" class="btn btn-danger" onclick="EliminarPersona(${MostrarPersonas.personaID})">
-                    Eliminar
+                   <i class="fa-solid fa-trash"></i>
                     </button>
                     </td> 
                 </tr>
