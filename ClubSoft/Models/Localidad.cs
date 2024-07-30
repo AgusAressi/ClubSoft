@@ -18,13 +18,12 @@ public class Vistalocalidades
 {
     public int LocalidadID { get; set; }
 
-     public int ProvinciaID { get; set; }
+    public int ProvinciaID { get; set; }
 
-      public string? Nombre { get; set; }
+    public string? Nombre { get; set; }
 
-       public string? NombreProvincia { get; set; }
-
-    
+    public string? NombreProvincia { get; set; }
+   
 }
 }
 

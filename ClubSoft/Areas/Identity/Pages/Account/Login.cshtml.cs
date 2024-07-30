@@ -115,7 +115,7 @@ namespace ClubSoft.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("inicio", "home");
+                    return RedirectToAction("inicio");
                 }
                 if (result.RequiresTwoFactor)
                 {

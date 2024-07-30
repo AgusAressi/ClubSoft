@@ -1,0 +1,15 @@
+.custom-card {
+    background-color: #f8f9fa; /* Fondo gris claro */
+    border-left: 7px solid #0d6efd; /* Borde azul oscuro y grueso a la izquierda */
+    border-radius: 0.5rem; /* Border-radius estándar de Bootstrap */
+  }
+
+.titulo-card{
+    font-size: 1.5rem;
+}
+
+.subtitulo-card{
+    font-size: 0.9rem;
+    color: grey;
+    font-style: italic;
+}
