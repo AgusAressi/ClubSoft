@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Productos";
+}
+
+
+
+<div class="p-3">
+  <div class="row">
+    <div class="mb-2">
+        <button type="button" class="btn btn-primary" onclick="NuevoProducto()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
+              Nuevo Producto
+          </button>
+    </div>
+    
+  </div>
+</div>
+
+
+
+<div class="p-3" style="heigth: 100%;">
+  <div class="card">
+    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PRODUCTOS</h3>
+    <div class="card-body mb-5">
+      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Descripcion</th>
+            <th>Estado</th>
+            <th>Tipo de Producto</th>
+            <th style="width: 70px"></th>
+            <th style="width: 70px"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-Productos">
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+  
+
+
+ 
+  @section Scripts{
+  <script src="~/js/Productos.js"></script>
+}

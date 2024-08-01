@@ -19,5 +19,6 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Localidad> Localidades { get; set; }
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Provincia> Provincias { get; set; }
+    public DbSet<Producto> Productos { get; set; }
     public DbSet<TipoEvento> TipoEventos { get; set; }
 }

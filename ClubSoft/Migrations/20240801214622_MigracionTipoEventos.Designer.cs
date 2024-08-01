@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240801151141_CrearTipoEventos")]
-    partial class CrearTipoEventos
+    [Migration("20240801214622_MigracionTipoEventos")]
+    partial class MigracionTipoEventos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
