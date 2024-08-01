@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Tipo de Eventos";
+}
+
+<div class="p-3">
+  <div class="row">
+      <h4>Agregar Nueva Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+      <input type="hidden" id="TipoEventoID" value="0" />
+      <div class="col-md-3">
+        <input type="text" class="form-control" id="TipoEventoNombre" style="text-transform:uppercase"
+          placeholder="Ingrese el nombre del evento">
+      </div>
+      <div class="col-md-3">
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      </div>
+  </div>
+</div>
+
+<div class="p-3" style="heigth: 100%;">
+  <div class="card">
+    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>TIPOS DE EVENTOS</h3>
+    <div class="card-body">
+      <div class="table-responsive" style="height: 500px; overflow-y: auto;">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th style="position: sticky; top: 0; background-color: white;">Nombre</th>
+              <th style="width: 70px"></th>
+              <th style="width: 70px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-TipoEventos">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ 
+  @section Scripts{
+  <script src="~/js/TipoEventos.js"></script>
+}

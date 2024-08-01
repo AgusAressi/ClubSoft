@@ -2,115 +2,105 @@
     ViewData["Title"] = "Personas";
 }
 
-<div class="p-3">
-  <div class="row">
-    <h4></i>Agregar Nueva Persona<i class="fa-solid fa-plus ps-2"></i></h4>
-   
-     
-<!-- Button trigger modal -->
-<div class="mb-2">
-  <button type="button" onclick="ListadoPersonas()" class="btn btn-primary">
-    Refrescar Tabla
-  </button>
-  <button type="button" class="btn btn-primary" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
-    Nueva Persona
-  </button>
-</div>
-
-@* MODAL AGREGAR *@
- <div class="modal fade modal-lg" id="ModalPersonas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitulo">Personas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="p-3">
+      <h4>Agregar Nueva Persona<i class="fa-solid fa-plus ps-2"></i></h4>
+      <div class="mb-2">
+          <button type="button" onclick="ListadoPersonas()" class="btn btn-primary">
+              Refrescar Tabla
+          </button>
+          <button type="button" class="btn btn-primary" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
+              Nueva Persona
+          </button>
       </div>
-      <div class="modal-body">
-        <form>
-              <div class="row">
-                <input type="hidden" id="PersonaID" value="0" />
-                <div class="mb-3 col-md-6">
-                  <label for="Nombre" class="form-label">Nombre</label>
-                  <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="Apellido" class="form-label">Apellido</label>
-                  <input type="text" class="form-control" id="PersonaApellido" placeholder="">
-                </div>
-
-                <div class="mb-3">
-                  <label for="Direccion" class="form-label">Dirección</label>
-                  <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-
-                <div class="mb-3">
-                  <label for="Telefono" class="form-label">Telefono</label>
-                  <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-
-                <div class="mb-3">
-                  <label for="Dni" class="form-label">DNI</label>
-                  <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-
-                <div class="mb-3">
-                  <label for="LocalidadID" class="form-label">Localidad</label>
-                  @Html.DropDownList("LocalidadID", null, htmlAttributes: new { @class = "form-control" })
-                </div>
-
-                <div class="mb-3">
-                  <label for="UsuarioID" class="form-label">Usuario</label>
-                  <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-              </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="p-3" style="heigth: 100%;">
-  <div class="card">
-    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PERSONAS</h3>
-    <div class="card-body mb-5">
-      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Dirección</th>
-            <th>Telefono</th>
-            <th>DNI</th>
-            <th>Localidad</th>
-            <th>Usuario</th>
-            <th style="width: 70px"></th>
-            <th style="width: 70px"></th>
-          </tr>
-        </thead>
-        <tbody id="tbody-Personas">
-        </tbody>
-      </table>
-    </div>
-    </div>
-  </div>
-</div>
   
 
+    @* MODAL AGREGAR *@
+      <div class="modal" tabindex="-1" id="ModalPersonas">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitulo">Personas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <input type="hidden" id="PersonaID" value="0" />
+                            <div class="mb-3 col-md-6">
+                                <label for="Nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase" placeholder="">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="Apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="PersonaApellido" placeholder="">
+                            </div>
 
- 
-  @section Scripts{
-  <script src="~/js/Personas.js"></script>
+                            <div class="mb-3">
+                                <label for="Direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase" placeholder="">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Telefono" class="form-label">Telefono</label>
+                                <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Dni" class="form-label">DNI</label>
+                                <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="LocalidadID" class="form-label">Localidad</label>
+                                @Html.DropDownList("LocalidadID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="UsuarioID" class="form-label">Usuario</label>
+                                <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase" placeholder="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*TABLA*@
+    <div class="mt-2" style="heigth: 100%;">
+        <div class="card">
+            <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PERSONAS</h3>
+            <div class="card-body mb-5">
+                <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Dirección</th>
+                                <th>Telefono</th>
+                                <th>DNI</th>
+                                <th>Localidad</th>
+                                <th>Usuario</th>
+                                <th style="width: 70px"></th>
+                                <th style="width: 70px"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-Personas">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> 
+
+@section Scripts {
+    <script src="~/js/Personas.js"></script>
 }

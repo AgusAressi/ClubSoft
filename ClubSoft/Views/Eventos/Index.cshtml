@@ -2,77 +2,66 @@
     ViewData["Title"] = "Eventos";
 }
 <div class="p-3">
-  <div class="row">
-    <h4></i>Agregar Nuevo Evento<i class="fa-solid fa-plus ps-2"></i></h4>
-   
+    <h4>Agregar Nuevo Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
+            Nuevo Evento
+        </button>
+    </div>
      
-<!-- Button trigger modal -->
-<div class="mb-2">
- 
-  <button type="button" class="btn btn-primary" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
-    Nuevo Evento
-  </button>
-</div>
-
-
-@* MODAL AGREGAR *@
- <div class="modal fade modal-lg" id="ModalEventos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitulo">EVENTOS</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-              <div class="row">
-                <input type="hidden" id="EventoID" value="0" />
-                <div class="mb-3 col-md-6">
-                  <label for="FechaEvento" class="form-label">Fecha Del Evento</label>
-                  <input type="datetime-local" class="form-control" id="FechaEvento" style="text-transform: uppercase"
-                    placeholder="">
+    @* MODAL AGREGAR *@
+      <div class="modal" tabindex="-1" id="ModalEventos">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitulo"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="mb-3 col-md-6">
-                  <label for="Lugar" class="form-label">Lugar</label>
-                  <input type="text" class="form-control" id="Lugar" placeholder="">
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <input type="hidden" id="EventoID" value="0" />
+                            <div class="mb-3 col-md-6">
+                                <label for="TipoEventoID" class="form-label">Tipo de evento</label>
+                                @Html.DropDownList("TipoEventoID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="DescripcionEvento" class="form-label">Descripcion del evento</label>
+                                <input type="text" class="form-control" id="DescripcionEvento" placeholder="">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="FechaEvento" class="form-label">Fecha Del Evento</label>
+                                <input type="datetime-local" class="form-control" id="FechaEvento" 
+                                  value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="Lugar" class="form-label">Lugar</label>
+                                <input type="text" class="form-control" id="Lugar" placeholder="">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="mb-3 col-md-6">
-                  <label for="TipoEvento" class="form-label">Tipo de evento</label>
-                  <input type="text" class="form-control" id="TipoEvento" style="text-transform: uppercase"
-                    placeholder="">
+                <div class="modal-footer">
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
                 </div>
-              </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    @* TABLA *@
+    <div class="mt-2" style="heigth: 100%;">
+        <div class="card">
+            <h3 class="card-header text-end"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+            <div class="card-body">
+                <div class="table-responsive" style="height: auto; overflow-y: auto;">
+                    <div class="row" id="card-Eventos"></div>  
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="p-3" style="heigth: 100%;">
-  <div class="card">
-    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>EVENTOS</h3>
-    <div class="card-body mb-5">
-      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
-        <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">PARTIDO FUTBOL</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">TIRO VS JUNIOR</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-  
-</div>
-     
-    </div>
-    </div>
-  </div>
-</div>
-  
- 
-  @section Scripts{
-  <script src="~/js/Eventos.js"></script>
+@section Scripts{
+    <script src="~/js/Eventos.js"></script>
 }

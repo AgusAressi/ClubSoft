@@ -250,6 +250,7 @@ a {
 }
 a:hover {
   color: var(--bs-link-hover-color);
+  transition: ease 0.3s;
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
