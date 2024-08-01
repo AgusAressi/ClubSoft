@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240801151141_CrearTipoEventos")]
-    partial class CrearTipoEventos
+    [Migration("20240801225603_MigracionTipoProductos")]
+    partial class MigracionTipoProductos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,6 +248,22 @@ namespace ClubSoft.Migrations
                     b.HasKey("TipoEventoID");
 
                     b.ToTable("TipoEventos");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.TipoProducto", b =>
+                {
+                    b.Property<int>("TipoProductoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TipoProductoID"));
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TipoProductoID");
+
+                    b.ToTable("TipoProductos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

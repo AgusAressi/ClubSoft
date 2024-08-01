@@ -20,4 +20,5 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Provincia> Provincias { get; set; }
     public DbSet<TipoEvento> TipoEventos { get; set; }
+    public DbSet<TipoProducto> TipoProductos { get; set; }
 }

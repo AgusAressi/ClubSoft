@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Tipo de Productos";
+}
+
+<div class="p-3">
+  <div class="row">
+      <h4>Agregar Nuevo Producto<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+      <input type="hidden" id="TipoProductoID" value="0" />
+      <div class="col-md-3">
+        <input type="text" class="form-control" id="TipoProductoNombre" style="text-transform:uppercase"
+          placeholder="Ingrese nombre del producto">
+      </div>
+      <div class="col-md-3">
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      </div>
+  </div>
+</div>
+
+<div class="p-3" style="heigth: 100%;">
+  <div class="card">
+    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>TIPOS DE PRODUCTOS</h3>
+    <div class="card-body">
+      <div class="table-responsive" style="height: 500px; overflow-y: auto;">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th style="position: sticky; top: 0; background-color: white;">Nombre</th>
+              <th style="width: 70px"></th>
+              <th style="width: 70px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-TipoProductos">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ 
+  @section Scripts{
+  <script src="~/js/TipoProductos.js"></script>
+}
