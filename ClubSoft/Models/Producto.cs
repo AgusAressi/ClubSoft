@@ -13,7 +13,7 @@ public class Producto
     public string? Descripcion { get; set; }
     public bool? Estado { get; set;}
     public int TipoProductoID { get; set; }
-    public virtual ICollection<TipoProducto> TipoProducto { get; set; }
+    public virtual TipoProducto TipoProducto { get; set; }
 
     public class VistaTipoProductos
 {
