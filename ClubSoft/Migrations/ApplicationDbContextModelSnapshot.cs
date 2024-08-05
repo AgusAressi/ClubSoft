@@ -96,7 +96,6 @@ namespace ClubSoft.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleFacturaID"));
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FacturaID")
@@ -213,6 +212,37 @@ namespace ClubSoft.Migrations
                     b.HasIndex("LocalidadID");
 
                     b.ToTable("Personas");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Producto", b =>
+                {
+                    b.Property<int>("ProductoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoID"));
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TipoProductoID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductoID");
+
+                    b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Provincia", b =>
@@ -465,6 +495,21 @@ namespace ClubSoft.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ProductoTipoProducto", b =>
+                {
+                    b.Property<int>("ProductosProductoID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoProductoID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductosProductoID", "TipoProductoID");
+
+                    b.HasIndex("TipoProductoID");
+
+                    b.ToTable("ProductoTipoProducto");
+                });
+
             modelBuilder.Entity("ClubSoft.Models.CuentaCorriente", b =>
                 {
                     b.HasOne("ClubSoft.Models.Cobro", "Cobro")
@@ -583,6 +628,21 @@ namespace ClubSoft.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductoTipoProducto", b =>
+                {
+                    b.HasOne("ClubSoft.Models.Producto", null)
+                        .WithMany()
+                        .HasForeignKey("ProductosProductoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubSoft.Models.TipoProducto", null)
+                        .WithMany()
+                        .HasForeignKey("TipoProductoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

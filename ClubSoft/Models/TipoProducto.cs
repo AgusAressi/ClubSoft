@@ -9,5 +9,5 @@ public class TipoProducto
     public int TipoProductoID { get; set; }
     public string? Nombre { get; set; }
     
-    // public virtual ICollection<Producto> Productos { get; set; }
+    public virtual ICollection<Producto> Productos { get; set; }
 }

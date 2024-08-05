@@ -12,11 +12,10 @@ public class Producto
     public decimal Cantidad { get; set; }
     public string? Descripcion { get; set; }
     public bool? Estado { get; set;}
+    public int TipoProductoID { get; set; }
+    public virtual ICollection<TipoProducto> TipoProducto { get; set; }
 
-public int TipoProductoID { get; set; }
-    // public virtual ICollection<TipoProducto> TipoProducto { get; set; }
-
-        public class VistaTipoProductos
+    public class VistaTipoProductos
 {
     public int ProductoID { get; set; }
     public int TipoProductoID { get; set; }
@@ -25,7 +24,7 @@ public int TipoProductoID { get; set; }
     public decimal Cantidad { get; set; }
     public string? Descripcion { get; set; }
     public bool? Estado { get; set;}
-     public string? NombreTipoProducto { get; set; }
+    public string? NombreTipoProducto { get; set; }
 
 }
 }
