@@ -55,13 +55,7 @@ public class PersonasController : Controller
             MostrarPersonas.Add(personaMostar);
         }
         return Json(MostrarPersonas);
-        
-        
-        // var MostrarPersonas = _context.Personas.ToList();
-        // if (PersonaID != null) {
-        //     MostrarPersonas = MostrarPersonas.Where(p=> p.PersonaID == PersonaID).ToList();
-        // }
-        // return Json(MostrarPersonas);
+
     }
 
       public JsonResult GuardarRegistro(
