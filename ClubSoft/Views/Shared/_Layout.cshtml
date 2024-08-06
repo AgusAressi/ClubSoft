@@ -24,14 +24,14 @@
                 <img src="~/img/logonav.png" style="width: 150px;" alt="logo" />
             </div>
             <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home" asp-action="Inicio">Inicio</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias" asp-action="Index">Provincias</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Localidades" asp-action="Index">Localidades</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Personas" asp-action="Index">Personas</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Productos" asp-action="Index">Productos</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="TipoEventos" asp-action="Index">Tipo de Eventos</a>
-                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Eventos" asp-action="Index">Eventos</a>
-                 <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="TipoProductos" asp-action="Index">Tipo de Productos</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home" asp-action="Inicio"><i class="fa-solid fa-house pe-2"></i>Inicio</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Personas" asp-action="Index"><i class="fas fa-users pe-2"></i>Personas</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Eventos" asp-action="Index"><i class="fas fa-calendar-days pe-2"></i>Eventos</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="TipoEventos" asp-action="Index">Tipo de Eventos</a>          
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Productos" asp-action="Index"><i class="fa-solid fa-list pe-2"></i>Productos</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="TipoProductos" asp-action="Index">Tipo de Productos</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias" asp-action="Index"><i class="fas fa-map-marker-alt pe-2"></i>Provincias</a>
+                <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Localidades" asp-action="Index"><i class="fas fa-city pe-2"></i>Localidades</a>
                 <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </div>
@@ -100,6 +100,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js"></script>
     <script src="~/fontawesome/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

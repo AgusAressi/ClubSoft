@@ -46,10 +46,27 @@ function ListadoLocalidades(){
 }
 
 function GuardarRegistro(){
-
     let localidadID = document.getElementById("LocalidadID").value;
-    let nombre = document.getElementById("LocalidadNombre").value;
+    let nombre = document.getElementById("LocalidadNombre").value.trim(); // Elimina espacios en blanco
     let provinciaID = document.getElementById("ProvinciaID").value;
+    let errorMensajeLocalidad = document.getElementById("errorMensajeLocalidad");
+    let errorMensajeProvincia = document.getElementById("errorMensajeProvincia");
+
+    // Validar si el campo de localidad está vacío
+    if(nombre == "") {
+        errorMensajeLocalidad.style.display = "block";
+        return;
+    } else {
+        errorMensajeLocalidad.style.display = "none";
+    }
+
+    // Validar si no se ha seleccionado una provincia
+    if(provinciaID == "0") {
+        errorMensajeProvincia.style.display = "block";
+        return;
+    } else {
+        errorMensajeProvincia.style.display = "none";
+    }
     
     $.ajax({
         url: '../../Localidades/GuardarLocalidad',
@@ -57,11 +74,17 @@ function GuardarRegistro(){
             localidadID: localidadID,
             nombre: nombre,
             provinciaID: provinciaID
-            
-            },
+        },
         type: 'POST',
         dataType: 'json',   
         success: function (resultado) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            }); 
             ListadoLocalidades();
         },
         error: function (xhr, status) {
@@ -94,21 +117,39 @@ function AbrirEditar(LocalidadID){
 }
 
 function EliminarLocalidad(LocalidadID){
-                
-    $.ajax({
-        url: '../../Localidades/EliminarLocalidad',
-        data: {
-            localidadID: LocalidadID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoLocalidades();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+    Swal.fire({
+        title: "Esta seguro que quiere eliminar el registro?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {            
+            $.ajax({
+                url: '../../Localidades/EliminarLocalidad',
+                data: {
+                    localidadID: LocalidadID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El registro se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });           
+                    ListadoLocalidades();
+                },
+                error: function (xhr, status) {
+                console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
 
 function LimpiarInput() {

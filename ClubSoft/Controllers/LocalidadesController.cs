@@ -21,8 +21,7 @@ public class LocalidadesController : Controller
     {
 
         var provincias = _context.Provincias.ToList();
-
-        provincias.Add(new Provincia{ProvinciaID = 0, Nombre = "[SELECCIONE LA PROVINCIA]"});
+        provincias.Add(new Provincia { ProvinciaID = 0, Nombre = "[SELECCIONE LA PROVINCIA]" });
         ViewBag.ProvinciaID = new SelectList(provincias.OrderBy(c => c.Nombre), "ProvinciaID", "Nombre");
 
         return View();
@@ -58,6 +57,7 @@ public class LocalidadesController : Controller
        )
     {
         string resultado = "";
+        Nombre = Nombre.ToUpper();
         if (LocalidadID == 0)
         {
             var localidad = new Localidad

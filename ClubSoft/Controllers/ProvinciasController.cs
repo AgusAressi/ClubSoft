@@ -47,8 +47,6 @@ public class ProvinciasController : Controller
             };
             _context.Add(provincia);
             _context.SaveChanges();
-
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
          else
          {
