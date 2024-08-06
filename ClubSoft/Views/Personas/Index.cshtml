@@ -2,13 +2,15 @@
     ViewData["Title"] = "Personas";
 }
 
+<link rel="stylesheet" href="~/css/Personas.css" asp-append-version="true" />
+
   <div class="p-3">
       <h4>Agregar Nueva Persona<i class="fa-solid fa-plus ps-2"></i></h4>
       <div class="mb-2">
-          <button type="button" onclick="ListadoPersonas()" class="btn btn-primary">
+          <button type="button" onclick="ListadoPersonas()" class="btn btn-primary boton-color">
               Refrescar Tabla
           </button>
-          <button type="button" class="btn btn-primary" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
+          <button type="button" class="btn btn-primary boton-color" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
               Nueva Persona
           </button>
       </div>
@@ -16,55 +18,55 @@
 
     @* MODAL AGREGAR *@
       <div class="modal" tabindex="-1" id="ModalPersonas">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+          <div class="modal-dialog modal-md"> 
+            <div class="modal-content container-modal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalTitulo">Personas</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-color" id="ModalTitulo">Personas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="row">
                             <input type="hidden" id="PersonaID" value="0" />
-                            <div class="mb-3 col-md-6">
-                                <label for="Nombre" class="form-label">Nombre</label>
+                            <div class="mb-2 col-md-6">
+                                <label for="Nombre" class="form-label fw-bold">Nombre</label>
                                 <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase" placeholder="">
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="Apellido" class="form-label">Apellido</label>
+                            <div class="mb-2 col-md-6">
+                                <label for="Apellido" class="form-label fw-bold">Apellido</label>
                                 <input type="text" class="form-control" id="PersonaApellido" placeholder="">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="Direccion" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase" placeholder="">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="Telefono" class="form-label">Telefono</label>
+                            <div class="mb-2 col-md-6">
+                                <label for="Telefono" class="form-label fw-bold">Telefono</label>
                                 <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="Dni" class="form-label">DNI</label>
+                            <div class="mb-2 col-md-6">
+                                <label for="Dni" class="form-label fw-bold">DNI</label>
                                 <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="LocalidadID" class="form-label">Localidad</label>
+                            <div class="mb-2">
+                                <label for="Direccion" class="form-label fw-bold">Dirección</label>
+                                <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase" placeholder="">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="LocalidadID" class="form-label fw-bold">Localidad</label>
                                 @Html.DropDownList("LocalidadID", null, htmlAttributes: new { @class = "form-control" })
                             </div>
 
-                            <div class="mb-3">
-                                <label for="UsuarioID" class="form-label">Usuario</label>
+                            <div class="mb-2">
+                                <label for="UsuarioID" class="form-label fw-bold">Usuario</label>
                                 <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase" placeholder="">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary boton-color">Guardar</button>
                 </div>
             </div>
         </div>

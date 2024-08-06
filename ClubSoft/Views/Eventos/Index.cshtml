@@ -1,49 +1,51 @@
 @{
     ViewData["Title"] = "Eventos";
 }
+
+<link rel="stylesheet" href="~/css/Eventos.css" asp-append-version="true" />
 <div class="p-3">
     <h4>Agregar Nuevo Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
     <div>
-        <button type="button" class="btn btn-primary" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
+        <button type="button" class="btn btn-primary boton-color" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
             Nuevo Evento
         </button>
     </div>
      
     @* MODAL AGREGAR *@
       <div class="modal" tabindex="-1" id="ModalEventos">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+         <div class="modal-dialog modal-md">
+            <div class="modal-content container-modal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalTitulo"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-color" id="ModalTitulo"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="row">
                             <input type="hidden" id="EventoID" value="0" />
-                            <div class="mb-3 col-md-6">
-                                <label for="TipoEventoID" class="form-label">Tipo de evento</label>
+                            <div class="mb-2 col-md-12">
+                                <label for="TipoEventoID" class="form-label fw-bold">Tipo de evento</label>
                                 @Html.DropDownList("TipoEventoID", null, htmlAttributes: new { @class = "form-control" })
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="DescripcionEvento" class="form-label">Descripcion del evento</label>
+                            <div class="mb-2 col-md-12">
+                                <label for="DescripcionEvento" class="form-label fw-bold">Descripcion del evento</label>
                                 <input type="text" class="form-control" id="DescripcionEvento" placeholder="">
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="FechaEvento" class="form-label">Fecha Del Evento</label>
+                            <div class="mb-2 col-md-12">
+                                <label for="FechaEvento" class="form-label fw-bold">Fecha Del Evento</label>
                                 <input type="datetime-local" class="form-control" id="FechaEvento" 
                                   value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="Lugar" class="form-label">Lugar</label>
+                            <div class="mb-2 col-md-12">
+                                <label for="Lugar" class="form-label fw-bold">Lugar</label>
                                 <input type="text" class="form-control" id="Lugar" placeholder="">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary boton-color">Guardar</button>
                 </div>
             </div>
         </div>
