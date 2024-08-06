@@ -53,7 +53,7 @@ function GuardarRegistro(){
     let errorMensajeProvincia = document.getElementById("errorMensajeProvincia");
 
     // Validar si el campo de localidad está vacío
-    if(nombre === "") {
+    if(nombre == "") {
         errorMensajeLocalidad.style.display = "block";
         return;
     } else {
@@ -61,7 +61,7 @@ function GuardarRegistro(){
     }
 
     // Validar si no se ha seleccionado una provincia
-    if(provinciaID === "") {
+    if(provinciaID == "0") {
         errorMensajeProvincia.style.display = "block";
         return;
     } else {
