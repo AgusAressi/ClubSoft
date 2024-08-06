@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Localidades";
 }
+<link rel="stylesheet" href="~/css/Localidades.css" asp-append-version="true" />
 
 @* <div class="text-center">
     <h1 class="display-4">Localidades</h1>
@@ -13,11 +14,11 @@
     <div class="col-md-3">
       <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
         placeholder="Ingrese la localidad">
-      <span id="errorMensajeLocalidad" style="color:red; display:none; font-size: 15px; padding-left: 4px;">Debe ingresar una localidad</span>
+      <span id="errorMensajeLocalidad" style="color:red; display:none; font-size: 15px; padding-left: 4px;"><i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una localidad</span>
     </div>
     <div class="col-md-3">
         @Html.DropDownList("ProvinciaID", null, htmlAttributes: new { @class = "form-control" })
-        <span id="errorMensajeProvincia" style="color:red; display:none; font-size: 15px; padding-left: 4px;">Debe seleccionar una provincia</span>
+        <span id="errorMensajeProvincia" style="color:red; display:none; font-size: 15px; padding-left: 4px;"><i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una provincia</span>
     </div>
     <div class="col-md-3">
       <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
