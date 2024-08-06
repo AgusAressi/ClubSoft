@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Productos";
+  ViewData["Title"] = "Productos";
 }
 
 
@@ -7,11 +7,12 @@
 <div class="p-3">
   <div class="row">
     <div class="mb-2">
-        <button type="button" class="btn btn-primary" onclick="NuevoProducto()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
-              Nuevo Producto
-          </button>
+      <button type="button" class="btn btn-primary" onclick="NuevoProducto()" data-bs-toggle="modal"
+        data-bs-target="#ModalProductos">
+        Nuevo Producto
+      </button>
     </div>
-    
+
   </div>
 </div>
 
@@ -22,30 +23,87 @@
     <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PRODUCTOS</h3>
     <div class="card-body mb-5">
       <div class="table-responsive" style="height: 350px; overflow-y: auto;">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Descripcion</th>
-            <th>Estado</th>
-            <th>Tipo de Producto</th>
-            <th style="width: 70px"></th>
-            <th style="width: 70px"></th>
-          </tr>
-        </thead>
-        <tbody id="tbody-Productos">
-        </tbody>
-      </table>
-    </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              @* <th>Imagen</th> *@
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Descripcion</th>
+              <th>Estado</th>
+              <th>Tipo de Producto</th>
+              <th style="width: 70px"></th>
+              <th style="width: 70px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-Productos">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
-  
 
 
- 
-  @section Scripts{
+<div class="modal" tabindex="-1" id="ModalProductos">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitulo">Productos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <input type="hidden" id="ProductoID" value="0" />
+            <div class="mb-3 col-md-6">
+              <label for="ProductoNombre" class="form-label">Nombre Del Producto</label>
+              <input type="text" class="form-control" id="ProductoNombre" style="text-transform: uppercase"
+                placeholder="">
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="ProductoPrecio" class="form-label">Precio Del Producto</label>
+              <input type="number" class="form-control" id="ProductoPrecio" placeholder="">
+            </div>
+
+            <div class="mb-3">
+              <label for="ProductoCantidad" class="form-label">Cantidad Del Producto</label>
+              <input type="number" class="form-control" id="ProductoCantidad" style="text-transform: uppercase" placeholder="">
+            </div>
+
+            <div class="mb-3">
+              <label for="ProductoDescripcion" class="form-label">Descripcion Del Producto</label>
+              <input type="text" class="form-control" id="ProductoDescripcion" style="text-transform: uppercase" placeholder="">
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="ProductoEstado" />
+              <label for="ProductoEstado" class="form-check-label">Estado</label>
+            </div>
+
+
+            <div class="mb-3">
+              <label for="TipoProductoID" class="form-label">Tipo de Productos</label>
+              @Html.DropDownList("TipoProductoID", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+          data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+@section Scripts {
   <script src="~/js/Productos.js"></script>
 }
