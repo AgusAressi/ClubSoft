@@ -22,7 +22,7 @@ public class EventosController : Controller
 
         var tipoEventos = _context.TipoEventos.ToList();
 
-        tipoEventos.Add(new TipoEvento{TipoEventoID = 0, Nombre = "[SELECCIONE EL TIPO DE EVENTO]"});
+        tipoEventos.Add(new TipoEvento{TipoEventoID = 0, Nombre = "[SELECCIONE EL TIPO DE EVENTO...]"});
         ViewBag.TipoEventoID = new SelectList(tipoEventos.OrderBy(c => c.Nombre), "TipoEventoID", "Nombre");
 
         return View();

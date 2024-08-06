@@ -1,14 +1,18 @@
 @{
     ViewData["Title"] = "Tipo de Eventos";
 }
+<link rel="stylesheet" href="~/css/Localidades.css" asp-append-version="true" />
 
 <div class="p-3">
   <div class="row">
-      <h4>Agregar Nueva Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+      <h4>Agregar Nuevo Tipo de Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
       <input type="hidden" id="TipoEventoID" value="0" />
       <div class="col-md-3">
         <input type="text" class="form-control" id="TipoEventoNombre" style="text-transform:uppercase"
           placeholder="Ingrese el nombre del evento">
+        <span id="errorMensaje" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+          <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un valor
+          </span>
       </div>
       <div class="col-md-3">
         <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>

@@ -1,0 +1,10 @@
+/* Ocultar los botones por defecto */
+.btn-success, .btn-danger {
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+  }
+  
+  /* Mostrar los botones cuando se pasa el cursor sobre la fila */
+  tr:hover .btn-success, tr:hover .btn-danger {
+    opacity: 1;
+  }

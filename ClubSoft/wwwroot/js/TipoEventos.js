@@ -41,25 +41,37 @@ function ListadoTipoEventos(){
 }
 
 function GuardarRegistro(){
+    const tipoEventoID = document.getElementById("TipoEventoID").value;
+    const nombre = document.getElementById("TipoEventoNombre").value.trim();
+    const errorMensaje = document.getElementById("errorMensaje");
 
-    let tipoEventoID = document.getElementById("TipoEventoID").value;
-    let nombre = document.getElementById("TipoEventoNombre").value;
-    
+    // Validar si el campo está vacío
+    if(nombre === "") {
+        errorMensaje.style.display = "block";
+        return;
+    } else {
+        errorMensaje.style.display = "none";
+    }
+
     $.ajax({
         url: '../../TipoEventos/GuardarTipoEvento',
-        data: { 
-            tipoEventoID: tipoEventoID,
-            nombre: nombre           
-            },
+        data: { tipoEventoID, nombre },
         type: 'POST',
-        dataType: 'json',   
+        dataType: 'json',
         success: function (resultado) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
             ListadoTipoEventos();
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
 
 function AbrirEditar(tipoEventoID){
