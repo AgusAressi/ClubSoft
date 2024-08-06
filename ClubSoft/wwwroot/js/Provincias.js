@@ -41,19 +41,34 @@ function ListadoProvincias(){
 }
 
 function GuardarRegistro(){
-
     let provinciaID = document.getElementById("ProvinciaID").value;
-    let nombre = document.getElementById("ProvinciaNombre").value;
+    let nombre = document.getElementById("ProvinciaNombre").value.trim(); // Elimina espacios en blanco
+    let errorMensaje = document.getElementById("errorMensaje");
+
+    // Validar si el campo está vacío
+    if(nombre === "") {
+        errorMensaje.style.display = "block";
+        return;
+    } else {
+        errorMensaje.style.display = "none";
+    }
     
     $.ajax({
         url: '../../Provincias/GuardarProvincia',
         data: { 
             ProvinciaID: provinciaID,
             Nombre: nombre           
-            },
+        },
         type: 'POST',
         dataType: 'json',   
         success: function (resultado) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            }); 
             ListadoProvincias();
         },
         error: function (xhr, status) {
@@ -85,22 +100,41 @@ function AbrirEditar(ProvinciaID){
     });
 }
 
-function EliminarProvnicia(ProvinciaID){
-                
-    $.ajax({
-        url: '../../Provincias/EliminarProvincia',
-        data: {
-            provinciaID: ProvinciaID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoProvincias();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+function EliminarProvnicia(ProvinciaID) {
+
+    Swal.fire({
+        title: "Esta seguro que quiere eliminar el registro?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Provincias/EliminarProvincia',
+                data: {
+                    provinciaID: ProvinciaID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El registro se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoProvincias();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
 
 function LimpiarInput() {
