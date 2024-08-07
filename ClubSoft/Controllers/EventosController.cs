@@ -64,6 +64,8 @@ public class EventosController : Controller
        )
     {
         string resultado = "";
+        Descripcion = Descripcion.ToUpper();
+         Lugar = Lugar.ToUpper();
         if (EventoID == 0)
         {
             var evento = new Evento

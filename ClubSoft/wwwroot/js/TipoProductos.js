@@ -17,7 +17,7 @@ function ListadoTipoProductos(){
                 <tr>
                     <td>${traerTodosLosTiposDeProductos.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirEditar(${traerTodosLosTiposDeProductos.tipoProductoID})">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodosLosTiposDeProductos.tipoProductoID})">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>

@@ -17,12 +17,12 @@ function ListadoProvincias(){
                 <tr>
                     <td>${traerTodasLasProvincias.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirEditar(${traerTodasLasProvincias.provinciaID})">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodasLasProvincias.provinciaID})">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarProvnicia(${traerTodasLasProvincias.provinciaID})">
+                    <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${traerTodasLasProvincias.provinciaID})">
                     <i class="fa-solid fa-trash"></i>
                     </button>
                     </td> 

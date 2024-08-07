@@ -19,7 +19,7 @@ function ListadoLocalidades(){
                     <td>${LocalidadesMostar.nombre}</td>
                     <td>${LocalidadesMostar.nombreProvincia}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirEditar(${LocalidadesMostar.localidadID})">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${LocalidadesMostar.localidadID})">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>

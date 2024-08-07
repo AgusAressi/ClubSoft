@@ -7,10 +7,7 @@
   <div class="p-3">
       <h4>Agregar Nueva Persona<i class="ms-2 fa-solid fa-square-plus"></i></h4>
       <div class="mb-2">
-          <button type="button" onclick="ListadoPersonas()" class="btn btn-primary boton-color">
-              Refrescar Tabla
-          </button>
-          <button type="button" class="btn btn-primary boton-color" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
+          <button type="button" class="btn boton-color" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
               Nueva Persona
           </button>
       </div>
@@ -65,7 +62,7 @@
                             </div>
                             <div class="mb-2 col-md-6">
                                 <label for="Apellido" class="form-label fw-bold">Apellido *</label>
-                                <input type="text" class="form-control" id="PersonaApellido" placeholder="">
+                                <input type="text" class="form-control" id="PersonaApellido" style="text-transform:uppercase" placeholder="">
                                 <span id="errorMensajeApellido" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un apellido
                                     </span>
@@ -73,7 +70,7 @@
 
                             <div class="mb-2 col-md-6">
                                 <label for="Telefono" class="form-label fw-bold">Telefono *</label>
-                                <input type="text" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
+                                <input type="number" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
                                 <span id="errorMensajeTelefono" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un telefono
                                     </span>
@@ -81,7 +78,7 @@
 
                             <div class="mb-2 col-md-6">
                                 <label for="Dni" class="form-label fw-bold">DNI *</label>
-                                <input type="text" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
+                                <input type="number" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
                                 <span id="errorMensajeDNI" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un DNI
                                     </span>
@@ -116,7 +113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary boton-color">Guardar</button>
+                    <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
                 </div>
             </div>
         </div>

@@ -24,3 +24,11 @@
 .text-color {
 color: white;
 }
+
+.card-color {
+    background-color: rgb(194, 185, 185);
+}
+
+.body-color {
+    background-color: rgb(234, 227, 227);
+}

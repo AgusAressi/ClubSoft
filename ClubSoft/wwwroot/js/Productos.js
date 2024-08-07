@@ -25,7 +25,7 @@ function ListadoProductos(){
                     </td>
                     <td>${producto.nombreTipoProducto}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-success" onclick="AbrirEditar(${producto.productoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
@@ -87,6 +87,13 @@ function GuardarRegistro() {
         dataType: 'json',   
         success: function (resultado) {
             console.log(resultado);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
             ListadoProductos(); 
         },
         error: function (xhr, status, error) {

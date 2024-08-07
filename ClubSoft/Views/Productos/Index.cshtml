@@ -2,12 +2,13 @@
   ViewData["Title"] = "Productos";
 }
 
-
+<link rel="stylesheet" href="~/css/Productos.css" asp-append-version="true" />
 
 <div class="p-3">
+  <h4>Agregar Nuevo Producto<i class="ms-2 fa-solid fa-square-plus"></i></h4>
   <div class="row">
     <div class="mb-2">
-      <button type="button" class="btn btn-primary" onclick="NuevoProducto()" data-bs-toggle="modal"
+      <button type="button" class="btn boton-color" onclick="NuevoProducto()" data-bs-toggle="modal"
         data-bs-target="#ModalProductos">
         Nuevo Producto
       </button>
@@ -47,44 +48,44 @@
 
 
 <div class="modal" tabindex="-1" id="ModalProductos">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content container-modal">
       <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitulo">Productos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title text-color" id="ModalTitulo">Productos</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row">
             <input type="hidden" id="ProductoID" value="0" />
-            <div class="mb-3 col-md-6">
-              <label for="ProductoNombre" class="form-label">Nombre Del Producto</label>
+            <div class="mb-2 col-md-6">
+              <label for="ProductoNombre" class="form-label fw-bold">Nombre Del Producto</label>
               <input type="text" class="form-control" id="ProductoNombre" style="text-transform: uppercase"
                 placeholder="">
             </div>
-            <div class="mb-3 col-md-6">
-              <label for="ProductoPrecio" class="form-label">Precio Del Producto</label>
+            <div class="mb-2 col-md-6">
+              <label for="ProductoPrecio" class="form-label fw-bold">Precio Del Producto</label>
               <input type="number" class="form-control" id="ProductoPrecio" placeholder="">
             </div>
 
-            <div class="mb-3">
-              <label for="ProductoCantidad" class="form-label">Cantidad Del Producto</label>
+            <div class="mb-2">
+              <label for="ProductoCantidad" class="form-label fw-bold">Cantidad Del Producto</label>
               <input type="number" class="form-control" id="ProductoCantidad" style="text-transform: uppercase" placeholder="">
             </div>
 
-            <div class="mb-3">
-              <label for="ProductoDescripcion" class="form-label">Descripcion Del Producto</label>
+            <div class="mb-2">
+              <label for="ProductoDescripcion" class="form-label fw-bold">Descripcion Del Producto</label>
               <input type="text" class="form-control" id="ProductoDescripcion" style="text-transform: uppercase" placeholder="">
             </div>
 
-            <div class="mb-3 form-check">
+            <div class="mb-2 form-check">
               <input type="checkbox" class="form-check-input" id="ProductoEstado" />
               <label for="ProductoEstado" class="form-check-label">Estado</label>
             </div>
 
 
-            <div class="mb-3">
-              <label for="TipoProductoID" class="form-label">Tipo de Productos</label>
+            <div class="mb-2">
+              <label for="TipoProductoID" class="form-label fw-bold">Tipo de Productos</label>
               @Html.DropDownList("TipoProductoID", null, htmlAttributes: new { @class = "form-control" })
             </div>
 
@@ -93,9 +94,9 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
           data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+        <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
       </div>
     </div>
   </div>
