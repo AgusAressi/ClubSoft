@@ -1,10 +1,19 @@
-/* Ocultar los botones por defecto */
-.btn-success, .btn-danger {
-    opacity: 0;
-    transition: opacity 0.1s ease-in;
-  }
-  
-  /* Mostrar los botones cuando se pasa el cursor sobre la fila */
-  tr:hover .btn-success, tr:hover .btn-danger {
-    opacity: 1;
-  }
+.btn-primary, .boton-color .btn-danger {
+  opacity: 0;
+  transition: opacity 0.1s ease-in;
+}
+
+/* Mostrar los botones cuando se pasa el cursor sobre la fila */
+tr:hover .btn-primary, tr:hover .btn-danger {
+  opacity: 1;
+}
+
+  .boton-color {
+    background-color: rgb(12, 12, 86);
+    color: white;
+}
+
+.boton-color:hover {
+  background-color: #0d6efd;
+  color: white;
+}

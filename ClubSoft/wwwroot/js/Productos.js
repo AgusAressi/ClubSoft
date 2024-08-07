@@ -25,7 +25,7 @@ function ListadoProductos(){
                     </td>
                     <td>${producto.nombreTipoProducto}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-success" onclick="AbrirEditar(${producto.productoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>

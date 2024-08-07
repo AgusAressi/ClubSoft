@@ -17,7 +17,7 @@ function ListadoTipoEventos(){
                 <tr>
                     <td>${traerTodosLosTiposDeEventos.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirEditar(${traerTodosLosTiposDeEventos.tipoEventoID})">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodosLosTiposDeEventos.tipoEventoID})">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>

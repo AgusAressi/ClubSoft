@@ -14,16 +14,16 @@ function ListadoEventos() {
                 contenidoCard += `
                 <div class="col-md-4">
                     <div class="card mb-4" style="width: 24rem;">
-                        <div class="card-header fw-bolder">
+                        <div class="card-header fw-bolder card-color">
                             ${evento.nombreTipoEvento}
                         </div>
-                        <div class="card-body">
+                        <div class="card-body body-color">
                             <h5 class="card-title text-center">${evento.descripcion}</h5>
                             <p class="card-text"><b>Fecha y hora del evento:</b> ${evento.fechaEvento}</p>
                             <p class="card-text"><b>Lugar:</b> ${evento.lugar}</p>
                         </div>
-                        <div class="card-footer text-center">
-                            <button type="button" class="btn btn-success" onclick="AbrirEditar(${evento.eventoID})">
+                        <div class="card-footer text-center card-color">
+                            <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${evento.eventoID})">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                             <button type="button" class="btn btn-danger ms-4" onclick="EliminarEvento(${evento.eventoID})">
