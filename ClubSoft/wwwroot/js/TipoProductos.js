@@ -44,6 +44,15 @@ function GuardarRegistro(){
 
     let tipoProductoID = document.getElementById("TipoProductoID").value;
     let nombre = document.getElementById("TipoProductoNombre").value;
+    let errorMensaje = document.getElementById("errorMensaje");
+
+    // Validar si el campo está vacío
+    if(nombre === "") {
+        errorMensaje.style.display = "block";
+        return;
+    } else {
+        errorMensaje.style.display = "none";
+    }
     
     $.ajax({
         url: '../../TipoProductos/GuardarTipoProducto',
@@ -54,6 +63,13 @@ function GuardarRegistro(){
         type: 'POST',
         dataType: 'json',   
         success: function (resultado) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            }); 
             ListadoTipoProductos();
         },
         error: function (xhr, status) {
