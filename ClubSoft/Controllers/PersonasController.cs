@@ -10,7 +10,7 @@ namespace ClubSoft.Controllers;
 
 public class PersonasController : Controller
 {
-    private  ApplicationDbContext _context;
+    private ApplicationDbContext _context;
 
     public PersonasController(ApplicationDbContext context)
     {
@@ -21,24 +21,24 @@ public class PersonasController : Controller
     {
         var localidades = _context.Localidades.ToList();
 
-        localidades.Add(new Localidad{LocalidadID = 0, Nombre = "[SELECCIONE LA LOCALIDAD...]"});
+        localidades.Add(new Localidad { LocalidadID = 0, Nombre = "[SELECCIONE LA LOCALIDAD...]" });
         ViewBag.LocalidadID = new SelectList(localidades.OrderBy(c => c.Nombre), "LocalidadID", "Nombre");
 
         return View();
     }
 
- public JsonResult ListadoPersonas()
+    public JsonResult ListadoPersonas()
     {
         List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
         var listadoPersonas = _context.Personas.ToList();
         var listadoLocalidades = _context.Localidades.ToList();
         var listadoProvincias = _context.Provincias.ToList();
 
-         foreach (var personas in listadoPersonas)
+        foreach (var personas in listadoPersonas)
         {
             var localidades = listadoLocalidades.Where(t => t.LocalidadID == personas.LocalidadID).Single();
             var provincias = listadoProvincias.Where(t => t.ProvinciaID == localidades.ProvinciaID).Single();
-            
+
             var personaMostar = new VistaPersonas
             {
                 PersonaID = personas.PersonaID,
@@ -58,20 +58,25 @@ public class PersonasController : Controller
 
     }
 
-      public JsonResult GuardarRegistro(
-       int PersonaID,
-       string? Nombre,
-       string? Apellido,
-       string? Direccion,
-       string? Telefono,
-       string? DNI,
-       int LocalidadID,
-       string? UsuarioID
-       
-       )
+    public JsonResult GuardarRegistro(
+     int PersonaID,
+     string? Nombre,
+     string? Apellido,
+     string? Direccion,
+     string? Telefono,
+     string? DNI,
+     int LocalidadID,
+     string? UsuarioID
+
+     )
     {
         string resultado = "";
+        Nombre = Nombre.ToUpper();
+        Apellido = Apellido.ToUpper();
+        Direccion = Direccion.ToUpper();
         if (PersonaID == 0)
+
+
         {
             var persona = new Persona
             {
@@ -83,28 +88,28 @@ public class PersonasController : Controller
                 DNI = DNI,
                 LocalidadID = LocalidadID,
                 UsuarioID = UsuarioID
-               
+
             };
             _context.Add(persona);
             _context.SaveChanges();
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-         else
-          {
-              var editarPersona = _context.Personas.Where(p => p.PersonaID == PersonaID).SingleOrDefault();
-              if (editarPersona != null)
-             {
-                  editarPersona.PersonaID = PersonaID;
-                  editarPersona.Nombre = Nombre;
-                  editarPersona.Apellido = Apellido;
-                  editarPersona.Direccion = Direccion;
-                  editarPersona.Telefono = Telefono;
-                  editarPersona.LocalidadID = LocalidadID;
-                  editarPersona.UsuarioID = UsuarioID;
-                  _context.SaveChanges();
-             }
-          }
+        else
+        {
+            var editarPersona = _context.Personas.Where(p => p.PersonaID == PersonaID).SingleOrDefault();
+            if (editarPersona != null)
+            {
+                editarPersona.PersonaID = PersonaID;
+                editarPersona.Nombre = Nombre;
+                editarPersona.Apellido = Apellido;
+                editarPersona.Direccion = Direccion;
+                editarPersona.Telefono = Telefono;
+                editarPersona.LocalidadID = LocalidadID;
+                editarPersona.UsuarioID = UsuarioID;
+                _context.SaveChanges();
+            }
+        }
         return Json(resultado);
     }
     public JsonResult TraerPersona(int? PersonaID)
@@ -118,14 +123,14 @@ public class PersonasController : Controller
         return Json(personasConId.ToList());
     }
 
-    
-     public JsonResult EliminarPersona(int PersonaID)
-   {
-    var persona = _context.Personas.Find(PersonaID);
-    _context.Remove(persona);
-    _context.SaveChanges();
 
-    return Json(true);
-   }
+    public JsonResult EliminarPersona(int PersonaID)
+    {
+        var persona = _context.Personas.Find(PersonaID);
+        _context.Remove(persona);
+        _context.SaveChanges();
 
+        return Json(true);
     }
+
+}

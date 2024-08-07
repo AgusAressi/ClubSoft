@@ -87,6 +87,13 @@ function GuardarRegistro() {
         dataType: 'json',   
         success: function (resultado) {
             console.log(resultado);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
             ListadoProductos(); 
         },
         error: function (xhr, status, error) {

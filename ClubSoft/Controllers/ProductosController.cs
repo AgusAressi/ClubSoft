@@ -63,6 +63,8 @@ public class ProductosController : Controller
       )
     {
         string resultado = "";
+        Nombre = Nombre.ToUpper();
+        Descripcion = Descripcion.ToUpper();
 
         if (ProductoID == 0)
         {
