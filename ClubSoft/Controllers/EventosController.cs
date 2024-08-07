@@ -43,7 +43,8 @@ public class EventosController : Controller
             {
                 EventoID = evento.EventoID,
                 Descripcion = evento.Descripcion, 
-                FechaEvento = evento.FechaEvento,
+                FechaEvento = evento.FechaEvento.ToString("dd/MM/yyyy"),
+                HoraEvento = evento.FechaEvento.ToString("HH:mm"),
                 Lugar = evento.Lugar,
                 TipoEventoID = evento.TipoEventoID,
                 NombreTipoEvento = tipoEvento.Nombre

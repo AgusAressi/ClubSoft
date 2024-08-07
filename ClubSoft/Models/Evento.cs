@@ -21,7 +21,8 @@ public class Evento
     public int EventoID { get; set; }
     public int TipoEventoID { get; set; }
     public string? Descripcion { get; set; }
-    public DateTime FechaEvento  { get; set; }
+    public string FechaEvento  { get; set; }
+    public string HoraEvento { get; set; }
     public string? Lugar { get; set; }
     public string? NombreTipoEvento { get; set; }
    

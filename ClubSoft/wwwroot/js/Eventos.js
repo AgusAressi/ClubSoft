@@ -19,7 +19,8 @@ function ListadoEventos() {
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-center">${evento.descripcion}</h5>
-                            <p class="card-text"><b>Fecha y hora del evento:</b> ${evento.fechaEvento}</p>
+                            <p class="card-text"><b>Fecha:</b> ${evento.fechaEvento}</p>
+                            <p class="card-text"><b>Hora:</b> ${evento.horaEvento}</p>
                             <p class="card-text"><b>Lugar:</b> ${evento.lugar}</p>
                         </div>
                         <div class="card-footer text-center">
