@@ -11,6 +11,7 @@ tr:hover .btn-primary, tr:hover .btn-danger {
   .boton-color {
     background-color: rgb(12, 12, 86);
     color: white;
+    border-color: rgb(12, 12, 86);
 }
 
 .boton-color:hover {
