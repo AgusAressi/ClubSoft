@@ -45,10 +45,14 @@ function ListadoEventos() {
 
 function LimpiarModal(){
     document.getElementById("EventoID").value = 0;
-    document.getElementById("TipoEventoID").value = "";
+    document.getElementById("TipoEventoID").value = 0;
     document.getElementById("DescripcionEvento").value = "";
     document.getElementById("FechaEvento").value = "";
     document.getElementById("Lugar").value = "";
+    document.getElementById("errorMensajeTipoEvento").style.display = "none";
+    document.getElementById("errorMensajeDescripcion").style.display = "none";
+    document.getElementById("errorMensajeFecha").style.display = "none";
+    document.getElementById("errorMensajeLugar").style.display = "none";
 }
 
 function NuevoEvento(){
@@ -62,6 +66,37 @@ function GuardarRegistro() {
     let fecha = document.getElementById("FechaEvento").value; 
     let lugar = document.getElementById("Lugar").value;
     
+    let isValid = true;
+
+    if (tipoEvento === "0") {
+        document.getElementById("errorMensajeTipoEvento").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeTipoEvento").style.display = "none";
+    }
+    if (descripcion === "") {
+        document.getElementById("errorMensajeDescripcion").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeDescripcion").style.display = "none";
+    }
+    if (fecha === "") {
+        document.getElementById("errorMensajeFecha").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeFecha").style.display = "none";
+    }
+    if (lugar === "") {
+        document.getElementById("errorMensajeLugar").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeLugar").style.display = "none";
+    }
+
+    if (!isValid) {
+        return;
+    }
+
     $.ajax({
         url: '../../Eventos/GuardarEvento',
         data: { 
@@ -75,6 +110,13 @@ function GuardarRegistro() {
         dataType: 'json',   
         success: function (resultado) {
             console.log(resultado);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
             ListadoEventos(); 
         },
         error: function (xhr, status, error) {
