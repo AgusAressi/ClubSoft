@@ -81,24 +81,6 @@ namespace ClubSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Productos",
-                columns: table => new
-                {
-                    ProductoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Cantidad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Estado = table.Column<bool>(type: "bit", nullable: true),
-                    TipoProductoID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Productos", x => x.ProductoID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Provincias",
                 columns: table => new
                 {
@@ -306,23 +288,23 @@ namespace ClubSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductoTipoProducto",
+                name: "Productos",
                 columns: table => new
                 {
-                    ProductosProductoID = table.Column<int>(type: "int", nullable: false),
+                    ProductoID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Cantidad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estado = table.Column<bool>(type: "bit", nullable: true),
                     TipoProductoID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductoTipoProducto", x => new { x.ProductosProductoID, x.TipoProductoID });
+                    table.PrimaryKey("PK_Productos", x => x.ProductoID);
                     table.ForeignKey(
-                        name: "FK_ProductoTipoProducto_Productos_ProductosProductoID",
-                        column: x => x.ProductosProductoID,
-                        principalTable: "Productos",
-                        principalColumn: "ProductoID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductoTipoProducto_TipoProductos_TipoProductoID",
+                        name: "FK_Productos_TipoProductos_TipoProductoID",
                         column: x => x.TipoProductoID,
                         principalTable: "TipoProductos",
                         principalColumn: "TipoProductoID",
@@ -392,6 +374,58 @@ namespace ClubSoft.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Ventas",
+                columns: table => new
+                {
+                    VentaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonaID = table.Column<int>(type: "int", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ventas", x => x.VentaID);
+                    table.ForeignKey(
+                        name: "FK_Ventas_Personas_PersonaID",
+                        column: x => x.PersonaID,
+                        principalTable: "Personas",
+                        principalColumn: "PersonaID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DetalleVentas",
+                columns: table => new
+                {
+                    DetalleVentaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VentaID = table.Column<int>(type: "int", nullable: false),
+                    ProductoID = table.Column<int>(type: "int", nullable: false),
+                    UsuarioID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cantidad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SubTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetalleVentas", x => x.DetalleVentaID);
+                    table.ForeignKey(
+                        name: "FK_DetalleVentas_Productos_ProductoID",
+                        column: x => x.ProductoID,
+                        principalTable: "Productos",
+                        principalColumn: "ProductoID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetalleVentas_Ventas_VentaID",
+                        column: x => x.VentaID,
+                        principalTable: "Ventas",
+                        principalColumn: "VentaID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -452,6 +486,16 @@ namespace ClubSoft.Migrations
                 column: "FacturaID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DetalleVentas_ProductoID",
+                table: "DetalleVentas",
+                column: "ProductoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleVentas_VentaID",
+                table: "DetalleVentas",
+                column: "VentaID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Eventos_TipoEventoID",
                 table: "Eventos",
                 column: "TipoEventoID");
@@ -467,9 +511,14 @@ namespace ClubSoft.Migrations
                 column: "LocalidadID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductoTipoProducto_TipoProductoID",
-                table: "ProductoTipoProducto",
+                name: "IX_Productos_TipoProductoID",
+                table: "Productos",
                 column: "TipoProductoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ventas_PersonaID",
+                table: "Ventas",
+                column: "PersonaID");
         }
 
         /// <inheritdoc />
@@ -497,10 +546,10 @@ namespace ClubSoft.Migrations
                 name: "DetalleFacturas");
 
             migrationBuilder.DropTable(
-                name: "Eventos");
+                name: "DetalleVentas");
 
             migrationBuilder.DropTable(
-                name: "ProductoTipoProducto");
+                name: "Eventos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -512,19 +561,22 @@ namespace ClubSoft.Migrations
                 name: "Cobros");
 
             migrationBuilder.DropTable(
-                name: "Personas");
-
-            migrationBuilder.DropTable(
                 name: "Facturas");
-
-            migrationBuilder.DropTable(
-                name: "TipoEventos");
 
             migrationBuilder.DropTable(
                 name: "Productos");
 
             migrationBuilder.DropTable(
+                name: "Ventas");
+
+            migrationBuilder.DropTable(
+                name: "TipoEventos");
+
+            migrationBuilder.DropTable(
                 name: "TipoProductos");
+
+            migrationBuilder.DropTable(
+                name: "Personas");
 
             migrationBuilder.DropTable(
                 name: "Localidades");

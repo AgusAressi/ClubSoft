@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240805203816_MigracionInicial")]
+    [Migration("20240808221702_MigracionInicial")]
     partial class MigracionInicial
     {
         /// <inheritdoc />
@@ -109,6 +109,41 @@ namespace ClubSoft.Migrations
                     b.HasIndex("FacturaID");
 
                     b.ToTable("DetalleFacturas");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.DetalleVenta", b =>
+                {
+                    b.Property<int>("DetalleVentaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleVentaID"));
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductoID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UsuarioID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VentaID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DetalleVentaID");
+
+                    b.HasIndex("ProductoID");
+
+                    b.HasIndex("VentaID");
+
+                    b.ToTable("DetalleVentas");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Evento", b =>
@@ -245,6 +280,8 @@ namespace ClubSoft.Migrations
 
                     b.HasKey("ProductoID");
 
+                    b.HasIndex("TipoProductoID");
+
                     b.ToTable("Productos");
                 });
 
@@ -294,6 +331,33 @@ namespace ClubSoft.Migrations
                     b.HasKey("TipoProductoID");
 
                     b.ToTable("TipoProductos");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Venta", b =>
+                {
+                    b.Property<int>("VentaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VentaID"));
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PersonaID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("VentaID");
+
+                    b.HasIndex("PersonaID");
+
+                    b.ToTable("Ventas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -498,21 +562,6 @@ namespace ClubSoft.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProductoTipoProducto", b =>
-                {
-                    b.Property<int>("ProductosProductoID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TipoProductoID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductosProductoID", "TipoProductoID");
-
-                    b.HasIndex("TipoProductoID");
-
-                    b.ToTable("ProductoTipoProducto");
-                });
-
             modelBuilder.Entity("ClubSoft.Models.CuentaCorriente", b =>
                 {
                     b.HasOne("ClubSoft.Models.Cobro", "Cobro")
@@ -551,6 +600,25 @@ namespace ClubSoft.Migrations
                     b.Navigation("Factura");
                 });
 
+            modelBuilder.Entity("ClubSoft.Models.DetalleVenta", b =>
+                {
+                    b.HasOne("ClubSoft.Models.Producto", "Producto")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("ProductoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubSoft.Models.Venta", "Venta")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("VentaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+
+                    b.Navigation("Venta");
+                });
+
             modelBuilder.Entity("ClubSoft.Models.Evento", b =>
                 {
                     b.HasOne("ClubSoft.Models.TipoEvento", "TipoEvento")
@@ -582,6 +650,28 @@ namespace ClubSoft.Migrations
                         .IsRequired();
 
                     b.Navigation("Localidad");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Producto", b =>
+                {
+                    b.HasOne("ClubSoft.Models.TipoProducto", "TipoProducto")
+                        .WithMany("Productos")
+                        .HasForeignKey("TipoProductoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoProducto");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Venta", b =>
+                {
+                    b.HasOne("ClubSoft.Models.Persona", "Persona")
+                        .WithMany("Ventas")
+                        .HasForeignKey("PersonaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Persona");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -635,21 +725,6 @@ namespace ClubSoft.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductoTipoProducto", b =>
-                {
-                    b.HasOne("ClubSoft.Models.Producto", null)
-                        .WithMany()
-                        .HasForeignKey("ProductosProductoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClubSoft.Models.TipoProducto", null)
-                        .WithMany()
-                        .HasForeignKey("TipoProductoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClubSoft.Models.Cobro", b =>
                 {
                     b.Navigation("CuentaCorrientes");
@@ -670,6 +745,13 @@ namespace ClubSoft.Migrations
             modelBuilder.Entity("ClubSoft.Models.Persona", b =>
                 {
                     b.Navigation("CuentaCorrientes");
+
+                    b.Navigation("Ventas");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Producto", b =>
+                {
+                    b.Navigation("DetalleVentas");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Provincia", b =>
@@ -680,6 +762,16 @@ namespace ClubSoft.Migrations
             modelBuilder.Entity("ClubSoft.Models.TipoEvento", b =>
                 {
                     b.Navigation("Eventos");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.TipoProducto", b =>
+                {
+                    b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("ClubSoft.Models.Venta", b =>
+                {
+                    b.Navigation("DetalleVentas");
                 });
 #pragma warning restore 612, 618
         }
