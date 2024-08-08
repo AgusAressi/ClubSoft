@@ -15,6 +15,8 @@ public class Producto
     public int TipoProductoID { get; set; }
     public virtual TipoProducto TipoProducto { get; set; }
 
+     public virtual ICollection<DetalleVenta> DetalleVentas { get; set; }
+
     public class VistaTipoProductos
 {
     public int ProductoID { get; set; }
