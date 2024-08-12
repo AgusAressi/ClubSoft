@@ -4,20 +4,23 @@
 
 <link rel="stylesheet" href="~/css/Personas.css" asp-append-version="true" />
 
-  <div class="p-3">
-      <h4>Agregar Nueva Persona<i class="ms-2 fa-solid fa-square-plus"></i></h4>
-      <div class="mb-2">
-          <button type="button" class="btn boton-color" onclick="NuevaPersona()" data-bs-toggle="modal" data-bs-target="#ModalPersonas">
-              Nueva Persona
-          </button>
-      </div>
-
+<div class="p-3">
     @*TABLA*@
     <div class="mt-2" style="heigth: 100%;">
-        <div class="card">
-            <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PERSONAS</h3>
+        <div class="card shadow-sm">
+            <div class="card-header row m-0 p-2">
+                <div class="col-md-6 d-flex align-items-center">
+                    <button type="button" class="btn boton-color" onclick="NuevaPersona()" data-bs-toggle="modal"
+                        data-bs-target="#ModalPersonas">
+                        <i class="fa-solid fa-plus fa-2x"></i>
+                    </button>
+                </div>
+                <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+                    <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>PERSONAS</h3>
+                </div>
+            </div>
             <div class="card-body mb-5">
-                <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -41,12 +44,13 @@
     </div>
 
     @* MODAL AGREGAR *@
-      <div class="modal" tabindex="-1" id="ModalPersonas">
-          <div class="modal-dialog modal-md"> 
+    <div class="modal" tabindex="-1" id="ModalPersonas">
+        <div class="modal-dialog modal-md">
             <div class="modal-content container-modal">
                 <div class="modal-header">
                     <h5 class="modal-title text-color" id="ModalTitulo">Personas</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -55,71 +59,88 @@
                             <input type="hidden" id="PersonaID" value="0" />
                             <div class="mb-2 col-md-6">
                                 <label for="Nombre" class="form-label fw-bold">Nombre *</label>
-                                <input type="text" class="form-control" id="PersonaNombre" style="text-transform: uppercase" placeholder="">
-                                <span id="errorMensajeNombre" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="text" class="form-control" id="PersonaNombre"
+                                    style="text-transform: uppercase" placeholder="">
+                                <span id="errorMensajeNombre"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un nombre
-                                    </span>
+                                </span>
                             </div>
                             <div class="mb-2 col-md-6">
                                 <label for="Apellido" class="form-label fw-bold">Apellido *</label>
-                                <input type="text" class="form-control" id="PersonaApellido" style="text-transform:uppercase" placeholder="">
-                                <span id="errorMensajeApellido" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="text" class="form-control" id="PersonaApellido"
+                                    style="text-transform:uppercase" placeholder="">
+                                <span id="errorMensajeApellido"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un apellido
-                                    </span>
+                                </span>
                             </div>
 
                             <div class="mb-2 col-md-6">
                                 <label for="Telefono" class="form-label fw-bold">Telefono *</label>
-                                <input type="number" class="form-control" id="PersonaTelefono" style="text-transform: uppercase" placeholder="">
-                                <span id="errorMensajeTelefono" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="number" class="form-control" id="PersonaTelefono"
+                                    style="text-transform: uppercase" placeholder="">
+                                <span id="errorMensajeTelefono"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un telefono
-                                    </span>
+                                </span>
                             </div>
 
                             <div class="mb-2 col-md-6">
                                 <label for="Dni" class="form-label fw-bold">DNI *</label>
-                                <input type="number" class="form-control" id="PersonaDni" style="text-transform: uppercase" placeholder="">
-                                <span id="errorMensajeDNI" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="number" class="form-control" id="PersonaDni"
+                                    style="text-transform: uppercase" placeholder="">
+                                <span id="errorMensajeDNI"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un DNI
-                                    </span>
+                                </span>
                             </div>
 
                             <div class="mb-2">
                                 <label for="Direccion" class="form-label fw-bold">Dirección *</label>
-                                <input type="text" class="form-control" id="PersonaDireccion" style="text-transform: uppercase" placeholder="">
-                                <span id="errorMensajeDireccion" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="text" class="form-control" id="PersonaDireccion"
+                                    style="text-transform: uppercase" placeholder="">
+                                <span id="errorMensajeDireccion"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una direccion
-                                    </span>
+                                </span>
                             </div>
-                            
+
 
                             <div class="mb-2">
                                 <label for="LocalidadID" class="form-label fw-bold">Localidad *</label>
                                 <div class="input-group">
-                                @Html.DropDownList("LocalidadID", null, htmlAttributes: new { @class = "form-control" })
-                                <a class="btn btn-primary boton-color" type="button" id="button-addon2" asp-controller="Localidades" asp-action="Index">Agregar nueva +</a>
+                                    @Html.DropDownList("LocalidadID", null, htmlAttributes: new
+                                        {
+                                            @class =
+                                             "form-control"
+                                        })
+                                    <a class="btn btn-primary boton-color" type="button" id="button-addon2"
+                                        asp-controller="Localidades" asp-action="Index">Agregar nueva +</a>
                                 </div>
-                                <span id="errorMensajeLocalidad" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <span id="errorMensajeLocalidad"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una localidad
-                                    </span>
+                                </span>
                             </div>
 
                             <div class="mb-2">
                                 <label for="UsuarioID" class="form-label fw-bold">Usuario</label>
-                                <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase" placeholder="">
+                                <input type="text" class="form-control" id="UsuarioID" style="text-transform: uppercase"
+                                    placeholder="">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
+                        data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-
-</div> 
+</div>
 
 @section Scripts {
     <script src="~/js/Personas.js"></script>

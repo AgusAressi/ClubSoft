@@ -5,102 +5,118 @@
 <link rel="stylesheet" href="~/css/Productos.css" asp-append-version="true" />
 
 <div class="p-3">
-  <h4>Agregar Nuevo Producto<i class="ms-2 fa-solid fa-square-plus"></i></h4>
-  <div class="row">
-    <div class="mb-2">
-      <button type="button" class="btn boton-color" onclick="NuevoProducto()" data-bs-toggle="modal"
-        data-bs-target="#ModalProductos">
-        Nuevo Producto
-      </button>
-    </div>
-
-  </div>
-</div>
-
-
-
-<div class="p-3" style="heigth: 100%;">
-  <div class="card">
-    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>PRODUCTOS</h3>
-    <div class="card-body mb-5">
-      <div class="table-responsive" style="height: 350px; overflow-y: auto;">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              @* <th>Imagen</th> *@
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Descripcion</th>
-              <th>Estado</th>
-              <th>Tipo de Producto</th>
-              <th style="width: 70px"></th>
-              <th style="width: 70px"></th>
-            </tr>
-          </thead>
-          <tbody id="tbody-Productos">
-          </tbody>
-        </table>
+  @*TABLA*@
+  <div class="mt-2" style="heigth: 100%;">
+    <div class="card shadow-sm">
+      <div class="card-header row m-0 p-2">
+        <div class="col-md-6 d-flex align-items-center">
+          <button type="button" class="btn boton-color" onclick="NuevoProducto()" data-bs-toggle="modal"
+            data-bs-target="#ModalProductos">
+            <i class="fa-solid fa-plus fa-2x"></i>
+          </button>
+        </div>
+        <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+          <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i> PRODUCTOS</h3>
+        </div>
+      </div>
+      <div class="card-body mb-5">
+        <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                @* <th>Imagen</th> *@
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Tipo de Producto</th>
+                <th style="width: 70px"></th>
+                <th style="width: 70px"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-Productos">
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  @*MODAL*@
+  <div class="modal" tabindex="-1" id="ModalProductos">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content container-modal">
+        <div class="modal-header">
+          <h5 class="modal-title text-color" id="ModalTitulo">Productos</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
+              <input type="hidden" id="ProductoID" value="0" />
+              <div class="mb-2 col-md-12">
+                <label for="ProductoNombre" class="form-label fw-bold">Nombre</label>
+                <input type="text" class="form-control" id="ProductoNombre" style="text-transform: uppercase"
+                  placeholder="">
+                <span id="errorMensajeNombre" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un nombre
+                </span>
+              </div>
 
-<div class="modal" tabindex="-1" id="ModalProductos">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content container-modal">
-      <div class="modal-header">
-        <h5 class="modal-title text-color" id="ModalTitulo">Productos</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <input type="hidden" id="ProductoID" value="0" />
-            <div class="mb-2 col-md-6">
-              <label for="ProductoNombre" class="form-label fw-bold">Nombre Del Producto</label>
-              <input type="text" class="form-control" id="ProductoNombre" style="text-transform: uppercase"
-                placeholder="">
+              <div class="mb-2 col-md-6">
+                <label for="ProductoPrecio" class="form-label fw-bold">Precio</label>
+                <input type="number" class="form-control" id="ProductoPrecio" placeholder="">
+                <span id="errorMensajePrecio" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar el precio
+                </span>
+              </div>
+
+              <div class="mb-2 col-md-6">
+                <label for="ProductoCantidad" class="form-label fw-bold">Cantidad</label>
+                <input type="number" class="form-control" id="ProductoCantidad" style="text-transform: uppercase"
+                  placeholder="">
+                <span id="errorMensajeCantidad" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una cantidad
+                </span>
+              </div>
+
+              <div class="mb-2">
+                <label for="ProductoDescripcion" class="form-label fw-bold">Descripcion</label>
+                <input type="text" class="form-control" id="ProductoDescripcion" style="text-transform: uppercase"
+                  placeholder="">
+                <span id="errorMensajeDescripcion" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una descripcion
+                </span>
+              </div>
+
+              <div class="mb-2 form-check">
+                <input type="checkbox" class="form-check-input" id="ProductoEstado" />
+                <label for="ProductoEstado" class="form-check-label">Estado</label>
+              </div>
+
+              <div class="mb-2">
+                <label for="TipoProductoID" class="form-label fw-bold">Tipo de Productos</label>
+                @Html.DropDownList("TipoProductoID", null, htmlAttributes: new { @class = "form-control" })
+                <span id="errorMensajeTipoProducto"
+                  style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar el tipo de producto
+                </span>
+              </div>
             </div>
-            <div class="mb-2 col-md-6">
-              <label for="ProductoPrecio" class="form-label fw-bold">Precio Del Producto</label>
-              <input type="number" class="form-control" id="ProductoPrecio" placeholder="">
-            </div>
-
-            <div class="mb-2">
-              <label for="ProductoCantidad" class="form-label fw-bold">Cantidad Del Producto</label>
-              <input type="number" class="form-control" id="ProductoCantidad" style="text-transform: uppercase" placeholder="">
-            </div>
-
-            <div class="mb-2">
-              <label for="ProductoDescripcion" class="form-label fw-bold">Descripcion Del Producto</label>
-              <input type="text" class="form-control" id="ProductoDescripcion" style="text-transform: uppercase" placeholder="">
-            </div>
-
-            <div class="mb-2 form-check">
-              <input type="checkbox" class="form-check-input" id="ProductoEstado" />
-              <label for="ProductoEstado" class="form-check-label">Estado</label>
-            </div>
-
-
-            <div class="mb-2">
-              <label for="TipoProductoID" class="form-label fw-bold">Tipo de Productos</label>
-              @Html.DropDownList("TipoProductoID", null, htmlAttributes: new { @class = "form-control" })
-            </div>
-
-
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
-          data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 

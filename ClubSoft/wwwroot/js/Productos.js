@@ -54,8 +54,13 @@ function LimpiarModal(){
     document.getElementById("ProductoCantidad").value = "";
     document.getElementById("ProductoDescripcion").value = "";
     document.getElementById("ProductoEstado").checked = ""
-    document.getElementById("TipoProductoID").value = "";
-   
+    document.getElementById("TipoProductoID").value = 0;
+    document.getElementById("errorMensajeNombre").style.display = "none";
+    document.getElementById("errorMensajePrecio").style.display = "none";
+    document.getElementById("errorMensajeCantidad").style.display = "none";
+    document.getElementById("errorMensajeDescripcion").style.display = "none";
+    document.getElementById("errorMensajeEstado").style.display = "none";
+    document.getElementById("errorMensajeTipoProducto").style.display = "none";
 }
 
 function NuevoProducto(){
@@ -71,6 +76,42 @@ function GuardarRegistro() {
     let estado = document.getElementById("ProductoEstado").checked;
     let tipoProductoID = document.getElementById("TipoProductoID").value;
     
+    let isValid = true;
+
+    if (nombre === "") {
+        document.getElementById("errorMensajeNombre").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeNombre").style.display = "none";
+    }
+    if (precio === "") {
+        document.getElementById("errorMensajePrecio").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajePrecio").style.display = "none";
+    }
+    if (cantidad === "") {
+        document.getElementById("errorMensajeCantidad").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeCantidad").style.display = "none";
+    }
+    if (descripcion === "") {
+        document.getElementById("errorMensajeDescripcion").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeDescripcion").style.display = "none";
+    }
+    if (tipoProductoID === "0") {
+        document.getElementById("errorMensajeTipoProducto").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeTipoProducto").style.display = "none";
+    }
+
+    if (!isValid) {
+        return;
+    }
     
     $.ajax({
         url: '../../Productos/GuardarRegistro',

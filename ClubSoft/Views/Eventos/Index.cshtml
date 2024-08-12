@@ -5,88 +5,105 @@
 <link rel="stylesheet" href="~/css/Eventos.css" asp-append-version="true" />
 
 <div class="p-3">
-    <h4>Agregar Nuevo Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
-    <div>
-        <button type="button" class="btn btn-primary boton-color" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
-            Nuevo Evento
-        </button>
-    </div>
-     
-
     @* TABLA *@
     <div class="mt-2" style="heigth: 100%;">
-        <div class="card">
-            <h3 class="card-header text-end"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+        <div class="card shadow-sm">
+            <div class="card-header row m-0 p-2">
+                <div class="col-md-6 d-flex align-items-center">
+                    <button type="button" class="btn boton-color" onclick="NuevoEvento()" data-bs-toggle="modal"
+                        data-bs-target="#ModalEventos">
+                        <i class="fa-solid fa-plus fa-2x"></i>
+                    </button>
+                </div>
+                <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+                    <h3 class="m-0"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+                </div>
+            </div>
+
             <div class="card-body">
-                <div class="table-responsive" style="height: auto; overflow-y: auto;">
-                    <div class="row" id="card-Eventos"></div>  
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                    <div class="row" id="card-Eventos"></div>
                 </div>
             </div>
         </div>
     </div>
 
     @* MODAL AGREGAR *@
-      <div class="modal" tabindex="-1" id="ModalEventos">
-         <div class="modal-dialog modal-md">
+    <div class="modal" tabindex="-1" id="ModalEventos">
+        <div class="modal-dialog modal-md">
             <div class="modal-content container-modal">
                 <div class="modal-header">
                     <h5 class="modal-title text-color" id="ModalTitulo"></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="row">
                             <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
                             <input type="hidden" id="EventoID" value="0" />
-                            
+
                             <div class="mb-2 col-md-12">
                                 <label for="TipoEventoID" class="form-label fw-bold">Tipo de evento *</label>
                                 <div class="input-group">
-                                    @Html.DropDownList("TipoEventoID", null, htmlAttributes: new { @class = "form-control" })
-                                    <a class="btn btn-primary boton-color" type="button" id="button-addon2" asp-controller="TipoEventos" asp-action="Index">Agregar nuevo +</a>
+                                    @Html.DropDownList("TipoEventoID", null, htmlAttributes: new
+                                        {
+                                            @class =
+                                             "form-control"
+                                        })
+                                    <a class="btn btn-primary boton-color" type="button" id="button-addon2"
+                                        asp-controller="TipoEventos" asp-action="Index">Agregar nuevo +</a>
                                 </div>
-                                <span id="errorMensajeTipoEvento" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar un tipo de evento
-                                    </span>
+                                <span id="errorMensajeTipoEvento"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar un tipo de
+                                    evento
+                                </span>
                             </div>
-                            
+
                             <div class="mb-2 col-md-12">
-                                <label for="DescripcionEvento" class="form-label fw-bold">Descripcion del evento *</label>
-                                <input type="text" class="form-control" id="DescripcionEvento"style="text-transform:uppercase "placeholder="">
-                                <span id="errorMensajeDescripcion" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <label for="DescripcionEvento" class="form-label fw-bold">Descripcion del evento
+                                    *</label>
+                                <input type="text" class="form-control" id="DescripcionEvento"
+                                    style="text-transform:uppercase " placeholder="">
+                                <span id="errorMensajeDescripcion"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una descripcion
-                                    </span>
+                                </span>
                             </div>
                             <div class="mb-2 col-md-12">
                                 <label for="FechaEvento" class="form-label fw-bold">Fecha Del Evento *</label>
-                                <input type="datetime-local" class="form-control" id="FechaEvento" 
-                                  value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
-                                <span id="errorMensajeFecha" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="datetime-local" class="form-control" id="FechaEvento"
+                                    value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
+                                <span id="errorMensajeFecha"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una fecha
-                                    </span>  
+                                </span>
                             </div>
                             <div class="mb-2 col-md-12">
                                 <label for="Lugar" class="form-label fw-bold">Lugar *</label>
-                                <input type="text" class="form-control" id="Lugar"style="text-transform:uppercase " placeholder="">
-                                <span id="errorMensajeLugar" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                                <input type="text" class="form-control" id="Lugar" style="text-transform:uppercase "
+                                    placeholder="">
+                                <span id="errorMensajeLugar"
+                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
                                     <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un lugar
-                                    </span>
+                                </span>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="GuardarRegistro()" class="btn btn-primary boton-color">Guardar</button>
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="GuardarRegistro()"
+                        class="btn btn-primary boton-color">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-
 </div>
 
-@section Scripts{
+@section Scripts {
     <script src="~/js/Eventos.js"></script>
 }

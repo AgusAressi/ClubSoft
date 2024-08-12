@@ -2,22 +2,24 @@
   ViewData["Title"] = "Ventas";
 }
 <link rel="stylesheet" href="~/css/Ventas.css" asp-append-version="true" />
+
 <div class="p-3">
-  <h4>Agregar Venta<i class="ms-2 fa-solid fa-square-plus"></i></h4>
-  <div class="mb-2">
-    <button type="button" class="btn boton-color" onclick="NuevaVenta()" data-bs-toggle="modal"
-      data-bs-target="#ModalVentas">
-      Nueva Venta
-    </button>
-  </div>
-
-
   @*TABLA*@
   <div class="mt-2" style="heigth: 100%;">
     <div class="card">
-      <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>Ventas</h3>
+      <div class="card-header row m-0 p-2">
+        <div class="col-md-6 d-flex align-items-center">
+          <button type="button" class="btn boton-color" onclick="NuevaVenta()" data-bs-toggle="modal"
+            data-bs-target="#ModalVentas">
+            <i class="fa-solid fa-plus fa-2x"></i>
+          </button>
+        </div>
+        <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+          <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>VENTAS</h3>
+        </div>
+      </div>
       <div class="card-body mb-5">
-        <div class="table-responsive" style="height: 350px; overflow-y: auto;">
+        <div class="table-responsive" style="height: 450px; overflow-y: auto;">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -40,7 +42,7 @@
   </div>
 
 
-  @* MODAL AGREGAR *@
+  @* MODAL *@
   <div class="modal" tabindex="-1" id="ModalVentas">
     <div class="modal-dialog modal-xl">
       <div class="modal-content container-modal">

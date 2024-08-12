@@ -21,7 +21,7 @@ public class ProductosController : Controller
     {
         var tipoProductos = _context.TipoProductos.ToList();
 
-        tipoProductos.Add(new TipoProducto { TipoProductoID = 0, Nombre = "[SELECCIONE El TIPO DE PRODUCTO...]" });
+        tipoProductos.Add(new TipoProducto { TipoProductoID = 0, Nombre = "[SELECCIONE EL TIPO DE PRODUCTO...]" });
         ViewBag.TipoProductoID = new SelectList(tipoProductos.OrderBy(t => t.Nombre), "TipoProductoID", "Nombre");
 
         return View();

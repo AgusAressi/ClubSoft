@@ -13,6 +13,7 @@ public class Venta
      public DateTime Fecha { get; set; }
      public string? Estado { get; set; }
      public decimal? Total { get; set; }
+     //relacionar con cta cte
 
      public virtual Persona Persona { get; set; }
      public virtual ICollection<DetalleVenta> DetalleVentas { get; set; }
