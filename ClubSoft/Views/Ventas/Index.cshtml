@@ -52,64 +52,61 @@
         </div>
         <div class="modal-body">
           <form>
-            <div class="row">
-
+            <div class="container">
               <input type="hidden" id="VentaID" value="0" />
-              <div class="mb-2 col-md-4">
-                <label for="TipoProducto" class="form-label fw-bold">Tipo De Producto</label>
-                <input type="text" class="form-control" id="TipoProducto" style="text-transform: uppercase"
-                  placeholder="">
-              </div>
-              <div class="mb-2 col-md-4">
-                <label for="Producto" class="form-label fw-bold">Producto</label>
-                <input type="text" class="form-control" id="Producto" style="text-transform: uppercase" placeholder="">
-              </div>
-              <div class="mb-2 col-md-2">
-                <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
-                <input type="number" class="form-control" id="Cantidad" style="text-transform: uppercase"
-                  placeholder="">
-              </div>
-              <div class="mb-2 col-md-2 d-flex aling-items-end mt-1">
-                <button type="button" class="btn boton-color" onclick="()">
-                  Agregar Producto
-                </button>
-              </div>
-              <div class="mb-2 col-md-8">
-                <label for="Cliente" class="form-label fw-bold">Cliente</label>
-                <input type="text" class="form-control" id="Cliente" style="text-transform: uppercase" placeholder="">
-              </div>
-              <div class="mb-2 col-md-4">
-                <label for="Estado" class="form-label fw-bold">Estado</label>
-                <input type="text" class="form-control" id="Estado" style="text-transform: uppercase" placeholder="">
-              </div>
-              <div class="mb-2 col-md-8">
-                <h5><b>Productos vendidos hasta el momento</b></h5>
-              </div>
-              <div class="mb-2 col-md-4 text-end">
-                <button type="button" class="btn boton-color" onclick="()">
-                  Confirmar Venta
-                </button>
-                <button type="button" class="btn boton-color" onclick="()">
-                  Cancelar Venta
-                </button>
+              <div class="row">
+                <div class="mb-2 col-md-4">
+                  <label for="TipoProducto" class="form-label fw-bold">Tipo De Producto</label>
+                  <input type="text" class="form-control" id="TipoProducto" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
+                <div class="mb-2 col-md-4">
+                  <label for="Producto" class="form-label fw-bold">Producto</label>
+                  <input type="text" class="form-control" id="Producto" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
+                <div class="mb-2 col-md-2">
+                  <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
+                  <input type="number" class="form-control" id="Cantidad" style="text-transform: uppercase"
+                    placeholder="">
+                </div>
+                <div class="mb-2 col-md-2 d-flex align-items-end">
+                  <button type="button" class="btn boton-color">
+                    Agregar Producto
+                  </button>
+                </div>
+                <div class="mb-2 col-md-5">
+                  <label for="Cliente" class="form-label fw-bold">Cliente</label>
+                  <input type="text" class="form-control" id="Cliente" style="text-transform: uppercase" placeholder="">
+                </div>
+                <div class="mb-2 col-md-8">
+                  <h5><b>Productos vendidos hasta el momento</b></h5>
+                </div>
+                <div class="mb-2 col-md-4 text-end">
+                  <button type="button" class="btn boton-color" onclick="()">
+                    Confirmar Venta
+                  </button>
+                  <button type="button" class="btn boton-color" onclick="()">
+                    Cancelar Venta
+                  </button>
 
-              </div>
-              <div class="mb-2 col-md-12 table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th>Precio</th>
-                      <th>Cantidad</th>
-                      <th>Total</th>
-                      <th style="width: 70px;"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="Tabla-Detalle">
-                  </tbody>
-                </table>
-                <p class="text-end">Total: <span id="total-price">$0.00</span></p>
-              </div>
+                </div>
+                <div class="mb-2 col-md-12 table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th style="width: 70px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="Tabla-Detalle">
+                    </tbody>
+                  </table>
+                  <p class="text-end">Total: <span id="total-price">$0.00</span></p>
+                </div>
 
 
           </form>
