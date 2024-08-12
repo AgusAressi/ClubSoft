@@ -22,3 +22,15 @@ body {
    margin-bottom: 60px; 
 }
 
+.menuhover {
+  font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+}
+
+.menuhover:hover {
+  background-color: lightgrey;
+  border-radius: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
