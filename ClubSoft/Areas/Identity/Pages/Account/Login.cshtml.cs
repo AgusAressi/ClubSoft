@@ -80,7 +80,7 @@ namespace ClubSoft.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Recordarme")]
             public bool RememberMe { get; set; }
         }
 
@@ -115,7 +115,7 @@ namespace ClubSoft.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("inicio");
+                    return RedirectToAction("Inicio", "Home");
                 }
                 if (result.RequiresTwoFactor)
                 {

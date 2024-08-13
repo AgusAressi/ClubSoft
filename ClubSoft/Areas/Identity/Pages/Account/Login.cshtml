@@ -38,13 +38,12 @@
                     </p>
                     <p class="text-center">
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-dark">¿No tenés una Cuenta? Registrate</a>
-                    </p>
-                 <p class="text-center">
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-dark">Enviar la confirmación por correo electrónico</a>
                     </p> 
                 </div> 
             </form>
         </section>
     </div>
-   
-</div>
+    
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}  
