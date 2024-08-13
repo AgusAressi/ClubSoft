@@ -21,4 +21,6 @@ public class CuentaCorriente
     public virtual Persona Persona { get; set; }
     public virtual Cobro Cobro { get; set; }
     public virtual Factura Factura { get; set; }
+
+     public virtual ICollection<Venta> Ventas { get; set; }
 }
