@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240808221702_MigracionInicial")]
-    partial class MigracionInicial
+    [Migration("20240819204918_Migracioninicial")]
+    partial class Migracioninicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,9 +39,6 @@ namespace ClubSoft.Migrations
                     b.Property<decimal>("Importe")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("PedidoID")
-                        .HasColumnType("int");
-
                     b.HasKey("CobroID");
 
                     b.ToTable("Cobros");
@@ -64,9 +61,6 @@ namespace ClubSoft.Migrations
                     b.Property<decimal>("Egreso")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("FacturaID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
@@ -82,8 +76,6 @@ namespace ClubSoft.Migrations
                     b.HasKey("CuentaCorrienteID");
 
                     b.HasIndex("CobroID");
-
-                    b.HasIndex("FacturaID");
 
                     b.HasIndex("PersonaID");
 
@@ -101,12 +93,7 @@ namespace ClubSoft.Migrations
                     b.Property<string>("Detalle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FacturaID")
-                        .HasColumnType("int");
-
                     b.HasKey("DetalleFacturaID");
-
-                    b.HasIndex("FacturaID");
 
                     b.ToTable("DetalleFacturas");
                 });
@@ -171,28 +158,6 @@ namespace ClubSoft.Migrations
                     b.HasIndex("TipoEventoID");
 
                     b.ToTable("Eventos");
-                });
-
-            modelBuilder.Entity("ClubSoft.Models.Factura", b =>
-                {
-                    b.Property<int>("FacturaID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FacturaID"));
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Importe")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PersonaID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FacturaID");
-
-                    b.ToTable("Facturas");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Localidad", b =>
@@ -341,6 +306,9 @@ namespace ClubSoft.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VentaID"));
 
+                    b.Property<int>("CuentaCorrienteID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Estado")
                         .HasColumnType("nvarchar(max)");
 
@@ -355,7 +323,7 @@ namespace ClubSoft.Migrations
 
                     b.HasKey("VentaID");
 
-                    b.HasIndex("PersonaID");
+                    b.HasIndex("CuentaCorrienteID");
 
                     b.ToTable("Ventas");
                 });
@@ -570,12 +538,6 @@ namespace ClubSoft.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClubSoft.Models.Factura", "Factura")
-                        .WithMany("CuentaCorrientes")
-                        .HasForeignKey("FacturaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ClubSoft.Models.Persona", "Persona")
                         .WithMany("CuentaCorrientes")
                         .HasForeignKey("PersonaID")
@@ -584,20 +546,7 @@ namespace ClubSoft.Migrations
 
                     b.Navigation("Cobro");
 
-                    b.Navigation("Factura");
-
                     b.Navigation("Persona");
-                });
-
-            modelBuilder.Entity("ClubSoft.Models.DetalleFactura", b =>
-                {
-                    b.HasOne("ClubSoft.Models.Factura", "Factura")
-                        .WithMany("DetallesFacturas")
-                        .HasForeignKey("FacturaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.DetalleVenta", b =>
@@ -665,13 +614,13 @@ namespace ClubSoft.Migrations
 
             modelBuilder.Entity("ClubSoft.Models.Venta", b =>
                 {
-                    b.HasOne("ClubSoft.Models.Persona", "Persona")
-                        .WithMany("Ventas")
-                        .HasForeignKey("PersonaID")
+                    b.HasOne("ClubSoft.Models.CuentaCorriente", "CuentaCorriente")
+                        .WithMany()
+                        .HasForeignKey("CuentaCorrienteID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Persona");
+                    b.Navigation("CuentaCorriente");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -730,13 +679,6 @@ namespace ClubSoft.Migrations
                     b.Navigation("CuentaCorrientes");
                 });
 
-            modelBuilder.Entity("ClubSoft.Models.Factura", b =>
-                {
-                    b.Navigation("CuentaCorrientes");
-
-                    b.Navigation("DetallesFacturas");
-                });
-
             modelBuilder.Entity("ClubSoft.Models.Localidad", b =>
                 {
                     b.Navigation("Personas");
@@ -745,8 +687,6 @@ namespace ClubSoft.Migrations
             modelBuilder.Entity("ClubSoft.Models.Persona", b =>
                 {
                     b.Navigation("CuentaCorrientes");
-
-                    b.Navigation("Ventas");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Producto", b =>

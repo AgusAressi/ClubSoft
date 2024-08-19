@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ClubSoft.Migrations
 {
     /// <inheritdoc />
-    public partial class MigracionInicial : Migration
+    public partial class Migracioninicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,6 @@ namespace ClubSoft.Migrations
                 {
                     CobroID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PedidoID = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Importe = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -66,18 +65,16 @@ namespace ClubSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Facturas",
+                name: "DetalleFacturas",
                 columns: table => new
                 {
-                    FacturaID = table.Column<int>(type: "int", nullable: false)
+                    DetalleFacturaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonaID = table.Column<int>(type: "int", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Importe = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Detalle = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facturas", x => x.FacturaID);
+                    table.PrimaryKey("PK_DetalleFacturas", x => x.DetalleFacturaID);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,26 +223,6 @@ namespace ClubSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DetalleFacturas",
-                columns: table => new
-                {
-                    DetalleFacturaID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FacturaID = table.Column<int>(type: "int", nullable: false),
-                    Detalle = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DetalleFacturas", x => x.DetalleFacturaID);
-                    table.ForeignKey(
-                        name: "FK_DetalleFacturas_Facturas_FacturaID",
-                        column: x => x.FacturaID,
-                        principalTable: "Facturas",
-                        principalColumn: "FacturaID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Localidades",
                 columns: table => new
                 {
@@ -344,7 +321,6 @@ namespace ClubSoft.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonaID = table.Column<int>(type: "int", nullable: false),
                     CobroID = table.Column<int>(type: "int", nullable: false),
-                    FacturaID = table.Column<int>(type: "int", nullable: false),
                     Saldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Ingreso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Egreso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -361,12 +337,6 @@ namespace ClubSoft.Migrations
                         principalColumn: "CobroID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CuentaCorrientes_Facturas_FacturaID",
-                        column: x => x.FacturaID,
-                        principalTable: "Facturas",
-                        principalColumn: "FacturaID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_CuentaCorrientes_Personas_PersonaID",
                         column: x => x.PersonaID,
                         principalTable: "Personas",
@@ -381,6 +351,7 @@ namespace ClubSoft.Migrations
                     VentaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonaID = table.Column<int>(type: "int", nullable: false),
+                    CuentaCorrienteID = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
@@ -389,10 +360,10 @@ namespace ClubSoft.Migrations
                 {
                     table.PrimaryKey("PK_Ventas", x => x.VentaID);
                     table.ForeignKey(
-                        name: "FK_Ventas_Personas_PersonaID",
-                        column: x => x.PersonaID,
-                        principalTable: "Personas",
-                        principalColumn: "PersonaID",
+                        name: "FK_Ventas_CuentaCorrientes_CuentaCorrienteID",
+                        column: x => x.CuentaCorrienteID,
+                        principalTable: "CuentaCorrientes",
+                        principalColumn: "CuentaCorrienteID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -471,19 +442,9 @@ namespace ClubSoft.Migrations
                 column: "CobroID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CuentaCorrientes_FacturaID",
-                table: "CuentaCorrientes",
-                column: "FacturaID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CuentaCorrientes_PersonaID",
                 table: "CuentaCorrientes",
                 column: "PersonaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DetalleFacturas_FacturaID",
-                table: "DetalleFacturas",
-                column: "FacturaID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetalleVentas_ProductoID",
@@ -516,9 +477,9 @@ namespace ClubSoft.Migrations
                 column: "TipoProductoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ventas_PersonaID",
+                name: "IX_Ventas_CuentaCorrienteID",
                 table: "Ventas",
-                column: "PersonaID");
+                column: "CuentaCorrienteID");
         }
 
         /// <inheritdoc />
@@ -540,9 +501,6 @@ namespace ClubSoft.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CuentaCorrientes");
-
-            migrationBuilder.DropTable(
                 name: "DetalleFacturas");
 
             migrationBuilder.DropTable(
@@ -558,12 +516,6 @@ namespace ClubSoft.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Cobros");
-
-            migrationBuilder.DropTable(
-                name: "Facturas");
-
-            migrationBuilder.DropTable(
                 name: "Productos");
 
             migrationBuilder.DropTable(
@@ -574,6 +526,12 @@ namespace ClubSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoProductos");
+
+            migrationBuilder.DropTable(
+                name: "CuentaCorrientes");
+
+            migrationBuilder.DropTable(
+                name: "Cobros");
 
             migrationBuilder.DropTable(
                 name: "Personas");

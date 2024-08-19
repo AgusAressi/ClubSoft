@@ -20,7 +20,7 @@ public class Persona
 
     public virtual ICollection<CuentaCorriente> CuentaCorrientes { get; set; }
 
-    public virtual ICollection<Venta> Ventas { get; set; }
+    
 
 
 

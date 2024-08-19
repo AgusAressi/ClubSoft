@@ -8,8 +8,7 @@ public class Cobro
 {
     [Key]
     public int CobroID { get; set; }
-    public int PedidoID { get; set; }
-   
+    
     public DateTime Fecha { get; set; }
     public decimal Importe { get; set; }
 
