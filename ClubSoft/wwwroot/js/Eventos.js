@@ -21,7 +21,7 @@ function ListadoEventos() {
                             <h5 class="card-title text-center">${evento.descripcion}</h5>
                             <p class="card-text"><b>Fecha:</b> ${evento.fechaEvento}</p>
                             <p class="card-text"><b>Hora:</b> ${evento.horaEvento}</p>
-                            <p class="card-text"><b>Lugar:</b> ${evento.lugar}</p>
+                            <p class="card-text"><b>Lugar:</b> ${evento.lugarNombre}</p>
                         </div>
                         <div class="card-footer text-center card-color">
                             <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${evento.eventoID})">
@@ -49,7 +49,7 @@ function LimpiarModal(){
     document.getElementById("TipoEventoID").value = 0;
     document.getElementById("DescripcionEvento").value = "";
     document.getElementById("FechaEvento").value = "";
-    document.getElementById("Lugar").value = "";
+    document.getElementById("LugarID").value = "";
     document.getElementById("errorMensajeTipoEvento").style.display = "none";
     document.getElementById("errorMensajeDescripcion").style.display = "none";
     document.getElementById("errorMensajeFecha").style.display = "none";
@@ -65,7 +65,7 @@ function GuardarRegistro() {
     let tipoEvento = document.getElementById("TipoEventoID").value;
     let descripcion = document.getElementById("DescripcionEvento").value;
     let fecha = document.getElementById("FechaEvento").value; 
-    let lugar = document.getElementById("Lugar").value;
+    let lugarID = document.getElementById("LugarID").value;
     
     let isValid = true;
 
@@ -87,7 +87,7 @@ function GuardarRegistro() {
     } else {
         document.getElementById("errorMensajeFecha").style.display = "none";
     }
-    if (lugar === "") {
+    if (lugarID === "0") {
         document.getElementById("errorMensajeLugar").style.display = "block";
         isValid = false;
     } else {
@@ -104,7 +104,7 @@ function GuardarRegistro() {
             eventoID: eventoID,
             descripcion: descripcion,
             fechaEvento: fecha,
-            lugar: lugar,
+            lugarID: lugarID,
             tipoEventoID: tipoEvento
         },
         type: 'POST',
@@ -141,7 +141,7 @@ function AbrirEditar(EventoID){
             document.getElementById("TipoEventoID").value = evento.tipoEventoID;
             document.getElementById("DescripcionEvento").value = evento.descripcion;
             document.getElementById("FechaEvento").value = evento.fechaEvento;
-            document.getElementById("Lugar").value = evento.lugar;
+            document.getElementById("LugarID").value = evento.lugarID;
 
             $("#ModalEventos").modal("show");
             $("#ModalTitulo").text("Editar Evento");

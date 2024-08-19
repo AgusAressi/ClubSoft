@@ -60,7 +60,6 @@
                                     evento
                                 </span>
                             </div>
-
                             <div class="mb-2 col-md-12">
                                 <label for="DescripcionEvento" class="form-label fw-bold">Descripcion del evento
                                     *</label>
@@ -81,12 +80,19 @@
                                 </span>
                             </div>
                             <div class="mb-2 col-md-12">
-                                <label for="Lugar" class="form-label fw-bold">Lugar *</label>
-                                <input type="text" class="form-control" id="Lugar" style="text-transform:uppercase "
-                                    placeholder="">
+                                <label for="LugarID" class="form-label fw-bold">Lugar *</label>
+                                <div class="input-group">
+                                    @Html.DropDownList("LugarID", null, htmlAttributes: new
+                                        {
+                                            @class =
+                                             "form-control"
+                                        })
+                                    <a class="btn btn-primary boton-color" type="button" id="button-addon2"
+                                        asp-controller="Lugares" asp-action="Index">Agregar nuevo +</a>
+                                </div>
                                 <span id="errorMensajeLugar"
                                     style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un lugar
+                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar un lugar
                                 </span>
                             </div>
                         </div>
@@ -101,7 +107,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 @section Scripts {

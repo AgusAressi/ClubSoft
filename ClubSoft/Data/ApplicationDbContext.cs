@@ -24,4 +24,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<TipoEvento> TipoEventos { get; set; }
     public DbSet<TipoProducto> TipoProductos { get; set; }
     public DbSet<Venta> Ventas { get; set; }
+    public DbSet<SocioAdherente> SocioAdherentes { get; set; }
+    public DbSet<SocioTitular> SocioTitulares { get; set; }
+    public DbSet<Lugar> Lugares { get; set; }
 }
