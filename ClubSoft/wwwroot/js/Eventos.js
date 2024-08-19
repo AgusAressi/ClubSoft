@@ -154,19 +154,37 @@ function AbrirEditar(EventoID){
 }
 
 function EliminarEvento(EventoID) {
-                
-    $.ajax({
-        url: '../../Eventos/EliminarEvento',
-        data: {
-            eventoID: EventoID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoEventos();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el evento?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Eventos/EliminarEvento',
+                data: {
+                    eventoID: EventoID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El evento se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoEventos();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }

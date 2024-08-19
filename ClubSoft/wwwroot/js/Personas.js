@@ -15,13 +15,12 @@ function ListadoPersonas(){
             $.each(MostrarPersonas, function (index, MostrarPersonas) {                  
                 contenidoTabla += `
                 <tr>
-                    <td>${MostrarPersonas.nombre}</td>
-                    <td>${MostrarPersonas.apellido}</td>
-                    <td>${MostrarPersonas.direccion}</td>
-                    <td>${MostrarPersonas.telefono}</td>
+                    <td>${MostrarPersonas.apellido}, ${MostrarPersonas.nombre}</td>
                     <td>${MostrarPersonas.dni}</td>
-                    <td>${MostrarPersonas.nombreLocalidad}, ${MostrarPersonas.nombreProvincia}</td>
-                    <td>${MostrarPersonas.usuarioID}</td>
+                    <td>${MostrarPersonas.direccion}, ${MostrarPersonas.nombreLocalidad}, ${MostrarPersonas.nombreProvincia}</td>
+                    <td>${MostrarPersonas.telefono}</td>
+                    <td>usuario</td>
+                    <td>rol</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarPersonas.personaID})">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -52,7 +51,6 @@ function LimpiarModal(){
     document.getElementById("PersonaTelefono").value = "";
     document.getElementById("PersonaDni").value = "";
     document.getElementById("LocalidadID").value = 0;
-    document.getElementById("UsuarioID").value = "";
     document.getElementById("errorMensajeNombre").style.display = "none";
     document.getElementById("errorMensajeApellido").style.display = "none";
     document.getElementById("errorMensajeDireccion").style.display = "none";
@@ -74,6 +72,10 @@ function GuardarRegistro() {
     let dni = document.getElementById("PersonaDni").value;
     let localidadID = document.getElementById("LocalidadID").value;
     let usuarioID = document.getElementById("UsuarioID").value;
+    let userName = document.getElementById("PersonaUserName").value;
+    let email = document.getElementById("PersonaEmail").value;
+    let password = document.getElementById("PersonaContraseña").value;
+    let rol = document.getElementById("RolID").value;
 
     let isValid = true;
 
@@ -123,34 +125,57 @@ function GuardarRegistro() {
         return;
     }
     $.ajax({
-        url: '../../Personas/GuardarRegistro',
-        data: { 
-            PersonaID: personaID,
-            Nombre: nombre,
-            Apellido: apellido,
-            Direccion: direccion, 
-            Telefono: telefono,
-            DNI: dni,
-            LocalidadID: localidadID,
-            UsuarioID: usuarioID
+        url: '../../Users/GuardarUsuario',
+        data: {
+            UserName: userName,
+            Email: email,
+            Password: password,
+            Rol: rol
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            console.log(resultado);
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoPersonas(); 
+        dataType: 'json',
+        success: function (usuarioResultado) {
+            if (usuarioResultado.Success) {
+                let usuarioID = usuarioResultado.UsuarioID;
+        
+                // Guardar datos de Persona con el UsuarioID generado
+                $.ajax({
+                    url: '../../Personas/GuardarRegistro',
+                    data: { 
+                        PersonaID: personaID,
+                        Nombre: nombre,
+                        Apellido: apellido,
+                        Direccion: direccion, 
+                        Telefono: telefono,
+                        DNI: dni,
+                        LocalidadID: localidadID,
+                        UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
+                    },
+                    type: 'POST',
+                    dataType: 'json',  
+                    success: function (resultado) {
+                        console.log(resultado);
+                        Swal.fire({
+                            position: "bottom-end",
+                            icon: "success",
+                            title: "Registro guardado correctamente!",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                        ListadoPersonas(); 
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Disculpe, existió un problema al guardar la persona');
+                    }
+                });
+            } else {
+                console.log('Disculpe, existió un problema al guardar el usuario');
+            }
         },
         error: function (xhr, status, error) {
-            console.log('Disculpe, existió un problema al guardar el registro');
+            console.log('Disculpe, existió un problema al guardar el usuario');
         }
-    });    
+    });
 }
 
 function AbrirEditar(PersonaID){
@@ -171,8 +196,7 @@ function AbrirEditar(PersonaID){
             document.getElementById("PersonaDireccion").value = persona.direccion,
             document.getElementById("PersonaTelefono").value = persona.telefono,
             document.getElementById("PersonaDni").value = persona.dni,
-            document.getElementById("LocalidadID").value = persona.localidadID,
-            document.getElementById("UsuarioID").value = persona.usuarioID
+            document.getElementById("LocalidadID").value = persona.localidadID
 
             $("#ModalPersonas").modal("show");
         },
@@ -182,20 +206,38 @@ function AbrirEditar(PersonaID){
         }
     });
 }
-function EliminarPersona(PersonaID){
-                
-    $.ajax({
-        url: '../../Personas/EliminarPersona',
-        data: {
-            personaID: PersonaID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoPersonas();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+function EliminarPersona(PersonaID) {
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar la persona?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Personas/EliminarPersona',
+                data: {
+                    personaID: PersonaID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "La persona se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoPersonas();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }

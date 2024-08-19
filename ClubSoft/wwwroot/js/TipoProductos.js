@@ -64,7 +64,7 @@ function GuardarRegistro(){
         dataType: 'json',   
         success: function (resultado) {
             Swal.fire({
-                position: "top-end",
+                position: "bottom-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
@@ -101,22 +101,40 @@ function AbrirEditar(tipoProductoID){
     });
 }
 
-function EliminarTipoProducto(tipoProductoID){
-                
-    $.ajax({
-        url: '../../TipoProductos/EliminarTipoProducto',
-        data: {
-            tipoProductoID: tipoProductoID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoTipoProductos();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+function EliminarTipoProducto(tipoProductoID) {
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el tipo de producto?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../TipoProductos/EliminarTipoProducto',
+                data: {
+                    tipoProductoID: tipoProductoID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El tipo de producto se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoTipoProductos();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
 
 function LimpiarInput() {
