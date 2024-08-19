@@ -9,7 +9,6 @@ public class Venta
      [Key]
      public int VentaID { get; set; }
 
-     public int PersonaID { get; set; }
      public int CuentaCorrienteID { get; set; }
      public DateTime Fecha { get; set; }
      public string? Estado { get; set; }
@@ -22,7 +21,9 @@ public class Venta
       public class VistaVentas
 {
      public int VentaID { get; set; }
-     public int PersonaID { get;set;}
+
+     public int CuentaCorrienteID { get; set; }
+    
      public DateTime Fecha { get; set; }
      public string? Estado { get; set; }
      public decimal? Total { get; set; }

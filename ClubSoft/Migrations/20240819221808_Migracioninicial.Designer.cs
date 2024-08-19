@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240819204918_Migracioninicial")]
+    [Migration("20240819221808_Migracioninicial")]
     partial class Migracioninicial
     {
         /// <inheritdoc />
@@ -25,25 +25,6 @@ namespace ClubSoft.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ClubSoft.Models.Cobro", b =>
-                {
-                    b.Property<int>("CobroID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CobroID"));
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Importe")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("CobroID");
-
-                    b.ToTable("Cobros");
-                });
-
             modelBuilder.Entity("ClubSoft.Models.CuentaCorriente", b =>
                 {
                     b.Property<int>("CuentaCorrienteID")
@@ -51,9 +32,6 @@ namespace ClubSoft.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CuentaCorrienteID"));
-
-                    b.Property<int>("CobroID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
@@ -75,27 +53,9 @@ namespace ClubSoft.Migrations
 
                     b.HasKey("CuentaCorrienteID");
 
-                    b.HasIndex("CobroID");
-
                     b.HasIndex("PersonaID");
 
                     b.ToTable("CuentaCorrientes");
-                });
-
-            modelBuilder.Entity("ClubSoft.Models.DetalleFactura", b =>
-                {
-                    b.Property<int>("DetalleFacturaID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleFacturaID"));
-
-                    b.Property<string>("Detalle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DetalleFacturaID");
-
-                    b.ToTable("DetalleFacturas");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.DetalleVenta", b =>
@@ -315,9 +275,6 @@ namespace ClubSoft.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PersonaID")
-                        .HasColumnType("int");
-
                     b.Property<decimal?>("Total")
                         .HasColumnType("decimal(18,2)");
 
@@ -532,19 +489,11 @@ namespace ClubSoft.Migrations
 
             modelBuilder.Entity("ClubSoft.Models.CuentaCorriente", b =>
                 {
-                    b.HasOne("ClubSoft.Models.Cobro", "Cobro")
-                        .WithMany("CuentaCorrientes")
-                        .HasForeignKey("CobroID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ClubSoft.Models.Persona", "Persona")
                         .WithMany("CuentaCorrientes")
                         .HasForeignKey("PersonaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cobro");
 
                     b.Navigation("Persona");
                 });
@@ -672,11 +621,6 @@ namespace ClubSoft.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ClubSoft.Models.Cobro", b =>
-                {
-                    b.Navigation("CuentaCorrientes");
                 });
 
             modelBuilder.Entity("ClubSoft.Models.Localidad", b =>

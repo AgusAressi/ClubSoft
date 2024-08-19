@@ -19,6 +19,42 @@ public class VentasController : Controller
 
     public IActionResult Index()
     {
-           return View();
+        return View();
     }
-      }
+
+
+    public JsonResult ListadoVentas()
+    {
+        List<VistaVentas> MostrarVentas = new List<VistaVentas>();
+
+        var listadoVentas = _context.Ventas.ToList();
+        var listadoPersonas = _context.Personas.ToList();
+        var listadoCuentasCorrientes = _context.CuentaCorrientes.ToList();
+
+        foreach (var ventas in listadoVentas)
+        {
+              var cuentaCorriente = listadoCuentasCorrientes
+            .Where(cc => cc.CuentaCorrienteID == ventas.CuentaCorrienteID)
+            .Single();
+             var persona = listadoPersonas
+            .Where(p => p.PersonaID == cuentaCorriente.PersonaID)
+            .Single();
+
+            var ventaMostar = new VistaVentas
+            {
+                VentaID = ventas.VentaID,
+                CuentaCorrienteID = ventas.CuentaCorrienteID,
+                Fecha = ventas.Fecha,
+                Estado = ventas.Estado,
+                Total = ventas.Total,
+                NombrePersona = persona.Nombre,
+                ApellidoPersona = persona.Apellido,
+
+            };
+            MostrarVentas.Add(ventaMostar);
+        }
+        return Json(MostrarVentas);
+
+    }
+
+}

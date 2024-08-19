@@ -11,10 +11,9 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
-    public DbSet<Cobro> Cobros { get; set; }
     public DbSet<CuentaCorriente> CuentaCorrientes { get; set; }
     public DbSet<DetalleVenta> DetalleVentas { get; set; }
-    public DbSet<DetalleFactura> DetalleFacturas { get; set; }
+    
     public DbSet<Evento> Eventos { get; set; }
     
     public DbSet<Localidad> Localidades { get; set; }

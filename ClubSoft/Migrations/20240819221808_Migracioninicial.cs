@@ -51,33 +51,6 @@ namespace ClubSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cobros",
-                columns: table => new
-                {
-                    CobroID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Importe = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cobros", x => x.CobroID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DetalleFacturas",
-                columns: table => new
-                {
-                    DetalleFacturaID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Detalle = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DetalleFacturas", x => x.DetalleFacturaID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Provincias",
                 columns: table => new
                 {
@@ -320,7 +293,6 @@ namespace ClubSoft.Migrations
                     CuentaCorrienteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonaID = table.Column<int>(type: "int", nullable: false),
-                    CobroID = table.Column<int>(type: "int", nullable: false),
                     Saldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Ingreso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Egreso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -330,12 +302,6 @@ namespace ClubSoft.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CuentaCorrientes", x => x.CuentaCorrienteID);
-                    table.ForeignKey(
-                        name: "FK_CuentaCorrientes_Cobros_CobroID",
-                        column: x => x.CobroID,
-                        principalTable: "Cobros",
-                        principalColumn: "CobroID",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CuentaCorrientes_Personas_PersonaID",
                         column: x => x.PersonaID,
@@ -350,7 +316,6 @@ namespace ClubSoft.Migrations
                 {
                     VentaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonaID = table.Column<int>(type: "int", nullable: false),
                     CuentaCorrienteID = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -437,11 +402,6 @@ namespace ClubSoft.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CuentaCorrientes_CobroID",
-                table: "CuentaCorrientes",
-                column: "CobroID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CuentaCorrientes_PersonaID",
                 table: "CuentaCorrientes",
                 column: "PersonaID");
@@ -501,9 +461,6 @@ namespace ClubSoft.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DetalleFacturas");
-
-            migrationBuilder.DropTable(
                 name: "DetalleVentas");
 
             migrationBuilder.DropTable(
@@ -529,9 +486,6 @@ namespace ClubSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "CuentaCorrientes");
-
-            migrationBuilder.DropTable(
-                name: "Cobros");
 
             migrationBuilder.DropTable(
                 name: "Personas");
