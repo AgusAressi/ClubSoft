@@ -62,16 +62,18 @@ public class UsersController : Controller
     public async Task<JsonResult> GuardarUsuario(string Username, string Email, string Password, string rol)
     {
         var user = new IdentityUser { UserName = Username, Email = Email };
-
         var result = await _userManager.CreateAsync(user, Password);
 
-        //BUSCAR POR MEDIO DE CORREO ELECTRONICO ESE USUARIO CREADO PARA BUSCAR EL ID
-        var usuario = _context.Users.Where(u => u.Email == Email).SingleOrDefault();
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, rol);
+            // Retorna el UsuarioID (que es el mismo que el ID del usuario recién creado)
+            return Json(new { Success = true, UsuarioID = user.Id });
+        }
 
-        await _userManager.AddToRoleAsync(usuario, rol);
-
-        return Json(result.Succeeded);
+        return Json(new { Success = false });
     }
+    
     public JsonResult EditarUsuario(int UsuarioID, string Email)
     {
 

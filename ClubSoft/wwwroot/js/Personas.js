@@ -124,6 +124,7 @@ function GuardarRegistro() {
     if (!isValid) {
         return;
     }
+
     $.ajax({
         url: '../../Users/GuardarUsuario',
         data: {
@@ -137,8 +138,7 @@ function GuardarRegistro() {
         success: function (usuarioResultado) {
             if (usuarioResultado.Success) {
                 let usuarioID = usuarioResultado.UsuarioID;
-        
-                // Guardar datos de Persona con el UsuarioID generado
+                    // Guardar datos de Persona con el UsuarioID generado
                 $.ajax({
                     url: '../../Personas/GuardarRegistro',
                     data: { 
