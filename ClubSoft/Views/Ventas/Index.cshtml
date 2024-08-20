@@ -56,9 +56,14 @@
               <input type="hidden" id="VentaID" value="0" />
               <div class="row">
                 <div class="mb-2 col-md-4">
-                  <label for="TipoProducto" class="form-label fw-bold">Tipo De Producto</label>
-                  <input type="text" class="form-control" id="TipoProducto" style="text-transform: uppercase"
-                    placeholder="">
+                  <label for="TipoProductoID" class="form-label fw-bold">Tipo De Producto</label>
+                   <div class="input-group">
+                                    @Html.DropDownList("TipoProductoID", null, htmlAttributes: new
+                                        {
+                                            @class =
+                                             "form-control"
+                                        })
+                                </div>
                 </div>
                 <div class="mb-2 col-md-4">
                   <label for="Producto" class="form-label fw-bold">Producto</label>
