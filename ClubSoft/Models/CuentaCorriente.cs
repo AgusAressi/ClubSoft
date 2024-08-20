@@ -19,6 +19,18 @@ public class CuentaCorriente
     public virtual Persona Persona { get; set; }
    
     
+    public class VistaCuentaCorrientes {
+     public int CuentaCorrienteID { get; set; }
+    public int PersonaID { get; set; }
+    public decimal Saldo { get; set; }
+    public decimal Ingreso { get; set; }
+    public decimal Egreso { get; set; }
+    public string? Descripcion { get; set; }
+    public DateTime Fecha { get; set; }
+    public string? NombrePersona { get; set; }
+    public string? ApellidoPersona { get; set; } 
+
+    }
 
      
 }

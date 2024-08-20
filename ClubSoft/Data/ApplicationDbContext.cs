@@ -13,9 +13,7 @@ public class ApplicationDbContext : IdentityDbContext
     }
     public DbSet<CuentaCorriente> CuentaCorrientes { get; set; }
     public DbSet<DetalleVenta> DetalleVentas { get; set; }
-    
     public DbSet<Evento> Eventos { get; set; }
-    
     public DbSet<Localidad> Localidades { get; set; }
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Provincia> Provincias { get; set; }

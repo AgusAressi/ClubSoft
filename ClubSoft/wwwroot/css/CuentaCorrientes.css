@@ -1,0 +1,41 @@
+.btn-primary, .btn-danger {
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+  }
+  
+  tr:hover .btn-primary, tr:hover .btn-danger {
+    opacity: 1;
+  }
+
+.boton-color {
+    background-color: rgb(12, 12, 86);
+    color: white;
+    border-color: rgb(12, 12, 86);
+}
+
+.boton-color2 {
+    background-color: rgba(81, 65, 65, 0.549);
+}
+
+.boton-color:hover {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+.container-modal {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(194, 185, 185);
+
+}
+
+
+.modal-header {
+    background-color: rgb(12, 12, 86);
+}
+
+.text-color {
+color: white;
+}
