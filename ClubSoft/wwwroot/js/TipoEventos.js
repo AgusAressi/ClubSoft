@@ -60,7 +60,7 @@ function GuardarRegistro(){
         dataType: 'json',
         success: function (resultado) {
             Swal.fire({
-                position: "top-end",
+                position: "bottom-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
@@ -97,22 +97,40 @@ function AbrirEditar(tipoEventoID){
     });
 }
 
-function EliminarTipoEvento(tipoEventoID){
-                
-    $.ajax({
-        url: '../../TipoEventos/EliminarTipoEvento',
-        data: {
-            tipoEventoID: tipoEventoID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoTipoEventos();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+function EliminarTipoEvento(tipoEventoID) {
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el tipo de evento?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../TipoEventos/EliminarTipoEvento',
+                data: {
+                    tipoEventoID: tipoEventoID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El tipo de evento se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoTipoEventos();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
 
 function LimpiarInput() {

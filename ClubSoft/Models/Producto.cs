@@ -11,7 +11,7 @@ public class Producto
     public decimal Precio { get; set; }
     public decimal Cantidad { get; set; }
     public string? Descripcion { get; set; }
-    public bool? Estado { get; set;}
+    public bool? Estado { get; set;} = true;
     public int TipoProductoID { get; set; }
     public virtual TipoProducto TipoProducto { get; set; }
 

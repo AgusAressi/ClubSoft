@@ -81,4 +81,70 @@ public class TipoEventosController : Controller
     return Json(true);
    }
 
+
+      public JsonResult ListadoLugaresEventos(int? id)
+    {
+        var traerLugaresEventos = _context.Lugares.ToList();
+        if (id != null) {
+            traerLugaresEventos = traerLugaresEventos.Where(l => l.LugarID == id).ToList();
+        }
+        return Json(traerLugaresEventos);
+    }
+
+
+    public JsonResult GuardarLugarEvento(
+       int LugarID,
+       string Nombre
+       )
+    {
+        string resultado = "";
+        Nombre = Nombre.ToUpper();
+
+        if (LugarID == 0)
+        {
+            var lugarevento = new Lugar
+            {
+                LugarID = LugarID,
+                Nombre = Nombre
+            };
+            _context.Add(lugarevento);
+            _context.SaveChanges();
+
+            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
+        }
+         else
+         {
+             var editarLugarEvento = _context.Lugares.Where(l => l.LugarID == LugarID).SingleOrDefault();
+             if (editarLugarEvento != null)
+             {
+                 editarLugarEvento.LugarID = LugarID;
+                 editarLugarEvento.Nombre = Nombre;
+                 _context.SaveChanges();
+             }
+          }
+        return Json(resultado);
+    }
+
+    
+     public JsonResult TraerLugarEvento(int? LugarID)
+    {
+        var tipoLugarPorID = _context.Lugares.ToList();
+        if (LugarID != null)
+        {
+            tipoLugarPorID = tipoLugarPorID.Where(l=> l.LugarID == LugarID).ToList();
+        }
+
+        return Json(tipoLugarPorID.ToList());
+    }
+
+    
+     public JsonResult EliminarLugarEvento(int LugarID)
+   {
+    var lugarEvento = _context.Lugares.Find(LugarID);
+    _context.Remove(lugarEvento);
+    _context.SaveChanges();
+
+    return Json(true);
+   }
+
 }

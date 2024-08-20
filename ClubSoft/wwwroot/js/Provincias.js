@@ -63,7 +63,7 @@ function GuardarRegistro(){
         dataType: 'json',   
         success: function (resultado) {
             Swal.fire({
-                position: "top-end",
+                position: "bottom-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
@@ -103,7 +103,7 @@ function AbrirEditar(ProvinciaID){
 function EliminarProvnicia(ProvinciaID) {
 
     Swal.fire({
-        title: "Esta seguro que quiere eliminar el registro?",
+        title: "¿Esta seguro que quiere eliminar la provincia?",
         text: "No podrás recuperarlo!",
         icon: "warning",
         showCancelButton: true,
@@ -123,7 +123,7 @@ function EliminarProvnicia(ProvinciaID) {
                 success: function (resultado) {
                     Swal.fire({
                         title: "Eliminado!",
-                        text: "El registro se elimino correctamente",
+                        text: "La provincia se elimino correctamente",
                         icon: "success",
                         confirmButtonColor: "#3085d6"
                     });
