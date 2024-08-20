@@ -1,17 +1,8 @@
-
-.btn-primary, .btn-danger {
-    opacity: 0;
-    transition: opacity 0.1s ease-in;
-  }
-  
-  tr:hover .btn-primary, tr:hover .btn-danger {
-    opacity: 1;
-  }
-
 .boton-color {
     background-color: rgb(12, 12, 86);
     color: white;
     border-color: rgb(12, 12, 86);
+    color: white;
 }
 
 .boton-color2 {

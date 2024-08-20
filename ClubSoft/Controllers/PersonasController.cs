@@ -24,6 +24,9 @@ public class PersonasController : Controller
         localidades.Add(new Localidad { LocalidadID = 0, Nombre = "[SELECCIONE LA LOCALIDAD...]" });
         ViewBag.LocalidadID = new SelectList(localidades.OrderBy(c => c.Nombre), "LocalidadID", "Nombre");
 
+        var roles = _context.Roles.ToList();
+        ViewBag.RolID = new SelectList(roles.OrderBy(t => t.Name), "Name", "Name", "Socio");
+
         return View();
     }
 
@@ -33,94 +36,125 @@ public class PersonasController : Controller
         var listadoPersonas = _context.Personas.ToList();
         var listadoLocalidades = _context.Localidades.ToList();
         var listadoProvincias = _context.Provincias.ToList();
+        var listadoUsuarios = _context.Users.ToList();
+        var listadoUserRoles = _context.UserRoles.ToList();
+        var listadoRoles = _context.Roles.ToList();
 
         foreach (var personas in listadoPersonas)
         {
-            var localidades = listadoLocalidades.Where(t => t.LocalidadID == personas.LocalidadID).Single();
-            var provincias = listadoProvincias.Where(t => t.ProvinciaID == localidades.ProvinciaID).Single();
+            var localidades = listadoLocalidades.FirstOrDefault(t => t.LocalidadID == personas.LocalidadID);
+            var provincias = localidades != null ? listadoProvincias.FirstOrDefault(t => t.ProvinciaID == localidades.ProvinciaID) : null;
+            var usuarios = listadoUsuarios.FirstOrDefault(t => t.Id == personas.UsuarioID);
+            var userRole = listadoUserRoles.FirstOrDefault(ur => ur.UserId == usuarios.Id);
+            var rol = userRole != null ? listadoRoles.FirstOrDefault(r => r.Id == userRole.RoleId) : null;
 
-            var personaMostar = new VistaPersonas
+            if (localidades != null && provincias != null && usuarios != null)
             {
-                PersonaID = personas.PersonaID,
-                Nombre = personas.Nombre,
-                Apellido = personas.Apellido,
-                Direccion = personas.Direccion,
-                Telefono = personas.Telefono,
-                DNI = personas.DNI,
-                LocalidadID = personas.LocalidadID,
-                NombreLocalidad = localidades.Nombre,
-                NombreProvincia = provincias.Nombre,
-                UsuarioID = personas.UsuarioID
-            };
-            MostrarPersonas.Add(personaMostar);
-        }
-        return Json(MostrarPersonas);
-
-    }
-
-    public JsonResult GuardarRegistro(
-     int PersonaID,
-     string? Nombre,
-     string? Apellido,
-     string? Direccion,
-     string? Telefono,
-     string? DNI,
-     int LocalidadID,
-     string? UsuarioID
-
-     )
-    {
-        string resultado = "";
-        Nombre = Nombre.ToUpper();
-        Apellido = Apellido.ToUpper();
-        Direccion = Direccion.ToUpper();
-        if (PersonaID == 0)
-
-
-        {
-            var persona = new Persona
-            {
-                PersonaID = PersonaID,
-                Nombre = Nombre,
-                Apellido = Apellido,
-                Direccion = Direccion,
-                Telefono = Telefono,
-                DNI = DNI,
-                LocalidadID = LocalidadID,
-                UsuarioID = UsuarioID
-
-            };
-            _context.Add(persona);
-            _context.SaveChanges();
-
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
-        }
-        else
-        {
-            var editarPersona = _context.Personas.Where(p => p.PersonaID == PersonaID).SingleOrDefault();
-            if (editarPersona != null)
-            {
-                editarPersona.PersonaID = PersonaID;
-                editarPersona.Nombre = Nombre;
-                editarPersona.Apellido = Apellido;
-                editarPersona.Direccion = Direccion;
-                editarPersona.Telefono = Telefono;
-                editarPersona.LocalidadID = LocalidadID;
-                editarPersona.UsuarioID = UsuarioID;
-                _context.SaveChanges();
+                var personaMostar = new VistaPersonas
+                {
+                    PersonaID = personas.PersonaID,
+                    Nombre = personas.Nombre,
+                    Apellido = personas.Apellido,
+                    Direccion = personas.Direccion,
+                    Telefono = personas.Telefono,
+                    DNI = personas.DNI,
+                    LocalidadID = personas.LocalidadID,
+                    NombreLocalidad = localidades.Nombre,
+                    NombreProvincia = provincias.Nombre,
+                    UsuarioID = personas.UsuarioID,
+                    Email = usuarios.Email,
+                    RolNombre = rol != null ? rol.Name : "Sin Rol"
+                };
+                MostrarPersonas.Add(personaMostar);
             }
         }
-        return Json(resultado);
+
+        return Json(MostrarPersonas);
     }
-    public JsonResult TraerPersona(int? PersonaID)
+
+  public JsonResult GuardarRegistro(
+        int PersonaID,
+        string? Nombre,
+        string? Apellido,
+        string? Direccion,
+        string? Telefono,
+        string? DNI,
+        int LocalidadID,
+        string? UsuarioID
+    )
     {
-        var personasConId = _context.Personas.ToList();
-        if (personasConId != null)
+        if (!ModelState.IsValid)
         {
-            personasConId = personasConId.Where(p => p.PersonaID == PersonaID).ToList();
+            return Json(new { success = false, message = "Error al validar las entradas" });
         }
 
-        return Json(personasConId.ToList());
+        using (var transaction = _context.Database.BeginTransaction())
+        {
+            try
+            {
+                if (PersonaID == 0)
+                {
+                    var persona = new Persona
+                    {
+                        Nombre = Nombre.ToUpper(),
+                        Apellido = Apellido.ToUpper(),
+                        Direccion = Direccion.ToUpper(),
+                        Telefono = Telefono,
+                        DNI = DNI,
+                        LocalidadID = LocalidadID,
+                        UsuarioID = UsuarioID
+                    };
+
+                    _context.Add(persona);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return Json(new { success = true, message = "Registro guardado correctamente" });
+                }
+                else
+                {
+                    var editarPersona = _context.Personas.Where(p => p.PersonaID == PersonaID).SingleOrDefault();
+                    if (editarPersona != null)
+                    {
+                        editarPersona.Nombre = Nombre;
+                        editarPersona.Apellido = Apellido;
+                        editarPersona.Direccion = Direccion;
+                        editarPersona.Telefono = Telefono;
+                        editarPersona.DNI = DNI;
+                        editarPersona.LocalidadID = LocalidadID;
+                        editarPersona.UsuarioID = UsuarioID;
+
+                        _context.SaveChanges();
+
+                        transaction.Commit();
+
+                        return Json(new { success = true, message = "Registro actualizado correctamente" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Persona no encontrada" });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+
+                return Json(new { success = false, message = "Error al guardar la persona: " + ex.Message });
+            }
+        }
+    }
+
+    public JsonResult TraerPersona(int? PersonaID)
+    {
+        var personaporID = _context.Personas.ToList();
+        if (PersonaID != null)
+        {
+            personaporID = personaporID.Where(e => e.PersonaID == PersonaID).ToList();
+        }
+
+        return Json(personaporID.ToList());
     }
 
 

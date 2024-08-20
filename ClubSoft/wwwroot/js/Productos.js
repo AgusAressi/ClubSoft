@@ -8,22 +8,25 @@ function ListadoProductos(){
         dataType: 'json',
         success: function (MostarProductos) {
             $("#ModalProductos").modal("hide");
-             LimpiarModal();
+            LimpiarModal();
 
             let contenidoTabla = ``;
-            
+
             $.each(MostarProductos, function (index, producto) {  
                 
+                // Formatear el precio como moneda
+                let precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(producto.precio);
+
                 contenidoTabla += `
                 <tr>
                     <td>${producto.nombre}</td>
-                    <td>${producto.precio}</td>
-                    <td>${producto.cantidad}</td>
-                    <td>${producto.descripcion}</td>
-                    <td>
+                    <td>${precioFormateado}</td>
+                    <td class="text-center">${producto.cantidad}</td>
+                    <td class="text-center">${producto.descripcion}</td>
+                    <td class="text-center">${producto.nombreTipoProducto}</td>
+                    <td class="text-center">
                         <input type="checkbox" class="form-check-input" ${producto.estado ? 'checked' : ''} disabled />
                     </td>
-                    <td>${producto.nombreTipoProducto}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})">
                             <i class="fa-solid fa-pen-to-square"></i>
@@ -53,13 +56,11 @@ function LimpiarModal(){
     document.getElementById("ProductoPrecio").value = "";
     document.getElementById("ProductoCantidad").value = "";
     document.getElementById("ProductoDescripcion").value = "";
-    document.getElementById("ProductoEstado").checked = ""
     document.getElementById("TipoProductoID").value = 0;
     document.getElementById("errorMensajeNombre").style.display = "none";
     document.getElementById("errorMensajePrecio").style.display = "none";
     document.getElementById("errorMensajeCantidad").style.display = "none";
     document.getElementById("errorMensajeDescripcion").style.display = "none";
-    document.getElementById("errorMensajeEstado").style.display = "none";
     document.getElementById("errorMensajeTipoProducto").style.display = "none";
 }
 
@@ -72,8 +73,8 @@ function GuardarRegistro() {
     let nombre = document.getElementById("ProductoNombre").value;
     let precio = document.getElementById("ProductoPrecio").value;
     let cantidad = document.getElementById("ProductoCantidad").value;
-    let descripcion = document.getElementById("ProductoDescripcion").value;  
-    let estado = document.getElementById("ProductoEstado").checked;
+    let descripcion = document.getElementById("ProductoDescripcion").value; 
+    let estado = document.getElementById("ProductoEstado").value; 
     let tipoProductoID = document.getElementById("TipoProductoID").value;
     
     let isValid = true;
@@ -129,7 +130,7 @@ function GuardarRegistro() {
         success: function (resultado) {
             console.log(resultado);
             Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
@@ -173,22 +174,39 @@ function AbrirEditar(ProductoID){
     });
 }
 
-function EliminarProducto(ProductoID){
-                
-    $.ajax({
-        url: '../../Productos/EliminarProducto',
-        data: {
-            productoID: ProductoID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {           
-            ListadoProductos();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
+function EliminarProducto(ProductoID) {
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el producto?",
+        text: "No podrás recuperarlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Productos/EliminarProducto',
+                data: {
+                    productoID: ProductoID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "El producto se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoProductos();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
-
 
