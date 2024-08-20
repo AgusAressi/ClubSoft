@@ -146,6 +146,17 @@ public class PersonasController : Controller
         }
     }
 
+    public JsonResult TraerPersona(int? PersonaID)
+    {
+        var personaporID = _context.Personas.ToList();
+        if (PersonaID != null)
+        {
+            personaporID = personaporID.Where(e => e.PersonaID == PersonaID).ToList();
+        }
+
+        return Json(personaporID.ToList());
+    }
+
 
     public JsonResult EliminarPersona(int PersonaID)
     {
