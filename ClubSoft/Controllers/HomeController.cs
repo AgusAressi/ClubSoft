@@ -52,8 +52,8 @@ public class HomeController : Controller
             }
             // else if (rolUsuario.Name == "SOCIO")
             // {
-            //     var empresa = await _context.Socio.FirstOrDefaultAsync(p => p.UsuarioID == usuarioLogueadoID);
-            //     nombreUsuario = empresa?.RazonSocial ?? "Razon social no disponible";
+            //     var socio = await _context.Socio.FirstOrDefaultAsync(p => p.UsuarioID == usuarioLogueadoID);
+            //     nombreUsuario = socio?.dni ?? "DNI no disponible";
             // }
         }
 
