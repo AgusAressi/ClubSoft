@@ -36,6 +36,9 @@ public class Persona
         public int LocalidadID { get; set; }
         public string? NombreLocalidad { get; set; }
         public string? NombreProvincia { get; set; }
+        public string? UsuarioID { get; set; }
+        public string? Email { get; set; }
+        public string? RolNombre { get; set; }
 
     }
 

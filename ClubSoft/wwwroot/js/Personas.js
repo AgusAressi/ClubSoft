@@ -19,8 +19,8 @@ function ListadoPersonas(){
                     <td>${MostrarPersonas.dni}</td>
                     <td>${MostrarPersonas.direccion}, ${MostrarPersonas.nombreLocalidad}, ${MostrarPersonas.nombreProvincia}</td>
                     <td>${MostrarPersonas.telefono}</td>
-                    <td>usuario</td>
-                    <td>rol</td>
+                    <td>${MostrarPersonas.email}</td>
+                    <td>${MostrarPersonas.rolNombre}</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarPersonas.personaID})">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -136,21 +136,21 @@ function GuardarRegistro() {
         type: 'POST',
         dataType: 'json',
         success: function (usuarioResultado) {
-            if (usuarioResultado.Success) {
-                let usuarioID = usuarioResultado.UsuarioID;
+            if (usuarioResultado.success) {
+                let usuarioID = usuarioResultado.usuarioID;
                     // Guardar datos de Persona con el UsuarioID generado
-                $.ajax({
-                    url: '../../Personas/GuardarRegistro',
-                    data: { 
-                        PersonaID: personaID,
-                        Nombre: nombre,
-                        Apellido: apellido,
-                        Direccion: direccion, 
-                        Telefono: telefono,
-                        DNI: dni,
-                        LocalidadID: localidadID,
-                        UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
-                    },
+                    $.ajax({
+                        url: '../../Personas/GuardarRegistro',
+                        data: { 
+                            PersonaID: personaID,
+                            Nombre: nombre,
+                            Apellido: apellido,
+                            Direccion: direccion, 
+                            Telefono: telefono,
+                            DNI: dni,
+                            LocalidadID: localidadID,
+                            UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
+                        },
                     type: 'POST',
                     dataType: 'json',  
                     success: function (resultado) {
