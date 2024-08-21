@@ -45,16 +45,11 @@ public class HomeController : Controller
         {
             //BUSCAMOS EL NOMBRE DEL ROL
             var rolUsuario = await _context.Roles.FirstOrDefaultAsync(p => p.Id == tieneRolUsuario.RoleId);
-            if (rolUsuario.Name == "EMPLEADO" || rolUsuario.Name == "ADMINISTRADOR")
+            if (rolUsuario.Name == "EMPLEADO" || rolUsuario.Name == "ADMINISTRADOR" || rolUsuario.Name == "SOCIO")
             {
                 var persona = await _context.Personas.FirstOrDefaultAsync(p => p.UsuarioID == usuarioLogueadoID);
                 nombreUsuario = persona?.Nombre ?? "Nombre no disponible";
             }
-            // else if (rolUsuario.Name == "SOCIO")
-            // {
-            //     var socio = await _context.Socio.FirstOrDefaultAsync(p => p.UsuarioID == usuarioLogueadoID);
-            //     nombreUsuario = socio?.dni ?? "DNI no disponible";
-            // }
         }
 
         ViewBag.NombreTitulo = nombreUsuario;
