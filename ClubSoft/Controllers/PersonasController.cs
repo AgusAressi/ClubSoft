@@ -33,7 +33,7 @@ public class PersonasController : Controller
     public JsonResult ListadoPersonas()
     {
         List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
-        var listadoPersonas = _context.Personas.ToList();
+        var listadoPersonas = _context.Personas.OrderBy(n => n.Nombre).ToList();
         var listadoLocalidades = _context.Localidades.ToList();
         var listadoProvincias = _context.Provincias.ToList();
         var listadoUsuarios = _context.Users.ToList();
