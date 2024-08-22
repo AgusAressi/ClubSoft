@@ -73,29 +73,30 @@ public class UsersController : Controller
 
         return Json(new { Success = false });
     }
+
     
-    public JsonResult EditarUsuario(int UsuarioID, string Email)
+    public JsonResult EditarUsuario(string? UsuarioID)
     {
-
-        return Json(true);
-    }
-
-    public JsonResult EliminarUsuario(string UsuarioID)
-    {
-
-        bool eliminado = false;
-
-        var existePersona = _context.Personas.Where(e => e.UsuarioID == UsuarioID).Count();
-
-        if (existePersona == 0)
+    
+     var usuarioporID = _context.Users.ToList();
+        if (UsuarioID != null)
         {
-            var eliminarUsuario = _context.Users.Find(UsuarioID);
-            _context.Remove(eliminarUsuario);
-            _context.SaveChanges();
-            eliminado = true;
+            usuarioporID = usuarioporID.Where(e => e.Id == UsuarioID).ToList();
         }
 
-        return Json(eliminado);
+        return Json(usuarioporID.ToList());
+    }
+
+   public JsonResult EliminarUsuario(string UsuarioID)
+    {
+        var usuario = _context.Users.Find(UsuarioID);
+        if (usuario != null)
+        {
+            _context.Users.Remove(usuario);
+            _context.SaveChanges();
+            return Json(true);
+        }
+        return Json(false);
     }
 
 }
