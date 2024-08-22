@@ -1,72 +1,77 @@
 @{
-    ViewData["Title"] = "Tipo de Eventos";
+  ViewData["Title"] = "Tipo de Eventos";
 }
 <link rel="stylesheet" href="~/css/Localidades.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/TipoEventos.css" asp-append-version="true" />
 
 <div class="p-3">
   <div class="row">
+    <div class="col-md-6">
       <h4>Agregar Nuevo Tipo de Evento<i class="ms-2 fa-solid fa-square-plus"></i></h4>
       <input type="hidden" id="TipoEventoID" value="0" />
-      <div class="col-md-3">
-        <input type="text" class="form-control" id="TipoEventoNombre" style="text-transform:uppercase"
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control me-2" id="TipoEventoNombre" style="text-transform:uppercase"
           placeholder="Ingrese el nombre del evento">
-        <span id="errorMensaje" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-          <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un valor
-          </span>
-      </div>
-      <div class="col-md-3">
         <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
       </div>
-<input type="hidden" id="LugarID" value="0" />
-      <div class="col-md-3">
-        <input type="text" class="form-control" id="LugarNombre" style="text-transform:uppercase"
+      <span id="errorMensaje" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+        <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un tipo de evento
+      </span>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Agregar Nuevo Lugar<i class="ms-2 fa-solid fa-square-plus"></i></h4>
+      <input type="hidden" id="LugarID" value="0" />
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control me-2" id="LugarNombre" style="text-transform:uppercase"
           placeholder="Ingrese el lugar del evento">
-        <span id="errorMensaje" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-          <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un valor
-          </span>
-      </div>
-      <div class="col-md-3">
         <button type="button" onclick="GuardarRegistroLugar()" class="btn boton-color">Guardar</button>
       </div>
+      <span id="errorMensajeLugar" style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+        <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar un lugar
+      </span>
+    </div>
   </div>
-</div><div class="p-3" style="height: 100%;">
-  <div class="card shadow-sm">
-    <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>TIPOS DE EVENTOS</h3>
-    <div class="card-body">
-      <div class="row">
-        <!-- Primera tabla: Tipos de Eventos -->
-        <div class="col-md-6">
-          <div class="table-responsive" style="height: 500px; overflow-y: auto;">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th style="position: sticky; top: 0; background-color: white;">Nombre</th>
-                  <th style="width: 70px"></th>
-                  <th style="width: 70px"></th>
-                </tr>
-              </thead>
-              <tbody id="tbody-TipoEventos">
-              </tbody>
-            </table>
-          </div>
-        </div>
+</div>
 
-        <!-- Segunda tabla: Lugares -->
-        <div class="col-md-6">
-          <div class="table-responsive" style="height: 500px; overflow-y: auto;">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th style="position: sticky; top: 0; background-color: white;">Lugar</th>
-                  <th style="width: 70px"></th>
-                  <th style="width: 70px"></th>
-                </tr>
-              </thead>
-              <tbody id="tbody-Lugares">
-              </tbody>
-            </table>
-          </div>
+<div class="row p-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>TIPOS DE EVENTOS</h3>
+      <div class="card-body">
+        <div class="table-responsive" style="height: 500px; overflow-y: auto;">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="position: sticky; top: 0; background-color: white;">Nombre</th>
+                <th style="width: 70px;"></th>
+                <th style="width: 70px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-TipoEventos">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>LUGARES</h3>
+      <div class="card-body">
+        <div class="table-responsive" style="height: 500px; overflow-y: auto;">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="position: sticky; top: 0; background-color: white;">Lugar</th>
+                <th style="width: 70px;"></th>
+                <th style="width: 70px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-Lugares">    
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -75,9 +80,7 @@
 
 
 
-
- 
-  @section Scripts{
+@section Scripts {
   <script src="~/js/TipoEventos.js"></script>
   <script src="~/js/Lugares.js"></script>
 }

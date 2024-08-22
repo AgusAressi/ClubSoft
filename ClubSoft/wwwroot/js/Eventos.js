@@ -21,7 +21,7 @@ function ListadoEventos() {
                             <h5 class="card-title text-center">${evento.descripcion}</h5>
                             <p class="card-text"><b>Fecha:</b> ${evento.fechaEvento}</p>
                             <p class="card-text"><b>Hora:</b> ${evento.horaEvento}</p>
-                            <p class="card-text"><b>Lugar:</b> ${evento.lugarNombre}</p>
+                            <p class="card-text"><b>Lugar:</b> ${evento.nombreLugar}</p>
                         </div>
                         <div class="card-footer text-center card-color">
                             <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${evento.eventoID})">
