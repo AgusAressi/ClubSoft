@@ -61,6 +61,8 @@ public class UsersController : Controller
     }
     public async Task<JsonResult> GuardarUsuario(string Username, string Email, string Password, string rol)
     {
+        Username = Username.Trim();
+        
         var user = new IdentityUser { UserName = Username, Email = Email };
         var result = await _userManager.CreateAsync(user, Password);
 
