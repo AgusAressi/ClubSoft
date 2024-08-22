@@ -46,12 +46,17 @@ function ListadoCuentaCorrientes(){
 
 function LimpiarModal(){
     document.getElementById("CuentaCorrienteID").value = 0;
-    document.getElementById("PersonaID").value = 0;
+    document.getElementById("PersonaID").value = "";
     document.getElementById("CuentaCorrienteSaldo").value = "";
     document.getElementById("CuentaCorrienteIngreso").value = "";
     document.getElementById("CuentaCorrienteEgreso").value = "";
     document.getElementById("CuentaCorrienteDescripcion").value = "";
     document.getElementById("CuentaCorrienteFecha").value = "";
+    document.getElementById("errorMensajeSaldo").style.display = "none";
+    document.getElementById("errorMensajeIngreso").style.display = "none";
+    document.getElementById("errorMensajeEgreso").style.display = "none";
+    document.getElementById("errorMensajeDescripcion").style.display = "none";
+    document.getElementById("errorMensajeFecha").style.display = "none";
 }
 
 function NuevaCuentaCorriente(){
@@ -67,9 +72,46 @@ function GuardarRegistro() {
     let descripcion = document.getElementById("CuentaCorrienteDescripcion").value;
     let fecha = document.getElementById("CuentaCorrienteFecha").value;
 
+    let isValid = true;
+
+    if (saldo === "") {
+        document.getElementById("errorMensajeSaldo").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeSaldo").style.display = "none";
+    }
+    if (ingreso === "") {
+        document.getElementById("errorMensajeIngreso").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeIngreso").style.display = "none";
+    }
+    if (egreso === "") {
+        document.getElementById("errorMensajeEgreso").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeEgreso").style.display = "none";
+    }
+    if (descripcion === "") {
+        document.getElementById("errorMensajeDescripcion").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeDescripcion").style.display = "none";
+    }
+    if (fecha === "") {
+        document.getElementById("errorMensajeFecha").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeFecha").style.display = "none";
+    }
+
+    if (!isValid) {
+        return;
+    }
+
 
     $.ajax({
-        url: '../../CuentaCorrientes/GuardarRegistro',
+        url: '../../CuentaCorrientes/GuardarCuentaCorriente',
         data: { 
             CuentaCorrienteID: cuentaCorrienteID,
             PersonaID: personaID,
@@ -110,30 +152,39 @@ function AbrirEditar(CuentaCorrienteID) {
         success: function (cuentaCorrientesConId) { 
             let cuentaCorriente = cuentaCorrientesConId[0];
             
-            if (cuentaCorriente) {
+            
                 document.getElementById("CuentaCorrienteID").value = cuentaCorriente.cuentaCorrienteID;
                 document.getElementById("PersonaID").value = cuentaCorriente.personaID;
                 document.getElementById("CuentaCorrienteSaldo").value = cuentaCorriente.saldo;
                 document.getElementById("CuentaCorrienteIngreso").value = cuentaCorriente.ingreso;
                 document.getElementById("CuentaCorrienteEgreso").value = cuentaCorriente.egreso;
                 document.getElementById("CuentaCorrienteDescripcion").value = cuentaCorriente.descripcion;
+                document.getElementById("CuentaCorrienteFecha").value = cuentaCorriente.fecha;
 
-                // Formateo de la fecha para que sea compatible con el input type="date"
-                let fecha = new Date(cuentaCorriente.fecha);
-                document.getElementById("CuentaCorrienteFecha").value = fecha.toISOString().substring(0, 10);
 
                 $("#ModalCuentaCorrientes").modal("show");
-            } else {
-                console.log('No se encontró el registro.');
+                $("#ModalTitulo").text("Editar Cuenta Corriente");
+            },
+    
+            error: function (xhr, status) {
+                console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
             }
-        },
-        error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
-        }
-    });
-}
+        });
+    }
 
 function EliminarCuentaCorriente(CuentaCorrienteID){
+
+    Swal.fire({
+        title: "¿Esta seguro que quiere eliminar la cuenta corriente?",
+        text: "No podrás recuperarla!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
                 
     $.ajax({
         url: '../../CuentaCorrientes/EliminarCuentaCorriente',
@@ -142,11 +193,19 @@ function EliminarCuentaCorriente(CuentaCorrienteID){
         },
         type: 'POST',
         dataType: 'json',
-        success: function (resultado) {           
+        success: function (resultado) { 
+            Swal.fire({
+                title: "Eliminado!",
+                text: "La cuenta corriente se elimino correctamente",
+                icon: "success",
+                confirmButtonColor: "#3085d6"
+            });          
             ListadoCuentaCorrientes();
         },
      error: function (xhr, status) {
      console.log('Disculpe, existió un problema al eliminar el registro.');
     }
+});
+}
 });
 }
