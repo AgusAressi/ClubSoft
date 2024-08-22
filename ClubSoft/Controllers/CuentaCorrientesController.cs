@@ -38,7 +38,7 @@ public class CuentaCorrientesController : Controller
              var persona = listadoPersonas
             .Where(p => p.PersonaID == cuentaCorrientes.PersonaID)
             .Single();
-            var cuentaCorrientesMostar = new VistaCuentaCorrientes
+            var cuentaCorrientesMostrar = new VistaCuentaCorrientes
             {
                 CuentaCorrienteID = cuentaCorrientes.CuentaCorrienteID,
                 PersonaID = cuentaCorrientes.PersonaID,
@@ -50,13 +50,13 @@ public class CuentaCorrientesController : Controller
                 NombrePersona = persona.Nombre, 
                 ApellidoPersona = persona.Apellido 
             };
-            MostrarCuentaCorrientes.Add(cuentaCorrientesMostar);
+            MostrarCuentaCorrientes.Add(cuentaCorrientesMostrar);
         }
         return Json(MostrarCuentaCorrientes);
 
     }
 
-    public JsonResult GuardarRegistro(
+    public JsonResult GuardarCuentaCorriente(
      int CuentaCorrienteID,
      int PersonaID,
      decimal Saldo,
@@ -68,7 +68,7 @@ public class CuentaCorrientesController : Controller
      )
     {
         string resultado = "";
-        Descripcion = Descripcion.ToUpper();
+         Descripcion = Descripcion.ToUpper();
         if (CuentaCorrienteID == 0)
 
 
