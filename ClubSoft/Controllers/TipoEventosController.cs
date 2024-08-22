@@ -40,7 +40,6 @@ public class TipoEventosController : Controller
         {
             var tipoevento = new TipoEvento
             {
-                TipoEventoID = TipoEventoID,
                 Nombre = Nombre
             };
             _context.Add(tipoevento);
@@ -104,7 +103,6 @@ public class TipoEventosController : Controller
         {
             var lugarevento = new Lugar
             {
-                LugarID = LugarID,
                 Nombre = Nombre
             };
             _context.Add(lugarevento);

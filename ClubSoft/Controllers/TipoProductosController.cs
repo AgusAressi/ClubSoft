@@ -40,7 +40,6 @@ public class TipoProductosController : Controller
         {
             var tipoproducto = new TipoProducto
             {
-                TipoProductoID = TipoProductoID,
                 Nombre = Nombre
             };
             _context.Add(tipoproducto);

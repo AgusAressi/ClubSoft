@@ -77,7 +77,6 @@ public class EventosController : Controller
         {
             var evento = new Evento
             {
-                EventoID = EventoID,
                 Descripcion = Descripcion,
                 FechaEvento = FechaEvento,
                 LugarID = LugarID,

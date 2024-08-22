@@ -75,7 +75,6 @@ public class CuentaCorrientesController : Controller
         {
             var cuentaCorriente = new CuentaCorriente
             {
-                CuentaCorrienteID = CuentaCorrienteID,
                 PersonaID = PersonaID,
                 Saldo = Saldo,
                 Ingreso = Ingreso,

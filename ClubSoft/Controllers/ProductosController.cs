@@ -70,7 +70,6 @@ public class ProductosController : Controller
         {
             var producto = new Producto
             {
-                ProductoID = ProductoID,
                 Nombre = Nombre,
                 Precio = Precio,
                 Cantidad = Cantidad,

@@ -80,7 +80,6 @@ public class VentasController : Controller
         {
             var venta = new Venta
             {
-                VentaID = VentaID,
                 CuentaCorrienteID = CuentaCorrienteID,
                 Fecha = Fecha,
                 Estado = Estado,
