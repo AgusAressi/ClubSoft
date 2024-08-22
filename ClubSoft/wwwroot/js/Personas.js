@@ -22,7 +22,7 @@ function ListadoPersonas(){
                     <td>${MostrarPersonas.email}</td>
                     <td>${MostrarPersonas.rolNombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarPersonas.personaID})">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarPersonas.personaID}, '${MostrarPersonas.usuarioID}')">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
