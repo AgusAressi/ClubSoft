@@ -57,14 +57,6 @@ function LimpiarModal(){
     document.getElementById("errorMensajeTelefono").style.display = "none";
     document.getElementById("errorMensajeDNI").style.display = "none";
     document.getElementById("errorMensajeLocalidad").style.display = "none";
-    document.getElementById("UsuarioID").value = 0;
-    document.getElementById("PersonaUserName").value = "";
-    document.getElementById("PersonaEmail").value = "";
-    document.getElementById("PersonaContraseña").value = "";
-    document.getElementById("errorMensajeEmail").style.display = "none";
-    document.getElementById("errorMensajeContraseña").style.display = "none";
-    document.getElementById("errorMensajeUserName").style.display = "none";
-    document.getElementById("errorMensajeRol").style.display = "none";
 }
 
 function NuevaPersona(){
@@ -129,34 +121,6 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeLocalidad").style.display = "none";
     }
 
-    if (userName === "") {
-        document.getElementById("errorMensajeUserName").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeUserName").style.display = "none";
-    }
-
-    if (email === "") {
-        document.getElementById("errorMensajeEmail").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeEmail").style.display = "none";
-    }
-
-    if (password === "") {
-        document.getElementById("errorMensajeContraseña").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeContraseña").style.display = "none";
-    }
-
-    if (rol === "0") {
-        document.getElementById("errorMensajeRol").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeRol").style.display = "none";
-    }
-
     if (!isValid) {
         return;
     }
@@ -192,7 +156,7 @@ function GuardarRegistro() {
                     success: function (resultado) {
                         console.log(resultado);
                         Swal.fire({
-                            position: "center",
+                            position: "bottom-end",
                             icon: "success",
                             title: "Registro guardado correctamente!",
                             showConfirmButton: false,
@@ -214,8 +178,8 @@ function GuardarRegistro() {
     });
 }
 
-function AbrirEditar(PersonaID, UsuarioID) {
-    // Primer AJAX para obtener los datos de la persona
+function AbrirEditar(PersonaID){
+    
     $.ajax({
         url: '../../Personas/TraerPersona',
         data: { 
@@ -227,39 +191,14 @@ function AbrirEditar(PersonaID, UsuarioID) {
             let persona = personasConId[0];
 
             document.getElementById("PersonaID").value = PersonaID;
-            document.getElementById("PersonaNombre").value = persona.nombre;
-            document.getElementById("PersonaApellido").value = persona.apellido;
-            document.getElementById("PersonaDireccion").value = persona.direccion;
-            document.getElementById("PersonaTelefono").value = persona.telefono;
-            document.getElementById("PersonaDni").value = persona.dni;
-            document.getElementById("LocalidadID").value = persona.localidadID;
+            document.getElementById("PersonaNombre").value = persona.nombre,
+            document.getElementById("PersonaApellido").value = persona.apellido,
+            document.getElementById("PersonaDireccion").value = persona.direccion,
+            document.getElementById("PersonaTelefono").value = persona.telefono,
+            document.getElementById("PersonaDni").value = persona.dni,
+            document.getElementById("LocalidadID").value = persona.localidadID
 
-            // Segundo AJAX para obtener los datos del usuario
-            $.ajax({
-                url: '../../Users/EditarUsuario',
-                data: { 
-                    UsuarioID: UsuarioID,
-                    Email: persona.Email
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (usuarioporID) {
-                    let usuario = usuarioporID[0];
-
-                    document.getElementById("UsuarioID").value = UsuarioID;
-                    document.getElementById("PersonaEmail").value = usuario.email;
-                    document.getElementById("PersonaUserName").value = usuario.userName;
-                    document.getElementById("PersonaContraseña").value = usuario.contraseña;
-                    document.getElementById("RolID").value = usuario.rol;
-
-                    $("#ModalPersonas").modal("show");
-                    $("#ModalTitulo").text("Editar Persona y Usuario");
-                },
-
-                error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al consultar el registro del usuario.');
-                }
-            });
+            $("#ModalPersonas").modal("show");
         },
 
         error: function (xhr, status) {
@@ -267,17 +206,15 @@ function AbrirEditar(PersonaID, UsuarioID) {
         }
     });
 }
-
-
-function EliminarPersona(PersonaID, UsuarioID) {
+function EliminarPersona(PersonaID) {
     Swal.fire({
-        title: "¿Está seguro que quiere eliminar la persona?",
-        text: "¡No podrás recuperarlo!",
+        title: "¿Esta seguro que quiere eliminar la persona?",
+        text: "No podrás recuperarlo!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminar!",
+        confirmButtonText: "Si, eliminar!",
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
@@ -289,24 +226,9 @@ function EliminarPersona(PersonaID, UsuarioID) {
                 type: 'POST',
                 dataType: 'json',
                 success: function (resultado) {
-
-                    $.ajax({
-                        url: '../../Users/EliminarUsuario',
-                        data: {
-                            UsuarioID: UsuarioID,
-                        },
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function (resultadoUsuario) {
-                            console.log('El usuario fue eliminado correctamente.');
-                        },
-                        error: function (xhr, status) {
-                            console.log('Disculpe, existió un problema al eliminar el usuario.');
-                        }
-                    });
                     Swal.fire({
                         title: "Eliminado!",
-                        text: "La persona se eliminó correctamente",
+                        text: "La persona se elimino correctamente",
                         icon: "success",
                         confirmButtonColor: "#3085d6"
                     });
