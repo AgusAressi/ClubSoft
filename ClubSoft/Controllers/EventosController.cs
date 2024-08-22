@@ -22,12 +22,12 @@ public class EventosController : Controller
 
         var tipoEventos = _context.TipoEventos.ToList();
 
-        tipoEventos.Add(new TipoEvento{TipoEventoID = 0, Nombre = "[SELECCIONE EL TIPO DE EVENTO...]"});
+        tipoEventos.Add(new TipoEvento { TipoEventoID = 0, Nombre = "[SELECCIONE EL TIPO DE EVENTO...]" });
         ViewBag.TipoEventoID = new SelectList(tipoEventos.OrderBy(c => c.Nombre), "TipoEventoID", "Nombre");
 
         var lugares = _context.Lugares.ToList();
 
-        lugares.Add(new Lugar{LugarID = 0, Nombre = "[SELECCIONE UN LUGAR...]"});
+        lugares.Add(new Lugar { LugarID = 0, Nombre = "[SELECCIONE UN LUGAR...]" });
         ViewBag.LugarID = new SelectList(lugares.OrderBy(c => c.Nombre), "LugarID", "Nombre");
 
         return View();
@@ -41,22 +41,22 @@ public class EventosController : Controller
         var listadoTipoEventos = _context.TipoEventos.ToList();
         var listadoLugares = _context.Lugares.ToList();
 
-         foreach (var evento in listadoEventos)
+        foreach (var evento in listadoEventos)
         {
             var tipoEvento = listadoTipoEventos.Where(t => t.TipoEventoID == evento.TipoEventoID).Single();
             var lugar = listadoLugares.Where(t => t.LugarID == evento.LugarID).Single();
-            
+
             var eventoMostar = new VistaTipoEventos
             {
                 EventoID = evento.EventoID,
-                Descripcion = evento.Descripcion, 
+                Descripcion = evento.Descripcion,
                 FechaEvento = evento.FechaEvento.ToString("dd/MM/yyyy"),
                 HoraEvento = evento.FechaEvento.ToString("HH:mm"),
                 LugarID = evento.LugarID,
                 TipoEventoID = evento.TipoEventoID,
                 NombreTipoEvento = tipoEvento.Nombre,
                 NombreLugar = lugar.Nombre
-              
+
             };
             EventosMostar.Add(eventoMostar);
         }
@@ -87,23 +87,23 @@ public class EventosController : Controller
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-         else
-         {
-             var editarEvento = _context.Eventos.Where(e => e.EventoID == EventoID).SingleOrDefault();
-             if (editarEvento != null)
-             {
-                 editarEvento.EventoID = EventoID;
-                 editarEvento.Descripcion = Descripcion;
-                 editarEvento.FechaEvento = FechaEvento;
-                 editarEvento.LugarID = LugarID;
-                 editarEvento.TipoEventoID = TipoEventoID;
-                 _context.SaveChanges();
-             }
-         }
+        else
+        {
+            var editarEvento = _context.Eventos.Where(e => e.EventoID == EventoID).SingleOrDefault();
+            if (editarEvento != null)
+            {
+                editarEvento.EventoID = EventoID;
+                editarEvento.Descripcion = Descripcion;
+                editarEvento.FechaEvento = FechaEvento;
+                editarEvento.LugarID = LugarID;
+                editarEvento.TipoEventoID = TipoEventoID;
+                _context.SaveChanges();
+            }
+        }
         return Json(resultado);
     }
 
-     public JsonResult TraerEvento(int? EventoID)
+    public JsonResult TraerEvento(int? EventoID)
     {
         var eventoporID = _context.Eventos.ToList();
         if (EventoID != null)
@@ -114,14 +114,14 @@ public class EventosController : Controller
         return Json(eventoporID.ToList());
     }
 
-     public JsonResult EliminarEvento(int EventoID)
-   {
-    var evento = _context.Eventos.Find(EventoID);
-    _context.Remove(evento);
-    _context.SaveChanges();
+    public JsonResult EliminarEvento(int EventoID)
+    {
+        var evento = _context.Eventos.Find(EventoID);
+        _context.Remove(evento);
+        _context.SaveChanges();
 
-    return Json(true);
-   }
+        return Json(true);
+    }
 }
 
 

@@ -16,13 +16,13 @@ public class TipoProductosController : Controller
     public IActionResult Index()
     {
         return View();
-
     }
 
     public JsonResult ListadoTipoProductos(int? id)
     {
         var traerTodasLosTiposProductos = _context.TipoProductos.ToList();
-        if (id != null) {
+        if (id != null)
+        {
             traerTodasLosTiposProductos = traerTodasLosTiposProductos.Where(t => t.TipoProductoID == id).ToList();
         }
         return Json(traerTodasLosTiposProductos);
@@ -47,16 +47,16 @@ public class TipoProductosController : Controller
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-         else
-         {
-             var editarTipoProducto = _context.TipoProductos.Where(e => e.TipoProductoID == TipoProductoID).SingleOrDefault();
-             if (editarTipoProducto != null)
-             {
-                 editarTipoProducto.TipoProductoID = TipoProductoID;
-                 editarTipoProducto.Nombre = Nombre;
-                 _context.SaveChanges();
-             }
-         }
+        else
+        {
+            var editarTipoProducto = _context.TipoProductos.Where(e => e.TipoProductoID == TipoProductoID).SingleOrDefault();
+            if (editarTipoProducto != null)
+            {
+                editarTipoProducto.TipoProductoID = TipoProductoID;
+                editarTipoProducto.Nombre = Nombre;
+                _context.SaveChanges();
+            }
+        }
         return Json(resultado);
     }
 
@@ -72,11 +72,11 @@ public class TipoProductosController : Controller
     }
 
     public JsonResult EliminarTipoProducto(int TipoProductoID)
-   {
-    var tipoProducto = _context.TipoProductos.Find(TipoProductoID);
-    _context.Remove(tipoProducto);
-    _context.SaveChanges();
+    {
+        var tipoProducto = _context.TipoProductos.Find(TipoProductoID);
+        _context.Remove(tipoProducto);
+        _context.SaveChanges();
 
-    return Json(true);
-   }
-     }
+        return Json(true);
+    }
+}

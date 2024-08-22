@@ -19,9 +19,7 @@ public class CuentaCorrientesController : Controller
 
     public IActionResult Index()
     {
-
         return View();
-    
     }
 
     public JsonResult ListadoCuentaCorrientes()
@@ -32,12 +30,12 @@ public class CuentaCorrientesController : Controller
 
         foreach (var cuentaCorrientes in listadoCuentaCorrientes)
         {
-             var cuentaCorriente = listadoCuentaCorrientes
-            .Where(cc => cc.CuentaCorrienteID == cuentaCorrientes.CuentaCorrienteID)
-            .Single(); 
-             var persona = listadoPersonas
-            .Where(p => p.PersonaID == cuentaCorrientes.PersonaID)
-            .Single();
+            var cuentaCorriente = listadoCuentaCorrientes
+           .Where(cc => cc.CuentaCorrienteID == cuentaCorrientes.CuentaCorrienteID)
+           .Single();
+            var persona = listadoPersonas
+           .Where(p => p.PersonaID == cuentaCorrientes.PersonaID)
+           .Single();
             var cuentaCorrientesMostrar = new VistaCuentaCorrientes
             {
                 CuentaCorrienteID = cuentaCorrientes.CuentaCorrienteID,
@@ -47,8 +45,8 @@ public class CuentaCorrientesController : Controller
                 Egreso = cuentaCorrientes.Egreso,
                 Descripcion = cuentaCorrientes.Descripcion,
                 Fecha = cuentaCorrientes.Fecha,
-                NombrePersona = persona.Nombre, 
-                ApellidoPersona = persona.Apellido 
+                NombrePersona = persona.Nombre,
+                ApellidoPersona = persona.Apellido
             };
             MostrarCuentaCorrientes.Add(cuentaCorrientesMostrar);
         }
@@ -57,21 +55,19 @@ public class CuentaCorrientesController : Controller
     }
 
     public JsonResult GuardarCuentaCorriente(
-     int CuentaCorrienteID,
-     int PersonaID,
-     decimal Saldo,
-     decimal Ingreso,
-     decimal Egreso,
-     string? Descripcion,
-     DateTime Fecha
-
+        int CuentaCorrienteID,
+        int PersonaID,
+        decimal Saldo,
+        decimal Ingreso,
+        decimal Egreso,
+        string? Descripcion,
+        DateTime Fecha
      )
     {
         string resultado = "";
-         Descripcion = Descripcion.ToUpper();
+        Descripcion = Descripcion.ToUpper();
+ 
         if (CuentaCorrienteID == 0)
-
-
         {
             var cuentaCorriente = new CuentaCorriente
             {
@@ -81,7 +77,6 @@ public class CuentaCorrientesController : Controller
                 Egreso = Egreso,
                 Descripcion = Descripcion,
                 Fecha = Fecha
-
             };
             _context.Add(cuentaCorriente);
             _context.SaveChanges();
@@ -117,7 +112,7 @@ public class CuentaCorrientesController : Controller
         return Json(cuentaCorrientesConId.ToList());
     }
 
-public JsonResult EliminarCuentaCorriente(int CuentaCorrienteID)
+    public JsonResult EliminarCuentaCorriente(int CuentaCorrienteID)
     {
         var cuentaCorriente = _context.CuentaCorrientes.Find(CuentaCorrienteID);
         _context.Remove(cuentaCorriente);
@@ -126,4 +121,4 @@ public JsonResult EliminarCuentaCorriente(int CuentaCorrienteID)
         return Json(true);
     }
 
-    }
+}
