@@ -9,7 +9,7 @@ function ListadoPersonas(){
         dataType: 'json',
         success: function (MostrarPersonas) {
             $("#ModalPersonas").modal("hide");
-             LimpiarModal();
+            LimpiarModal();
             let contenidoTabla = ``;
 
             $.each(MostrarPersonas, function (index, MostrarPersonas) {                  
@@ -36,6 +36,22 @@ function ListadoPersonas(){
             });
 
             document.getElementById("tbody-Personas").innerHTML = contenidoTabla;
+
+            // Filtro de búsqueda
+            document.getElementById('searchInput').addEventListener('input', function () {
+                var filter = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#tbody-Personas tr');
+
+                rows.forEach(function (row) {
+                    var nombreCompleto = row.cells[0].textContent.toLowerCase();
+                    if (nombreCompleto.includes(filter)) {
+                        row.style.display = ''; // muestra la fila si coincide
+                    } else {
+                        row.style.display = 'none'; // ocultar la fila si no coincide
+                    }
+                });
+            });
+
         },  
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');

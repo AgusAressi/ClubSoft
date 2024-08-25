@@ -29,7 +29,7 @@ public class ProductosController : Controller
     public JsonResult ListadoProductos(int? id)
     {
         List<VistaTipoProductos> MostrarProductos = new List<VistaTipoProductos>();
-        var listadoProductos = _context.Productos.ToList();
+        var listadoProductos = _context.Productos.OrderBy(n => n.Nombre).ToList();
         var listadoTipoProducto = _context.TipoProductos.ToList();
         foreach (var productos in listadoProductos)
         {
@@ -70,7 +70,6 @@ public class ProductosController : Controller
         {
             var producto = new Producto
             {
-                ProductoID = ProductoID,
                 Nombre = Nombre,
                 Precio = Precio,
                 Cantidad = Cantidad,
@@ -117,5 +116,20 @@ public class ProductosController : Controller
 
         return Json(true);
     }
+
+    public JsonResult OcultarActivarProducto(int? ProductoID, int Accion)
+        {
+            var producto = _context.Productos.Find(ProductoID);
+            if (Accion == 1)
+            {
+                producto.Estado = true;
+            }
+            else
+            {
+                producto.Estado = false;
+            }
+            _context.SaveChanges();
+            return Json(true);
+        }
 
 }

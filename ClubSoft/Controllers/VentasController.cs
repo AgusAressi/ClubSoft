@@ -85,7 +85,6 @@ var productos = _context.Productos.ToList();
         {
             var venta = new Venta
             {
-                VentaID = VentaID,
                 CuentaCorrienteID = CuentaCorrienteID,
                 Fecha = Fecha,
                 Estado = Estado,

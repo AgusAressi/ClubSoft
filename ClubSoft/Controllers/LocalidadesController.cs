@@ -62,7 +62,6 @@ public class LocalidadesController : Controller
         {
             var localidad = new Localidad
             {
-                LocalidadID = LocalidadID,
                 Nombre = Nombre,
                 ProvinciaID = ProvinciaID
             };
