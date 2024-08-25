@@ -24,6 +24,11 @@ public class VentasController : Controller
         tipoproductos.Add(new TipoProducto { TipoProductoID = 0, Nombre = "[SELECCIONE El Tipo De Producto...]" });
         ViewBag.TipoProductoID = new SelectList(tipoproductos.OrderBy(c => c.Nombre), "TipoProductoID", "Nombre");
 
+var productos = _context.Productos.ToList();
+
+        productos.Add(new Producto { ProductoID = 0, Nombre = "[SELECCIONE El  Producto...]" });
+        ViewBag.ProductoID = new SelectList(productos.OrderBy(c => c.Nombre), "ProductoID", "Nombre");
+
         return View();
     }
 
@@ -129,5 +134,15 @@ public class VentasController : Controller
 
         return Json(true);
     }
+
+    public JsonResult PrecioProducto(int productoID)
+{
+    var precio = _context.Productos
+                        .Where(p => p.ProductoID == productoID)
+                        .Select(p => p.Precio)
+                        .FirstOrDefault();
+
+    return Json(precio);
+}
 
 }
