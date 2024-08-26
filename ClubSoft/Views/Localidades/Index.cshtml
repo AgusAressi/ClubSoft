@@ -12,16 +12,16 @@
     <h4>Agregar Nueva Localidad<i class="ms-2 fa-solid fa-square-plus"></i></h4>
     <input type="hidden" id="LocalidadID" value="0" />
     <div class="col-md-3">
-      <input type="text" class="form-control" id="LocalidadNombre" style="text-transform:uppercase"
+      <input type="text" class="form-control shadow-sm" id="LocalidadNombre" style="text-transform:uppercase"
         placeholder="Ingrese la localidad">
       <span id="errorMensajeLocalidad" style="color:red; display:none; font-size: 15px; padding-left: 4px;"><i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una localidad</span>
     </div>
     <div class="col-md-3">
-        @Html.DropDownList("ProvinciaID", null, htmlAttributes: new { @class = "form-control" })
+        @Html.DropDownList("ProvinciaID", null, htmlAttributes: new { @class = "form-control shadow-sm" })
         <span id="errorMensajeProvincia" style="color:red; display:none; font-size: 15px; padding-left: 4px;"><i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una provincia</span>
     </div>
     <div class="col-md-3">
-      <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
+      <button type="button" onclick="GuardarRegistro()" class="btn boton-color shadow-sm">Guardar</button>
     </div>
   </div>
 </div>

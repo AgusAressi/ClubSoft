@@ -1,18 +1,18 @@
 window.onload = ListadoCuentaCorrientes();
 
-function ListadoCuentaCorrientes(){
+function ListadoCuentaCorrientes() {
     $.ajax({
         url: '../../CuentaCorrientes/ListadoCuentaCorrientes',
-        data: { 
-         },
+        data: {
+        },
         type: 'POST',
         dataType: 'json',
         success: function (MostrarCuentaCorrientes) {
             $("#ModalCuentaCorrientes").modal("hide");
-              LimpiarModal();
+            LimpiarModal();
             let contenidoTabla = ``;
 
-            $.each(MostrarCuentaCorrientes, function (index, MostrarCuentaCorrientes) {                  
+            $.each(MostrarCuentaCorrientes, function (index, MostrarCuentaCorrientes) {
                 contenidoTabla += `
                 <tr>
                     <td>${MostrarCuentaCorrientes.nombrePersona}, ${MostrarCuentaCorrientes.apellidoPersona}</td>
@@ -33,18 +33,18 @@ function ListadoCuentaCorrientes(){
                     </button>
                     </td> 
                 </tr>
-             `;           
+             `;
             });
 
             document.getElementById("tbody-CuentaCorrientes").innerHTML = contenidoTabla;
-        },  
+        },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');
         }
     });
 }
 
-function LimpiarModal(){
+function LimpiarModal() {
     document.getElementById("CuentaCorrienteID").value = 0;
     document.getElementById("PersonaID").value = "";
     document.getElementById("CuentaCorrienteSaldo").value = "";
@@ -59,14 +59,14 @@ function LimpiarModal(){
     document.getElementById("errorMensajeFecha").style.display = "none";
 }
 
-function NuevaCuentaCorriente(){
+function NuevaCuentaCorriente() {
     $("#ModalTitulo").text("Nueva Cuenta Corriente");
 }
 
 function GuardarRegistro() {
     let cuentaCorrienteID = document.getElementById("CuentaCorrienteID").value;
     let personaID = document.getElementById("PersonaID").value;
-    let saldo = document.getElementById("CuentaCorrienteSaldo").value; 
+    let saldo = document.getElementById("CuentaCorrienteSaldo").value;
     let ingreso = document.getElementById("CuentaCorrienteIngreso").value;
     let egreso = document.getElementById("CuentaCorrienteEgreso").value;
     let descripcion = document.getElementById("CuentaCorrienteDescripcion").value;
@@ -112,17 +112,17 @@ function GuardarRegistro() {
 
     $.ajax({
         url: '../../CuentaCorrientes/GuardarCuentaCorriente',
-        data: { 
+        data: {
             CuentaCorrienteID: cuentaCorrienteID,
             PersonaID: personaID,
-            Saldo: saldo, 
+            Saldo: saldo,
             Ingreso: ingreso,
             Egreso: egreso,
             Descripcion: descripcion,
             Fecha: fecha,
         },
         type: 'POST',
-        dataType: 'json',   
+        dataType: 'json',
         success: function (resultado) {
             console.log(resultado);
             Swal.fire({
@@ -132,47 +132,47 @@ function GuardarRegistro() {
                 showConfirmButton: false,
                 timer: 1000
             });
-            ListadoCuentaCorrientes(); 
+            ListadoCuentaCorrientes();
         },
         error: function (xhr, status, error) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
 
 function AbrirEditar(CuentaCorrienteID) {
-    
+
     $.ajax({
         url: '../../CuentaCorrientes/TraerCuentaCorriente',
-        data: { 
+        data: {
             cuentaCorrienteID: CuentaCorrienteID,
         },
         type: 'POST',
         dataType: 'json',
-        success: function (cuentaCorrientesConId) { 
+        success: function (cuentaCorrientesConId) {
             let cuentaCorriente = cuentaCorrientesConId[0];
-            
-            
-                document.getElementById("CuentaCorrienteID").value = cuentaCorriente.cuentaCorrienteID;
-                document.getElementById("PersonaID").value = cuentaCorriente.personaID;
-                document.getElementById("CuentaCorrienteSaldo").value = cuentaCorriente.saldo;
-                document.getElementById("CuentaCorrienteIngreso").value = cuentaCorriente.ingreso;
-                document.getElementById("CuentaCorrienteEgreso").value = cuentaCorriente.egreso;
-                document.getElementById("CuentaCorrienteDescripcion").value = cuentaCorriente.descripcion;
-                document.getElementById("CuentaCorrienteFecha").value = cuentaCorriente.fecha;
 
 
-                $("#ModalCuentaCorrientes").modal("show");
-                $("#ModalTitulo").text("Editar Cuenta Corriente");
-            },
-    
-            error: function (xhr, status) {
-                console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
-            }
-        });
-    }
+            document.getElementById("CuentaCorrienteID").value = cuentaCorriente.cuentaCorrienteID;
+            document.getElementById("PersonaID").value = cuentaCorriente.personaID;
+            document.getElementById("CuentaCorrienteSaldo").value = cuentaCorriente.saldo;
+            document.getElementById("CuentaCorrienteIngreso").value = cuentaCorriente.ingreso;
+            document.getElementById("CuentaCorrienteEgreso").value = cuentaCorriente.egreso;
+            document.getElementById("CuentaCorrienteDescripcion").value = cuentaCorriente.descripcion;
+            document.getElementById("CuentaCorrienteFecha").value = cuentaCorriente.fecha;
 
-function EliminarCuentaCorriente(CuentaCorrienteID){
+
+            $("#ModalCuentaCorrientes").modal("show");
+            $("#ModalTitulo").text("Editar Cuenta Corriente");
+        },
+
+        error: function (xhr, status) {
+            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
+        }
+    });
+}
+
+function EliminarCuentaCorriente(CuentaCorrienteID) {
 
     Swal.fire({
         title: "¿Esta seguro que quiere eliminar la cuenta corriente?",
@@ -185,27 +185,27 @@ function EliminarCuentaCorriente(CuentaCorrienteID){
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-                
-    $.ajax({
-        url: '../../CuentaCorrientes/EliminarCuentaCorriente',
-        data: {
-            cuentaCorrienteID: CuentaCorrienteID,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) { 
-            Swal.fire({
-                title: "Eliminado!",
-                text: "La cuenta corriente se elimino correctamente",
-                icon: "success",
-                confirmButtonColor: "#3085d6"
-            });          
-            ListadoCuentaCorrientes();
-        },
-     error: function (xhr, status) {
-     console.log('Disculpe, existió un problema al eliminar el registro.');
-    }
-});
-}
-});
+
+            $.ajax({
+                url: '../../CuentaCorrientes/EliminarCuentaCorriente',
+                data: {
+                    cuentaCorrienteID: CuentaCorrienteID,
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (resultado) {
+                    Swal.fire({
+                        title: "Eliminado!",
+                        text: "La cuenta corriente se elimino correctamente",
+                        icon: "success",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    ListadoCuentaCorrientes();
+                },
+                error: function (xhr, status) {
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
+                }
+            });
+        }
+    });
 }
