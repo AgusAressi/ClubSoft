@@ -42,7 +42,6 @@ public class ProvinciasController : Controller
         {
             var provincia = new Provincia
             {
-                ProvinciaID = ProvinciaID,
                 Nombre = Nombre
             };
             _context.Add(provincia);

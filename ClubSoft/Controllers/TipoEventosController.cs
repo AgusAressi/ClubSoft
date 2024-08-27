@@ -16,13 +16,13 @@ public class TipoEventosController : Controller
     public IActionResult Index()
     {
         return View();
-
     }
 
-        public JsonResult ListadoTipoEventos(int? id)
+    public JsonResult ListadoTipoEventos(int? id)
     {
         var traerTodasLosTiposEventos = _context.TipoEventos.ToList();
-        if (id != null) {
+        if (id != null)
+        {
             traerTodasLosTiposEventos = traerTodasLosTiposEventos.Where(t => t.TipoEventoID == id).ToList();
         }
         return Json(traerTodasLosTiposEventos);
@@ -40,7 +40,6 @@ public class TipoEventosController : Controller
         {
             var tipoevento = new TipoEvento
             {
-                TipoEventoID = TipoEventoID,
                 Nombre = Nombre
             };
             _context.Add(tipoevento);
@@ -48,20 +47,20 @@ public class TipoEventosController : Controller
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-         else
-         {
-             var editarTipoEvento = _context.TipoEventos.Where(e => e.TipoEventoID == TipoEventoID).SingleOrDefault();
-             if (editarTipoEvento != null)
-             {
-                 editarTipoEvento.TipoEventoID = TipoEventoID;
-                 editarTipoEvento.Nombre = Nombre;
-                 _context.SaveChanges();
-             }
-         }
+        else
+        {
+            var editarTipoEvento = _context.TipoEventos.Where(e => e.TipoEventoID == TipoEventoID).SingleOrDefault();
+            if (editarTipoEvento != null)
+            {
+                editarTipoEvento.TipoEventoID = TipoEventoID;
+                editarTipoEvento.Nombre = Nombre;
+                _context.SaveChanges();
+            }
+        }
         return Json(resultado);
     }
 
-     public JsonResult TraerTipoEvento(int? TipoEventoID)
+    public JsonResult TraerTipoEvento(int? TipoEventoID)
     {
         var tipoEventoPorID = _context.TipoEventos.ToList();
         if (TipoEventoID != null)
@@ -72,20 +71,21 @@ public class TipoEventosController : Controller
         return Json(tipoEventoPorID.ToList());
     }
 
-     public JsonResult EliminarTipoEvento(int TipoEventoID)
-   {
-    var tipoEvento = _context.TipoEventos.Find(TipoEventoID);
-    _context.Remove(tipoEvento);
-    _context.SaveChanges();
+    public JsonResult EliminarTipoEvento(int TipoEventoID)
+    {
+        var tipoEvento = _context.TipoEventos.Find(TipoEventoID);
+        _context.Remove(tipoEvento);
+        _context.SaveChanges();
 
-    return Json(true);
-   }
+        return Json(true);
+    }
 
 
-      public JsonResult ListadoLugaresEventos(int? id)
+    public JsonResult ListadoLugaresEventos(int? id)
     {
         var traerLugaresEventos = _context.Lugares.ToList();
-        if (id != null) {
+        if (id != null)
+        {
             traerLugaresEventos = traerLugaresEventos.Where(l => l.LugarID == id).ToList();
         }
         return Json(traerLugaresEventos);
@@ -104,7 +104,6 @@ public class TipoEventosController : Controller
         {
             var lugarevento = new Lugar
             {
-                LugarID = LugarID,
                 Nombre = Nombre
             };
             _context.Add(lugarevento);
@@ -112,39 +111,39 @@ public class TipoEventosController : Controller
 
             resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
         }
-         else
-         {
-             var editarLugarEvento = _context.Lugares.Where(l => l.LugarID == LugarID).SingleOrDefault();
-             if (editarLugarEvento != null)
-             {
-                 editarLugarEvento.LugarID = LugarID;
-                 editarLugarEvento.Nombre = Nombre;
-                 _context.SaveChanges();
-             }
-          }
+        else
+        {
+            var editarLugarEvento = _context.Lugares.Where(l => l.LugarID == LugarID).SingleOrDefault();
+            if (editarLugarEvento != null)
+            {
+                editarLugarEvento.LugarID = LugarID;
+                editarLugarEvento.Nombre = Nombre;
+                _context.SaveChanges();
+            }
+        }
         return Json(resultado);
     }
 
-    
-     public JsonResult TraerLugarEvento(int? LugarID)
+
+    public JsonResult TraerLugarEvento(int? LugarID)
     {
         var tipoLugarPorID = _context.Lugares.ToList();
         if (LugarID != null)
         {
-            tipoLugarPorID = tipoLugarPorID.Where(l=> l.LugarID == LugarID).ToList();
+            tipoLugarPorID = tipoLugarPorID.Where(l => l.LugarID == LugarID).ToList();
         }
 
         return Json(tipoLugarPorID.ToList());
     }
 
-    
-     public JsonResult EliminarLugarEvento(int LugarID)
-   {
-    var lugarEvento = _context.Lugares.Find(LugarID);
-    _context.Remove(lugarEvento);
-    _context.SaveChanges();
 
-    return Json(true);
-   }
+    public JsonResult EliminarLugarEvento(int LugarID)
+    {
+        var lugarEvento = _context.Lugares.Find(LugarID);
+        _context.Remove(lugarEvento);
+        _context.SaveChanges();
+
+        return Json(true);
+    }
 
 }

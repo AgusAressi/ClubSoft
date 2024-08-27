@@ -61,6 +61,8 @@ public class UsersController : Controller
     }
     public async Task<JsonResult> GuardarUsuario(string Username, string Email, string Password, string rol)
     {
+        Username = Username.Trim();
+        
         var user = new IdentityUser { UserName = Username, Email = Email };
         var result = await _userManager.CreateAsync(user, Password);
 
@@ -73,27 +75,30 @@ public class UsersController : Controller
 
         return Json(new { Success = false });
     }
+
     
-    public JsonResult EditarUsuario(string UsuarioID)
+    public JsonResult EditarUsuario(string? UsuarioID)
     {
-        var usuarioporID = _context.Users.ToList();
+    
+     var usuarioporID = _context.Users.ToList();
         if (UsuarioID != null)
         {
             usuarioporID = usuarioporID.Where(e => e.Id == UsuarioID).ToList();
         }
 
         return Json(usuarioporID.ToList());
-
     }
 
-    public JsonResult EliminarUsuario(string UsuarioID)
+   public JsonResult EliminarUsuario(string UsuarioID)
     {
-
-            var eliminarUsuario = _context.Users.Find(UsuarioID);
-            _context.Remove(eliminarUsuario);
+        var usuario = _context.Users.Find(UsuarioID);
+        if (usuario != null)
+        {
+            _context.Users.Remove(usuario);
             _context.SaveChanges();
-
-        return Json(true);
+            return Json(true);
+        }
+        return Json(false);
     }
 
 }

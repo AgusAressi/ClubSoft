@@ -29,10 +29,25 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home"
                         asp-action="Inicio"><i class="fa-solid fa-house pe-2"></i>Inicio</a>
+                    
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Personas"
                         asp-action="Index"><i class="fas fa-users pe-2"></i>Personas</a>
-                        <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="CuentaCorrientes"
-                        asp-action="Index"><i class="fas fa-users pe-2"></i>CuentaCorrientes</a>
+
+                    <!-- Dropdown para Socios -->
+                    <div class="list-group-item p-0">
+                        <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                            data-bs-toggle="collapse" href="#sociosMenu" role="button" aria-expanded="false"
+                            aria-controls="sociosMenu">
+                            <span><i class="fa-solid fa-address-card pe-2"></i>Socios</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse bg-light mx-2 rounded" id="sociosMenu">
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="SocioTitulares"
+                                asp-action="Index">Socios Titulares</a>
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="SocioAdherentes"
+                                asp-action="Index">Socios Adherentes</a>
+                        </div>
+                    </div>
 
                     <!-- Dropdown para Eventos -->
                     <div class="list-group-item p-0">
@@ -65,7 +80,8 @@
                                 asp-action="Index">Tipos de Productos</a>
                         </div>
                     </div>
-
+                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="CuentaCorrientes"
+                        asp-action="Index"><i class="fa-solid fa-pen-to-square pe-2"></i>Cuentas Corrientes</a>
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Ventas"
                         asp-action="Index"><i class="fa-solid fa-cart-shopping pe-2"></i>Ventas</a>
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias"
@@ -117,6 +133,8 @@
     <script src="~/js/scripts.js"></script>
     <script src="~/fontawesome/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="~/js/jquery/jquery-ui.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

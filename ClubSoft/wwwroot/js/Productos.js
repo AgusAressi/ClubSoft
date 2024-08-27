@@ -17,6 +17,13 @@ function ListadoProductos(){
                 // Formatear el precio como moneda
                 let precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(producto.precio);
 
+                let botonOcultar = 
+                    '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',1)"><i class="fa-solid fa-eye-slash"></i></button>';
+
+                if (producto.estado) {
+                    botonOcultar = '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',0)" ><i class="fa-solid fa-eye-slash"></i></button>';
+                }
+
                 contenidoTabla += `
                 <tr>
                     <td>${producto.nombre}</td>
@@ -27,6 +34,9 @@ function ListadoProductos(){
                     <td class="text-center">
                         <input type="checkbox" class="form-check-input" ${producto.estado ? 'checked' : ''} disabled />
                     </td>
+                    <td class="text-center">` +
+                    botonOcultar +
+                    `</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})">
                             <i class="fa-solid fa-pen-to-square"></i>
@@ -210,3 +220,15 @@ function EliminarProducto(ProductoID) {
     });
 }
 
+function OcultarActivarProducto(ProductoID, accion) {
+    $.ajax({
+        type: "POST",
+        url: '../../Productos/OcultarActivarProducto',
+        data: { ProductoID: ProductoID, Accion: accion },
+        success: function (producto) {
+            ListadoProductos();
+        },
+        error: function (data) {
+        }
+    });
+}

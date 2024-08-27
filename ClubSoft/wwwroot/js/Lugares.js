@@ -49,14 +49,14 @@ function LimpiarInput() {
 function GuardarRegistroLugar(){
     const lugarID = document.getElementById("LugarID").value;
     const nombre = document.getElementById("LugarNombre").value.trim();
-    const errorMensaje = document.getElementById("errorMensaje");
+    const errorMensajeLugar = document.getElementById("errorMensajeLugar");
 
-    // Validar si el campo está vacío
-    if(nombre === "") {
-        errorMensaje.style.display = "block";
+
+    if(nombre == "") {
+        errorMensajeLugar.style.display = "block";
         return;
     } else {
-        errorMensaje.style.display = "none";
+        errorMensajeLugar.style.display = "none";
     }
 
     $.ajax({
