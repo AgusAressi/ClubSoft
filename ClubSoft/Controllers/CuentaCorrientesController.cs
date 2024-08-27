@@ -17,10 +17,6 @@ namespace ClubSoft.Controllers
             _context = context;
         }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
         public IActionResult Index()
         {
             return View();
