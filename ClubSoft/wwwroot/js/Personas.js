@@ -1,41 +1,53 @@
 window.onload = ListadoPersonas();
 
-function ListadoPersonas(){
+let currentPage = 1;
+const itemsPerPage = 6;
+let totalPages = 1;
+
+function ListadoPersonas(pagina = 1) {
     $.ajax({
         url: '../../Personas/ListadoPersonas',
-        data: { 
-         },
         type: 'POST',
         dataType: 'json',
         success: function (MostrarPersonas) {
             $("#ModalPersonas").modal("hide");
             LimpiarModal();
+            // Calcular el total de páginas
+            totalPages = Math.ceil(MostrarPersonas.length / itemsPerPage);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const datosPagina = MostrarPersonas.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(MostrarPersonas, function (index, MostrarPersonas) {                  
+            $.each(datosPagina, function (index, persona) {
                 contenidoTabla += `
                 <tr>
-                    <td>${MostrarPersonas.apellido}, ${MostrarPersonas.nombre}</td>
-                    <td>${MostrarPersonas.dni}</td>
-                    <td>${MostrarPersonas.direccion}, ${MostrarPersonas.nombreLocalidad}, ${MostrarPersonas.nombreProvincia}</td>
-                    <td>${MostrarPersonas.telefono}</td>
-                    <td>${MostrarPersonas.email}</td>
-                    <td>${MostrarPersonas.rolNombre}</td>
+                    <td>${persona.apellido}, ${persona.nombre}</td>
+                    <td>${persona.dni}</td>
+                    <td>${persona.direccion}, ${persona.nombreLocalidad}, ${persona.nombreProvincia}</td>
+                    <td>${persona.telefono}</td>
+                    <td>${persona.email}</td>
+                    <td>${persona.rolNombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarPersonas.personaID}, '${MostrarPersonas.usuarioID}')">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${persona.personaID}, '${persona.usuarioID}')">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarPersona(${MostrarPersonas.personaID}, '${MostrarPersonas.usuarioID}')">
+                    <button type="button" class="btn btn-danger" onclick="EliminarPersona(${persona.personaID}, '${persona.usuarioID}')">
                     <i class="fa-solid fa-trash"></i>
                     </button>
                     </td> 
-                </tr>
-             `;           
+                </tr>`;
             });
 
             document.getElementById("tbody-Personas").innerHTML = contenidoTabla;
+
+            // Generar la paginación
+            generarPaginacion(totalPages, pagina);
 
             // Filtro de búsqueda
             document.getElementById('searchInput').addEventListener('input', function () {
@@ -51,13 +63,38 @@ function ListadoPersonas(){
                     }
                 });
             });
-
-        },  
+        },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');
         }
     });
 }
+
+function generarPaginacion(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoPersonas(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoPersonas(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoPersonas(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
 
 function LimpiarModal(){
     document.getElementById("PersonaID").value = 0;

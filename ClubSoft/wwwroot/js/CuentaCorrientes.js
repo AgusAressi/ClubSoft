@@ -37,6 +37,8 @@ function ListadoCuentaCorrientes() {
             });
 
             document.getElementById("tbody-CuentaCorrientes").innerHTML = contenidoTabla;
+
+            
         },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');

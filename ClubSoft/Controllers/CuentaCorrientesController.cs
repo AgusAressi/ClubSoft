@@ -21,11 +21,7 @@ namespace ClubSoft.Controllers
     {
         return View();
     }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        
 
         public JsonResult ListadoCuentaCorrientes()
         {

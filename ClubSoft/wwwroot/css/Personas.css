@@ -62,3 +62,37 @@ color: white;
     color: #fff;
     cursor: pointer;
   }
+
+  .page-item .page-link {
+    color: white; /* Color de texto general */
+    background-color: rgb(12, 12, 86); /* Color de fondo general */
+    border-color: rgb(12, 12, 86); /* Color de borde general */
+}
+
+  .page-item:first-child .page-link {
+    background-color: rgb(12, 12, 86);
+    color: white;
+    border-color: rgb(12, 12, 86);
+    color: white;
+}
+
+.page-item:last-child .page-link {
+  background-color: rgb(12, 12, 86);
+  color: white;
+  border-color: rgb(12, 12, 86);
+  color: white;
+}
+
+.page-item.active .page-link {
+  background-color: rgb(194, 185, 185);
+  border-color:rgb(194, 185, 185);
+}
+.page-item.disabled .page-link {
+  background-color:  rgb(12, 12, 86);
+  color: white
+}
+
+.table-responsive {
+  height: 380px; 
+    overflow-y: auto;
+}
