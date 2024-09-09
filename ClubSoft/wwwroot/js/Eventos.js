@@ -49,7 +49,7 @@ function LimpiarModal(){
     document.getElementById("TipoEventoID").value = 0;
     document.getElementById("DescripcionEvento").value = "";
     document.getElementById("FechaEvento").value = "";
-    document.getElementById("LugarID").value = "";
+    document.getElementById("LugarID").value = 0;
     document.getElementById("errorMensajeTipoEvento").style.display = "none";
     document.getElementById("errorMensajeDescripcion").style.display = "none";
     document.getElementById("errorMensajeFecha").style.display = "none";

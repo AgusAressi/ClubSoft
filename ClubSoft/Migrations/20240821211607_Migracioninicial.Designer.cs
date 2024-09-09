@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820212413_Migracioninicial")]
+    [Migration("20240821211607_Migracioninicial")]
     partial class Migracioninicial
     {
         /// <inheritdoc />

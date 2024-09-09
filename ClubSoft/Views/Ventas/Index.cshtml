@@ -47,7 +47,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content container-modal">
         <div class="modal-header">
-          <h5 class="modal-title text-color" id="ModalTitulo">Ventas</h5>
+          <h5 class="modal-title text-color" id="ModalTitulo"></h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -56,25 +56,19 @@
               <input type="hidden" id="VentaID" value="0" />
               <div class="row">
                 <div class="mb-2 col-md-4">
-                  <label for="TipoProductoID" class="form-label fw-bold">Tipo De Producto</label>
-                   <div class="input-group">
-                                    @Html.DropDownList("TipoProductoID", null, htmlAttributes: new
-                                        {
-                                            @class =
-                                             "form-control"
-                                        })
-                                </div>
+                    <label for="TipoProductoID" class="form-label fw-bold">Tipo De Producto</label>
+                    <div class="input-group">
+                        @Html.DropDownList("TipoProductoID", null, new { @class = "form-control", @id = "TipoProductoID" })
+                    </div>
                 </div>
+
                 <div class="mb-2 col-md-4">
-                  <label for="ProductoID" class="form-label fw-bold">Producto</label>
-                  <div class="input-group">
-                                    @Html.DropDownList("ProductoID", null, htmlAttributes: new
-                                        {
-                                            @class =
-                                             "form-control"
-                                        })
-                                </div>
+                    <label for="ProductoID" class="form-label fw-bold">Producto</label>
+                    <div class="input-group">
+                        @Html.DropDownList("ProductoID", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
                 </div>
+                
                 <div class="mb-2 col-md-2">
                   <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
                   <input type="number" class="form-control" id="Cantidad" style="text-transform: uppercase"
