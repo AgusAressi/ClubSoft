@@ -2,7 +2,7 @@
   ViewData["Title"] = "Socios Titulares";
 }
 
-<link rel="stylesheet" href="~/css/TipoProductos.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Socios.css" asp-append-version="true" />
 
 <div class="p-3">
     @*TABLA*@
@@ -10,10 +10,14 @@
         <div class="card shadow-sm">
             <div class="card-header row m-0 p-2">
                 <div class="col-md-8 d-flex align-items-center">
-                    <button type="button" class="btn boton-color" onclick="NuevaPersona()" data-bs-toggle="modal"
-                        data-bs-target="#ModalPersonas">
+                    <button type="button" class="btn boton-color" onclick="NuevoSocioTitular()" data-bs-toggle="modal"
+                        data-bs-target="#ModalSocioTitular">
                         <i class="fa-solid fa-plus fa-2x"></i>
                     </button>
+                    <div class="search shadow-sm">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre...">
+                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
                 </div>
                 <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
                     <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>SOCIOS TITULARES</h3>
@@ -25,15 +29,10 @@
                         <thead>
                             <tr>
                                 <th>Apellido y Nombre</th>
-                                <th>DNI</th>
-                                <th>Dirección</th>
-                                <th>Telefono</th>
-                                
-                                <th style="width: 70px"></th>
                                 <th style="width: 70px"></th>
                             </tr>
                         </thead>
-                        <tbody id="tbody-Personas">
+                        <tbody id="tbody-sociostitulares">
                         </tbody>
                     </table>
                 </div>
@@ -42,8 +41,43 @@
     </div>
 </div>
 
+@*MODAL*@
+  <div class="modal" tabindex="-1" id="ModalSocioTitular">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content container-modal">
+        <div class="modal-header">
+          <h5 class="modal-title text-color" id="ModalSocioTitularTitulo"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="LimpiarModalSocioTitular()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
+              <input type="hidden" id="SocioTitularID" value="0" />
+              <div class="mb-2">
+                <label for="PersonaID" class="form-label fw-bold">Seleccione una persona</label>
+                @Html.DropDownList("PersonaID", null, htmlAttributes: new { @class = "form-control" })
+                <span id="errorMensajePersona"
+                  style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una persona
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModalSocioTitular()" class="btn btn-secondary boton-color2"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarSocioTitular()" class="btn boton-color">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 @section Scripts {
-    <script src="~/js/Personas.js"></script>
+    <script src="~/js/SociosTitulares.js"></script>
 }

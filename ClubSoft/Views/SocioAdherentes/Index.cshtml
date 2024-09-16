@@ -1,0 +1,93 @@
+@{
+  ViewData["Title"] = "Socios Titulares";
+}
+
+<link rel="stylesheet" href="~/css/Socios.css" asp-append-version="true" />
+
+<div class="p-3">
+    @*TABLA*@
+    <div class="mt-2" style="heigth: 100%;">
+        <div class="card shadow-sm">
+            <div class="card-header row m-0 p-2">
+                <div class="col-md-8 d-flex align-items-center">
+                    <button type="button" class="btn boton-color" onclick="NuevoSocioAdherente()" data-bs-toggle="modal"
+                        data-bs-target="#ModalSocioAdherente">
+                        <i class="fa-solid fa-plus fa-2x"></i>
+                    </button>
+                    <div class="search shadow-sm">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre...">
+                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
+                    <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>SOCIOS ADHERENTES</h3>
+                </div>
+            </div>
+            <div class="card-body mb-5">
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Apellido y Nombre</th>
+                                <th>Socio Titular</th>
+                                <th style="width: 70px"></th>
+                                <th style="width: 70px"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-sociosadherentes">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*MODAL*@
+  <div class="modal" tabindex="-1" id="ModalSocioAdherente">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content container-modal">
+        <div class="modal-header">
+          <h5 class="modal-title text-color" id="ModalSocioAdherenteTitulo"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="LimpiarModalSocioAdherente()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
+              <input type="hidden" id="SocioAdherenteID" value="0" />
+              <div class="mb-2">
+                <label for="PersonaID" class="form-label fw-bold">Seleccione una persona</label>
+                @Html.DropDownList("PersonaID", null, htmlAttributes: new { @class = "form-control" })
+                <span id="errorMensajePersona"
+                  style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una persona
+                </span>
+              </div>
+              <div class="mb-2">
+                <label for="SocioTitularID" class="form-label fw-bold">Seleccione el socio titular</label>
+                @Html.DropDownList("SocioTitularID", null, htmlAttributes: new { @class = "form-control" })
+                <span id="errorMensajeSocioTitular"
+                  style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar un socio titular
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModalSocioAdherente()" class="btn btn-secondary boton-color2"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarSocioAdherente()" class="btn boton-color">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/js/SociosAdherentes.js"></script>
+}

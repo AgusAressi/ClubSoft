@@ -24,4 +24,5 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<SocioAdherente> SocioAdherentes { get; set; }
     public DbSet<SocioTitular> SocioTitulares { get; set; }
     public DbSet<Lugar> Lugares { get; set; }
+    public DbSet<Cobro> Cobros { get; set; }
 }

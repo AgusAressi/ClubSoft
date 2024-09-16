@@ -303,3 +303,76 @@ function EliminarPersona(PersonaID, UsuarioID) {
         }
     });
 }
+
+function Imprimir() {
+    // Cambiar la orientación de la hoja a horizontal ('l')
+    var doc = new jsPDF('l', 'mm', 'a4');
+
+    var totalPagesExp = "{total_pages_count_string}";
+
+    // Agregar un título al documento
+    var titulo = "Personas";
+    doc.setFontSize(16);  
+    doc.setFont("helvetica", "bold");  
+    doc.text(titulo, 14, 20); 
+    
+
+    // Función para agregar contenido de página, incluyendo el pie de página
+    var pageContent = function (data) {
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+        // FOOTER
+        var str = "Pagina " + data.pageCount;
+        if (typeof doc.putTotalPages === 'function') {
+            str = str + " de " + totalPagesExp;
+        }
+
+        doc.setLineWidth(8);
+        doc.setDrawColor(238, 238, 238);
+        doc.line(14, pageHeight - 11, pageWidth - 14, pageHeight - 11);
+
+        doc.setFontSize(10);
+        doc.setFontStyle('bold');
+        doc.text(str, 17, pageHeight - 10);
+    };
+
+    var elem = document.getElementById("tabla-imprimir");
+    var res = doc.autoTableHtmlToJson(elem);
+
+    // Eliminar las últimas dos columnas de "editar" y "eliminar"
+    res.columns.splice(-2, 2); 
+    res.data = res.data.map(row => row.slice(0, -2));
+
+    // Configurar autoTable
+    doc.autoTable(res.columns, res.data, {
+        startY: 30, 
+        addPageContent: pageContent,
+        theme: 'grid',
+        headStyles: {
+            fillColor: [64, 64, 64],  
+            textColor: [255, 0, 0],   
+            fontStyle: 'bold',        
+        },
+        columnStyles: {
+            0: { halign: 'center', cellWidth: 'auto', fontSize: 7 },
+            1: { fontSize: 7, overflow: 'hidden' },
+            2: { fontSize: 7, overflow: 'hidden' },
+        },
+        margin: { top: 10 },
+    });
+
+    // Calcular el total de páginas antes de mostrar el PDF
+    if (typeof doc.putTotalPages === 'function') {
+        doc.putTotalPages(totalPagesExp);
+    }
+
+    // Mostrar el PDF en un iframe
+    var string = doc.output('datauristring');
+    var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
+
+    var x = window.open();
+    x.document.open();
+    x.document.write(iframe);
+    x.document.close();
+}

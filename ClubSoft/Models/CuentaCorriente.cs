@@ -14,13 +14,19 @@ public class CuentaCorriente
     public decimal Egreso { get; set; }
     public string? Descripcion { get; set; }
     public DateTime Fecha { get; set; }
-    
-    //EL MOVIMIENTO DE CUENTA CORRIENTE PUEDE VENIR DE: COBRO, FACTURA,
+    public int VentaID { get; set; }
+    public int CobroID { get; set; }
+
+
     public virtual Persona Persona { get; set; }
-   
-    
-    public class VistaCuentaCorrientes {
-     public int CuentaCorrienteID { get; set; }
+    public virtual Venta Venta { get; set; }
+    public virtual Cobro Cobro { get; set; }
+
+}
+
+public class VistaCuentaCorrientes
+{
+    public int CuentaCorrienteID { get; set; }
     public int PersonaID { get; set; }
     public decimal Saldo { get; set; }
     public decimal Ingreso { get; set; }
@@ -28,9 +34,6 @@ public class CuentaCorriente
     public string? Descripcion { get; set; }
     public DateTime Fecha { get; set; }
     public string? NombrePersona { get; set; }
-    public string? ApellidoPersona { get; set; } 
+    public string? ApellidoPersona { get; set; }
 
-    }
-
-     
 }
