@@ -11,5 +11,18 @@ public class SocioAdherente
     public int SocioTitularID { get; set; }
     public int PersonaID { get; set; }
 
-    public virtual ICollection<SocioTitular> SocioTitulares { get; set; }
+    public virtual SocioTitular SocioTitular { get; set; }
+
+
+}
+public class VistaSociosAdherentes
+{
+    public int SocioAdherenteID { get; set; }
+    public int SocioTitularID { get; set; }
+    public string? SocioTitularNombre { get; set; }
+    public string? SocioTitularApellido { get; set; }
+    public int PersonaID { get; set; }
+    public string? PersonaNombre { get; set; }
+    public string? PersonaApellido { get; set; }
+
 }

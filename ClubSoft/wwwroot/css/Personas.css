@@ -63,6 +63,7 @@ color: white;
     cursor: pointer;
   }
 
+<<<<<<< HEAD
   .page-item .page-link {
     color: white; /* Color de texto general */
     background-color: rgb(12, 12, 86); /* Color de fondo general */
@@ -96,3 +97,15 @@ color: white;
   height: 380px; 
     overflow-y: auto;
 }
+=======
+  .boton-imprimir{
+    height: 40px;
+    width: 40px;
+    background: rgb(12, 12, 86);
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+>>>>>>> 803a57e57a61dc5a82d4fd951e3a375bd9f7d402
