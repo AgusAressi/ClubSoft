@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
 using static ClubSoft.Models.Persona;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
 
@@ -21,11 +23,31 @@ public class PersonasController : Controller
     {
         var localidades = _context.Localidades.ToList();
 
-        localidades.Add(new Localidad { LocalidadID = 0, Nombre = "[SELECCIONE LA LOCALIDAD...]" });
+        localidades.Add(new Localidad { LocalidadID = 0, Nombre = "[SELECCIONE]" });
         ViewBag.LocalidadID = new SelectList(localidades.OrderBy(c => c.Nombre), "LocalidadID", "Nombre");
 
         var roles = _context.Roles.ToList();
-        ViewBag.RolID = new SelectList(roles.OrderBy(t => t.Name), "Name", "Name", "Socio");
+        roles.Insert(0, new IdentityRole { Id = "0", Name = "[SELECCIONE]" });
+        ViewBag.RolID = new SelectList(roles.OrderBy(t => t.Name), "Id", "Name");
+
+        var sociosTitulares = _context.SocioTitulares
+        .Include(st => st.Persona)
+        .ToList();
+
+        sociosTitulares.Add(new SocioTitular 
+        {
+            SocioTitularID = 0, 
+            PersonaID = 0, 
+            Persona = new Persona { Nombre = "[SELECCIONE]", Apellido = "" }
+        });
+
+        var listaTitulares = sociosTitulares.Select(st => new 
+        {
+            st.SocioTitularID,
+            NombreCompleto = st.Persona.Apellido + " " + st.Persona.Nombre
+        }).OrderBy(st => st.NombreCompleto);
+
+        ViewBag.SocioTitularID = new SelectList(listaTitulares, "SocioTitularID", "NombreCompleto");
 
         return View();
     }

@@ -96,7 +96,7 @@ function generarPaginacion(totalPages, currentPage) {
 }
 
 
-function LimpiarModal(){
+function LimpiarModal() {
     document.getElementById("PersonaID").value = 0;
     document.getElementById("PersonaNombre").value = "";
     document.getElementById("PersonaApellido").value = "";
@@ -117,11 +117,16 @@ function LimpiarModal(){
     document.getElementById("errorMensajeContraseña").style.display = "none";
     document.getElementById("PersonaUserName").value = "";
     document.getElementById("errorMensajeUserName").style.display = "none";
+    document.getElementById("RolID").value = 0;
     document.getElementById("errorMensajeRol").style.display = "none";
-
+    document.getElementById("TipoSocio").value = 0;
+    document.getElementById("errorMensajeTipoSocio").style.display = "none";
+    document.getElementById("SocioTitularID").value = 0;
+    document.getElementById("errorMensajeSocioTitular").style.display = "none";
+    document.getElementById("tipoSocioSection").style.display = "none";
 }
 
-function NuevaPersona(){
+function NuevaPersona() {
     $("#ModalTitulo").text("Nueva Persona");
 }
 
@@ -129,7 +134,7 @@ function GuardarRegistro() {
     let personaID = document.getElementById("PersonaID").value;
     let nombre = document.getElementById("PersonaNombre").value;
     let apellido = document.getElementById("PersonaApellido").value;
-    let direccion = document.getElementById("PersonaDireccion").value; 
+    let direccion = document.getElementById("PersonaDireccion").value;
     let telefono = document.getElementById("PersonaTelefono").value;
     let dni = document.getElementById("PersonaDni").value;
     let localidadID = document.getElementById("LocalidadID").value;
@@ -138,6 +143,8 @@ function GuardarRegistro() {
     let email = document.getElementById("PersonaEmail").value;
     let password = document.getElementById("PersonaContraseña").value;
     let rol = document.getElementById("RolID").value;
+    let tipoSocio = document.getElementById("TipoSocio").value;
+    let SocioTitular = document.getElementById("SocioTitularID").value;
 
     let isValid = true;
 
@@ -183,6 +190,49 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeLocalidad").style.display = "none";
     }
 
+    if (userName === "") {
+        document.getElementById("errorMensajeUserName").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeUserName").style.display = "none";
+    }
+
+    if (email === "") {
+        document.getElementById("errorMensajeEmail").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeEmail").style.display = "none";
+    }
+
+    if (password === "") {
+        document.getElementById("errorMensajeContraseña").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeContraseña").style.display = "none";
+    }
+
+    if (rol === "0") {
+        document.getElementById("errorMensajeRol").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeRol").style.display = "none";
+    }
+
+    if (tipoSocio === "0") {
+        document.getElementById("errorMensajeTipoSocio").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeTipoSocio").style.display = "none";
+    }
+
+    if (SocioTitular === "0") {
+        document.getElementById("errorMensajeSocioTitular").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeSocioTitular").style.display = "none";
+    }
+
+
     if (!isValid) {
         return;
     }
@@ -200,21 +250,21 @@ function GuardarRegistro() {
         success: function (usuarioResultado) {
             if (usuarioResultado.success) {
                 let usuarioID = usuarioResultado.usuarioID;
-                    // Guardar datos de Persona con el UsuarioID generado
-                    $.ajax({
-                        url: '../../Personas/GuardarRegistro',
-                        data: { 
-                            PersonaID: personaID,
-                            Nombre: nombre,
-                            Apellido: apellido,
-                            Direccion: direccion, 
-                            Telefono: telefono,
-                            DNI: dni,
-                            LocalidadID: localidadID,
-                            UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
-                        },
+                // Guardar datos de Persona con el UsuarioID generado
+                $.ajax({
+                    url: '../../Personas/GuardarRegistro',
+                    data: {
+                        PersonaID: personaID,
+                        Nombre: nombre,
+                        Apellido: apellido,
+                        Direccion: direccion,
+                        Telefono: telefono,
+                        DNI: dni,
+                        LocalidadID: localidadID,
+                        UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
+                    },
                     type: 'POST',
-                    dataType: 'json',  
+                    dataType: 'json',
                     success: function (resultado) {
                         console.log(resultado);
                         Swal.fire({
@@ -224,7 +274,7 @@ function GuardarRegistro() {
                             showConfirmButton: false,
                             timer: 1000
                         });
-                        ListadoPersonas(); 
+                        ListadoPersonas();
                     },
                     error: function (xhr, status, error) {
                         console.log('Disculpe, existió un problema al guardar la persona');
@@ -244,12 +294,12 @@ function AbrirEditar(PersonaID, UsuarioID) {
     // Primer AJAX para obtener los datos de la persona
     $.ajax({
         url: '../../Personas/TraerPersona',
-        data: { 
+        data: {
             personaID: PersonaID,
         },
         type: 'POST',
         dataType: 'json',
-        success: function (personasConId) { 
+        success: function (personasConId) {
             let persona = personasConId[0];
 
             document.getElementById("PersonaID").value = PersonaID;
@@ -263,20 +313,20 @@ function AbrirEditar(PersonaID, UsuarioID) {
             // Segundo AJAX para obtener los datos del usuario
             $.ajax({
                 url: '../../Users/EditarUsuario',
-                data: { 
+                data: {
                     UsuarioID: UsuarioID,
                 },
                 type: 'POST',
                 dataType: 'json',
-                success: function (usuarioporID) { 
+                success: function (usuarioporID) {
                     let usuario = usuarioporID[0];
-                    
+
                     document.getElementById("UsuarioID").value = UsuarioID;
                     document.getElementById("PersonaEmail").value = usuario.email;
                     document.getElementById("PersonaUserName").value = usuario.userName;
                     document.getElementById("PersonaContraseña").value = usuario.contraseña;
                     document.getElementById("RolID").value = usuario.rolID;
-                
+
                     $("#ModalPersonas").modal("show");
                     $("#ModalTitulo").text("Editar Persona y Usuario");
                 },
@@ -349,10 +399,10 @@ function Imprimir() {
 
     // Agregar un título al documento
     var titulo = "Personas";
-    doc.setFontSize(16);  
-    doc.setFont("helvetica", "bold");  
-    doc.text(titulo, 14, 20); 
-    
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(titulo, 14, 20);
+
 
     // Función para agregar contenido de página, incluyendo el pie de página
     var pageContent = function (data) {
@@ -378,18 +428,18 @@ function Imprimir() {
     var res = doc.autoTableHtmlToJson(elem);
 
     // Eliminar las últimas dos columnas de "editar" y "eliminar"
-    res.columns.splice(-2, 2); 
+    res.columns.splice(-2, 2);
     res.data = res.data.map(row => row.slice(0, -2));
 
     // Configurar autoTable
     doc.autoTable(res.columns, res.data, {
-        startY: 30, 
+        startY: 30,
         addPageContent: pageContent,
         theme: 'grid',
         headStyles: {
-            fillColor: [64, 64, 64],  
-            textColor: [255, 0, 0],   
-            fontStyle: 'bold',        
+            fillColor: [64, 64, 64],
+            textColor: [255, 0, 0],
+            fontStyle: 'bold',
         },
         columnStyles: {
             0: { halign: 'center', cellWidth: 'auto', fontSize: 7 },
@@ -412,4 +462,28 @@ function Imprimir() {
     x.document.open();
     x.document.write(iframe);
     x.document.close();
+}
+
+function toggleSocioTitular() {
+    var tipoSocio = document.getElementById("TipoSocio").value;
+    var socioTitular = document.getElementById("SocioTitularID");
+
+    if (tipoSocio == "2") { // ADHERENTE seleccionado
+        socioTitular.disabled = false; // Habilitar la selección de Socio Titular
+    } else {
+        socioTitular.disabled = true; // Deshabilitar la selección de Socio Titular
+        socioTitular.selectedIndex = 0; // Resetear la selección a [SELECCIONE]
+    }
+}
+
+function toggleTipoSocio() {
+    var rolID = document.getElementById("RolID").value;
+    var tipoSocioSection = document.getElementById("tipoSocioSection");
+
+    // Verificar si el valor seleccionado es el ID del rol "SOCIO"
+    if (rolID == "c77746d3-1855-479a-b6d0-eaa8580b9264") {
+        tipoSocioSection.style.display = "block"; // Mostrar la sección
+    } else {
+        tipoSocioSection.style.display = "none"; // Ocultar la sección
+    }
 }
