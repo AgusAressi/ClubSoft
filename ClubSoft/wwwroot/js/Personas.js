@@ -144,10 +144,14 @@ function GuardarRegistro() {
     let password = document.getElementById("PersonaContraseña").value;
     let rol = document.getElementById("RolID").value;
     let tipoSocio = document.getElementById("TipoSocio").value;
-    let SocioTitular = document.getElementById("SocioTitularID").value;
+    let socioTitularID = document.getElementById("SocioTitularID").value;
+    let socioAdherenteID = document.getElementById("SocioAdherenteID").value;
 
+
+    console.log(personaID, nombre, apellido, direccion, telefono, dni, localidadID, usuarioID, userName, email, password, rol, tipoSocio, socioTitularID, socioAdherenteID);
     let isValid = true;
 
+    // Validaciones de campos vacíos
     if (nombre === "") {
         document.getElementById("errorMensajeNombre").style.display = "block";
         isValid = false;
@@ -225,67 +229,62 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeTipoSocio").style.display = "none";
     }
 
-    if (SocioTitular === "0") {
+    if (tipoSocio == "2" && socioTitularID === "") {
         document.getElementById("errorMensajeSocioTitular").style.display = "block";
         isValid = false;
     } else {
         document.getElementById("errorMensajeSocioTitular").style.display = "none";
     }
 
-
     if (!isValid) {
         return;
     }
 
+     // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
+     let data = {
+        personaID: personaID,
+        nombre: nombre,
+        apellido: apellido,
+        direccion: direccion,
+        telefono: telefono,
+        dni: dni,
+        localidadID: localidadID,
+        usuarioID: usuarioID,
+        userName: userName,
+        email: email,
+        password: password,
+        rol: rol,
+        tipoSocio: tipoSocio,
+        socioAdherenteID: socioAdherenteID
+    };
+
+    if (tipoSocio == "2") {
+        data.socioTitularID = socioTitularID;
+    }
+
     $.ajax({
-        url: '../../Users/GuardarUsuario',
-        data: {
-            UserName: userName,
-            Email: email,
-            Password: password,
-            Rol: rol
-        },
+        url: '../../Personas/GuardarRegistro',
+        data: data,
         type: 'POST',
         dataType: 'json',
-        success: function (usuarioResultado) {
-            if (usuarioResultado.success) {
-                let usuarioID = usuarioResultado.usuarioID;
-                // Guardar datos de Persona con el UsuarioID generado
-                $.ajax({
-                    url: '../../Personas/GuardarRegistro',
-                    data: {
-                        PersonaID: personaID,
-                        Nombre: nombre,
-                        Apellido: apellido,
-                        Direccion: direccion,
-                        Telefono: telefono,
-                        DNI: dni,
-                        LocalidadID: localidadID,
-                        UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
-                    },
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function (resultado) {
-                        console.log(resultado);
-                        Swal.fire({
-                            position: "bottom-end",
-                            icon: "success",
-                            title: "Registro guardado correctamente!",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                        ListadoPersonas();
-                    },
-                    error: function (xhr, status, error) {
-                        console.log('Disculpe, existió un problema al guardar la persona');
-                    }
-                });
-            } else {
-                console.log('Disculpe, existió un problema al guardar el usuario');
-            }
+        success: function (resultado) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            ListadoPersonas();
         },
-        error: function (xhr, status, error) {
-            console.log('Disculpe, existió un problema al guardar el usuario');
+        error: function (xhr, status) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Hubo un problema al guardar el registro",
+                showConfirmButton: true
+            });
+            console.log('Disculpe, existió un problema al guardar el registro');
         }
     });
 }
@@ -487,3 +486,5 @@ function toggleTipoSocio() {
         tipoSocioSection.style.display = "none"; // Ocultar la sección
     }
 }
+
+

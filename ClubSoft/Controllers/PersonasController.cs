@@ -13,10 +13,14 @@ namespace ClubSoft.Controllers;
 public class PersonasController : Controller
 {
     private ApplicationDbContext _context;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly RoleManager<IdentityRole> _rolManager;
 
-    public PersonasController(ApplicationDbContext context)
+    public PersonasController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> rolManager)
     {
         _context = context;
+        _userManager = userManager;
+        _rolManager = rolManager;
     }
 
     public IActionResult Index()
@@ -94,7 +98,7 @@ public class PersonasController : Controller
         return Json(MostrarPersonas);
     }
 
-  public JsonResult GuardarRegistro(
+    public async Task<JsonResult> GuardarRegistro(
         int PersonaID,
         string? Nombre,
         string? Apellido,
@@ -102,73 +106,114 @@ public class PersonasController : Controller
         string? Telefono,
         string? DNI,
         int LocalidadID,
-        string? UsuarioID
+        string? UsuarioID,
+        string? UserName,
+        string? Email,
+        string? Password,
+        string? rol,
+        int TipoSocio,
+        int? SocioTitularID,
+        int? SocioAdherenteID
     )
     {
-        if (!ModelState.IsValid)
+        string resultado = "";
+        string usuarioNuevoID = "";
+        
+        // Guarda el usuario en AspNetUsers
+        if (UsuarioID == "0")
         {
-            return Json(new { success = false, message = "Error al validar las entradas" });
-        }
+            var user = new IdentityUser { UserName = UserName, Email = Email };
+            var result = await _userManager.CreateAsync(user, Password);
 
-        using (var transaction = _context.Database.BeginTransaction())
-        {
-            try
+            if (result.Succeeded)
             {
-                if (PersonaID == 0)
-                {
-                    var persona = new Persona
-                    {
-                        Nombre = Nombre.ToUpper(),
-                        Apellido = Apellido.ToUpper(),
-                        Direccion = Direccion.ToUpper(),
-                        Telefono = Telefono,
-                        DNI = DNI,
-                        LocalidadID = LocalidadID,
-                        UsuarioID = UsuarioID
-                    };
-
-                    _context.Add(persona);
-                    _context.SaveChanges();
-
-                    transaction.Commit();
-
-                    return Json(new { success = true, message = "Registro guardado correctamente" });
-                }
-                else
-                {
-                    var editarPersona = _context.Personas.Where(p => p.PersonaID == PersonaID).SingleOrDefault();
-                    if (editarPersona != null)
-                    {
-                        editarPersona.Nombre = Nombre;
-                        editarPersona.Apellido = Apellido;
-                        editarPersona.Direccion = Direccion;
-                        editarPersona.Telefono = Telefono;
-                        editarPersona.DNI = DNI;
-                        editarPersona.LocalidadID = LocalidadID;
-                        editarPersona.UsuarioID = UsuarioID;
-
-                        _context.SaveChanges();
-
-                        transaction.Commit();
-
-                        return Json(new { success = true, message = "Registro actualizado correctamente" });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Persona no encontrada" });
-                    }
-                }
+                await _userManager.AddToRoleAsync(user, rol);
+                usuarioNuevoID = user.Id;  
             }
-            catch (Exception ex)
+            else
             {
-                transaction.Rollback();
-
-                return Json(new { success = false, message = "Error al guardar la persona: " + ex.Message });
+                return Json(new { Success = false, message = "Error al crear el usuario" });
             }
         }
+
+        // Si UsuarioID es "0", usa el nuevo ID creado; de lo contrario, usa el ID pasado
+        UsuarioID = usuarioNuevoID != "" ? usuarioNuevoID : UsuarioID;
+
+        // Guarda la persona
+        Persona persona;
+        if (PersonaID == 0)
+        {
+            persona = new Persona
+            {
+                Nombre = Nombre,
+                Apellido = Apellido,
+                Direccion = Direccion,
+                Telefono = Telefono,
+                DNI = DNI,
+                LocalidadID = LocalidadID,
+                UsuarioID = UsuarioID
+            };
+            _context.Personas.Add(persona);
+            await _context.SaveChangesAsync();
+
+            // Captura el ID recién creado de la persona
+            PersonaID = persona.PersonaID;
+        }
+        else
+        {
+            // Si ya existe, carga la persona actualizada
+            persona = await _context.Personas.FindAsync(PersonaID);
+            if (persona == null)
+            {
+                return Json(new { Success = false, message = "Persona no encontrada" });
+            }
+
+            persona.Nombre = Nombre;
+            persona.Apellido = Apellido;
+            persona.Direccion = Direccion;
+            persona.Telefono = Telefono;
+            persona.DNI = DNI;
+            persona.LocalidadID = LocalidadID;
+            persona.UsuarioID = UsuarioID;
+
+            _context.Personas.Update(persona);
+            await _context.SaveChangesAsync();
+        }
+
+        // Verifica si es SocioTitular o SocioAdherente y guarda en la tabla correspondiente
+        if (TipoSocio == 1)
+        {
+            if (SocioTitularID == 0)
+            {
+                SocioTitular socioTitular = new SocioTitular
+                {
+                    PersonaID = PersonaID
+                };
+                _context.SocioTitulares.Add(socioTitular);
+                resultado = "Socio Titular creado exitosamente";
+            }
+        }
+        else if (TipoSocio == 2)
+        {
+            if (SocioAdherenteID == 0)
+            {
+                SocioAdherente socioAdherente = new SocioAdherente
+                {
+                    PersonaID = PersonaID,
+                    SocioTitularID = SocioTitularID ?? 0
+                };
+                _context.SocioAdherentes.Add(socioAdherente);
+                resultado = "Socio Adherente creado exitosamente";
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, message = resultado });
     }
 
-       public JsonResult TraerPersona(int? PersonaID)
+
+    public JsonResult TraerPersona(int? PersonaID)
     {
         var personaporID = _context.Personas.ToList();
         if (PersonaID != null)
