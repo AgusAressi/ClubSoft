@@ -38,14 +38,14 @@ public class PersonasController : Controller
         .Include(st => st.Persona)
         .ToList();
 
-        sociosTitulares.Add(new SocioTitular 
+        sociosTitulares.Add(new SocioTitular
         {
-            SocioTitularID = 0, 
-            PersonaID = 0, 
+            SocioTitularID = 0,
+            PersonaID = 0,
             Persona = new Persona { Nombre = "[SELECCIONE]", Apellido = "" }
         });
 
-        var listaTitulares = sociosTitulares.Select(st => new 
+        var listaTitulares = sociosTitulares.Select(st => new
         {
             st.SocioTitularID,
             NombreCompleto = st.Persona.Apellido + " " + st.Persona.Nombre
@@ -112,102 +112,75 @@ public class PersonasController : Controller
         string? Password,
         string? rol,
         int TipoSocio,
-        int? SocioTitularID,
+        int SocioTitularID,
         int? SocioAdherenteID
     )
     {
         string resultado = "";
-        string usuarioNuevoID = "";
-        
-        // Guarda el usuario en AspNetUsers
-        if (UsuarioID == "0")
-        {
-            var user = new IdentityUser { UserName = UserName, Email = Email };
-            var result = await _userManager.CreateAsync(user, Password);
 
+        rol = "SOCIO";
+
+        //SI EL USUARIO ID ES VACIO, QUIERE DECIR QUE VAMOS A CREAR UN USUARIO NUEVO Y DEMAS REGISTROS
+        if (UsuarioID == "0")
+        {           
+            //INICIALIAMOS EL OBJETO USUARIO
+            var user = new IdentityUser { UserName = UserName, Email = Email };
+            //EJECUTAMOS EL METODO PARA CREARLO DE FORMA ASINCRONA
+            var result = await _userManager.CreateAsync(user, Password);
             if (result.Succeeded)
             {
+                //SI EL REGISTRO FUE CORRECTO
+                //DEBE ASIGNARLE EL ROL CORRESPONDIENTE
                 await _userManager.AddToRoleAsync(user, rol);
-                usuarioNuevoID = user.Id;  
+
+                //LUEGO DEBEMOS CREAR LA PERSONA GUARDANDO EL USUARIO ID REGISTRADO
+                var persona = new Persona
+                {
+                    Nombre = Nombre,
+                    Apellido = Apellido,
+                    Direccion = Direccion,
+                    Telefono = Telefono,
+                    DNI = DNI,
+                    LocalidadID = LocalidadID,
+                    UsuarioID = user.Id
+                };
+                _context.Personas.Add(persona);
+                _context.SaveChanges();
+
+                //LUEGO VERIFICAR SI EL ROL ES SOCIO
+                if (rol == "SOCIO")
+                {
+                    // Verifica si es SocioTitular o SocioAdherente y guarda en la tabla correspondiente
+                    if (TipoSocio == 1)
+                    {
+                        SocioTitular socioTitular = new SocioTitular
+                        {
+                            PersonaID = persona.PersonaID
+                        };
+                        _context.SocioTitulares.Add(socioTitular);
+                        _context.SaveChanges();
+                        resultado = "Socio Titular creado exitosamente";
+                    }
+                    else if (TipoSocio == 2)
+                    {
+                        SocioAdherente socioAdherente = new SocioAdherente
+                        {
+                            PersonaID = persona.PersonaID,
+                            SocioTitularID = SocioTitularID
+                        };
+                        _context.SocioAdherentes.Add(socioAdherente);
+                        _context.SaveChanges();
+                        resultado = "Socio Adherente creado exitosamente";
+                    }
+                  
+                }
             }
             else
             {
+                //SI NO REGISTRA, DEVUELVE EL ERROR Y NO HACE MAS NADA
                 return Json(new { Success = false, message = "Error al crear el usuario" });
             }
-        }
-
-        // Si UsuarioID es "0", usa el nuevo ID creado; de lo contrario, usa el ID pasado
-        UsuarioID = usuarioNuevoID != "" ? usuarioNuevoID : UsuarioID;
-
-        // Guarda la persona
-        Persona persona;
-        if (PersonaID == 0)
-        {
-            persona = new Persona
-            {
-                Nombre = Nombre,
-                Apellido = Apellido,
-                Direccion = Direccion,
-                Telefono = Telefono,
-                DNI = DNI,
-                LocalidadID = LocalidadID,
-                UsuarioID = UsuarioID
-            };
-            _context.Personas.Add(persona);
-            await _context.SaveChangesAsync();
-
-            // Captura el ID recién creado de la persona
-            PersonaID = persona.PersonaID;
-        }
-        else
-        {
-            // Si ya existe, carga la persona actualizada
-            persona = await _context.Personas.FindAsync(PersonaID);
-            if (persona == null)
-            {
-                return Json(new { Success = false, message = "Persona no encontrada" });
-            }
-
-            persona.Nombre = Nombre;
-            persona.Apellido = Apellido;
-            persona.Direccion = Direccion;
-            persona.Telefono = Telefono;
-            persona.DNI = DNI;
-            persona.LocalidadID = LocalidadID;
-            persona.UsuarioID = UsuarioID;
-
-            _context.Personas.Update(persona);
-            await _context.SaveChangesAsync();
-        }
-
-        // Verifica si es SocioTitular o SocioAdherente y guarda en la tabla correspondiente
-        if (TipoSocio == 1)
-        {
-            if (SocioTitularID == 0)
-            {
-                SocioTitular socioTitular = new SocioTitular
-                {
-                    PersonaID = PersonaID
-                };
-                _context.SocioTitulares.Add(socioTitular);
-                resultado = "Socio Titular creado exitosamente";
-            }
-        }
-        else if (TipoSocio == 2)
-        {
-            if (SocioAdherenteID == 0)
-            {
-                SocioAdherente socioAdherente = new SocioAdherente
-                {
-                    PersonaID = PersonaID,
-                    SocioTitularID = SocioTitularID ?? 0
-                };
-                _context.SocioAdherentes.Add(socioAdherente);
-                resultado = "Socio Adherente creado exitosamente";
-            }
-        }
-
-        await _context.SaveChangesAsync();
+        }    
 
         return Json(new { success = true, message = resultado });
     }

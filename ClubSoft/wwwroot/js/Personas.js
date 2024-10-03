@@ -236,9 +236,9 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeSocioTitular").style.display = "none";
     }
 
-    if (!isValid) {
-        return;
-    }
+    // if (!isValid) {
+    //     return;
+    // }
 
      // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
      let data = {
@@ -480,7 +480,7 @@ function toggleTipoSocio() {
     var tipoSocioSection = document.getElementById("tipoSocioSection");
 
     // Verificar si el valor seleccionado es el ID del rol "SOCIO"
-    if (rolID == "c77746d3-1855-479a-b6d0-eaa8580b9264") {
+    if (rolID == "80800f9f-025d-48c7-8cff-32bc75b9288c") {
         tipoSocioSection.style.display = "block"; // Mostrar la sección
     } else {
         tipoSocioSection.style.display = "none"; // Ocultar la sección
