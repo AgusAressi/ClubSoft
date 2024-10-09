@@ -188,17 +188,52 @@ public class PersonasController : Controller
 
     public JsonResult TraerPersona(int? PersonaID)
     {
-        var personaporID = _context.Personas.ToList();
-        if (PersonaID != null)
+        // Verificamos si se proporcionó un ID de persona
+        if (PersonaID == null)
         {
-            personaporID = personaporID.Where(e => e.PersonaID == PersonaID).ToList();
+            return Json(new { error = "El ID de la persona es requerido" });
         }
 
-        return Json(personaporID.ToList());
+        // Realizamos la consulta uniendo Personas con AspNetUsers y obteniendo el rol
+        var personaporID = (from p in _context.Personas
+                            join u in _context.Users // AspNetUsers se llama "Users" en Identity
+                            on p.UsuarioID equals u.Id // Relacionamos UsuarioID con Id de AspNetUsers
+                            join ur in _context.UserRoles // AspNetUserRoles para obtener el rol del usuario
+                            on u.Id equals ur.UserId
+                            join r in _context.Roles // AspNetRoles para obtener el nombre del rol
+                            on ur.RoleId equals r.Id
+                            where p.PersonaID == PersonaID
+                            select new
+                            {
+                                p.PersonaID,
+                                p.Nombre,
+                                p.Apellido,
+                                p.Direccion,
+                                p.Telefono,
+                                p.DNI,
+                                p.LocalidadID,
+                                Usuario = new
+                                {
+                                    u.Id, // ID del usuario (AspNetUsers)
+                                    u.UserName,
+                                    u.Email,
+                                    Rol = r.Id // Obtenemos el nombre del rol del usuario
+                                }
+                            }).FirstOrDefault();
+
+        // Si no se encuentra la persona, devolvemos un error
+        if (personaporID == null)
+        {
+            return Json(new { error = "Persona no encontrada" });
+        }
+
+        // Devolvemos los datos de la persona y el usuario asociado con el rol
+        return Json(personaporID);
     }
 
     public JsonResult EliminarPersona(int PersonaID)
     {
+        
         var persona = _context.Personas.Find(PersonaID);
         _context.Remove(persona);
         _context.SaveChanges();

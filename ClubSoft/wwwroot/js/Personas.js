@@ -289,55 +289,36 @@ function GuardarRegistro() {
     });
 }
 
-function AbrirEditar(PersonaID, UsuarioID) {
-    // Primer AJAX para obtener los datos de la persona
+function AbrirEditar(PersonaID) {
     $.ajax({
         url: '../../Personas/TraerPersona',
         data: {
-            personaID: PersonaID,
+            PersonaID: PersonaID,
         },
         type: 'POST',
         dataType: 'json',
-        success: function (personasConId) {
-            let persona = personasConId[0];
-
-            document.getElementById("PersonaID").value = PersonaID;
+        success: function (personaporID) {
+            let persona = personaporID;
+            
+            document.getElementById("PersonaID").value = persona.personaID;
             document.getElementById("PersonaNombre").value = persona.nombre;
             document.getElementById("PersonaApellido").value = persona.apellido;
             document.getElementById("PersonaDireccion").value = persona.direccion;
             document.getElementById("PersonaTelefono").value = persona.telefono;
             document.getElementById("PersonaDni").value = persona.dni;
             document.getElementById("LocalidadID").value = persona.localidadID;
+            document.getElementById("UsuarioID").value = persona.usuario.id;
+            document.getElementById("PersonaEmail").value = persona.usuario.email; 
+            document.getElementById("PersonaUserName").value = persona.usuario.userName;
+            document.getElementById("PersonaContraseña").value = ''; 
+            $("#RolID").val(persona.usuario.rol);
 
-            // Segundo AJAX para obtener los datos del usuario
-            $.ajax({
-                url: '../../Users/EditarUsuario',
-                data: {
-                    UsuarioID: UsuarioID,
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (usuarioporID) {
-                    let usuario = usuarioporID[0];
-
-                    document.getElementById("UsuarioID").value = UsuarioID;
-                    document.getElementById("PersonaEmail").value = usuario.email;
-                    document.getElementById("PersonaUserName").value = usuario.userName;
-                    document.getElementById("PersonaContraseña").value = usuario.contraseña;
-                    document.getElementById("RolID").value = usuario.rolID;
-
-                    $("#ModalPersonas").modal("show");
-                    $("#ModalTitulo").text("Editar Persona y Usuario");
-                },
-
-                error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al consultar el registro del usuario.');
-                }
-            });
+            // Mostrar modal y cambiar título
+            $("#ModalPersonas").modal("show");
+            $("#ModalTitulo").text("Editar Persona y Usuario");
         },
-
         error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
+            console.log('Disculpe, existió un problema al consultar el registro del usuario.');
         }
     });
 }
@@ -476,14 +457,14 @@ function toggleSocioTitular() {
 }
 
 function toggleTipoSocio() {
-    var rolID = document.getElementById("RolID").value;
+    var rolName = document.getElementById("RolID").options[document.getElementById("RolID").selectedIndex].text;
     var tipoSocioSection = document.getElementById("tipoSocioSection");
 
-    // Verificar si el valor seleccionado es el ID del rol "SOCIO"
-    if (rolID == "80800f9f-025d-48c7-8cff-32bc75b9288c") {
-        tipoSocioSection.style.display = "block"; // Mostrar la sección
+    // Verificar si el valor seleccionado es el rol con nombre "SOCIO"
+    if (rolName === "SOCIO") {
+        tipoSocioSection.style.display = "block"; // Mostrar
     } else {
-        tipoSocioSection.style.display = "none"; // Ocultar la sección
+        tipoSocioSection.style.display = "none"; // Ocultar
     }
 }
 

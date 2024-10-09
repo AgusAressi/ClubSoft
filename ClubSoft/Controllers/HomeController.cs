@@ -17,6 +17,7 @@ public class HomeController : Controller
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _rolManager;
 
+    
     public IActionResult Index()
     {
         return View();
