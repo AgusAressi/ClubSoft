@@ -26,6 +26,11 @@ public class ProductosController : Controller
 
         return View();
     }
+     public IActionResult InformeProductos()
+    {
+        return View();
+    }
+
     public JsonResult ListadoProductos(int? id)
     {
         List<VistaTipoProductos> MostrarProductos = new List<VistaTipoProductos>();
@@ -131,5 +136,26 @@ public class ProductosController : Controller
             _context.SaveChanges();
             return Json(true);
         }
+
+         public JsonResult InformeListadoProductos(int? id)
+    {
+        List<VistaTipoProductos> MostrarProductos = new List<VistaTipoProductos>();
+        var listadoProductos = _context.Productos.OrderBy(n => n.Nombre).ToList();
+        var listadoTipoProducto = _context.TipoProductos.OrderBy(t => t.Nombre).ToList();
+        foreach (var productos in listadoProductos)
+        {
+            var tipoProducto = listadoTipoProducto.Where(t => t.TipoProductoID == productos.TipoProductoID).Single();
+
+            var productoMostar = new VistaTipoProductos
+            {
+                ProductoID = productos.ProductoID,
+                TipoProductoID = productos.TipoProductoID,
+                Nombre = productos.Nombre,
+                NombreTipoProducto = tipoProducto.Nombre
+            };
+            MostrarProductos.Add(productoMostar);
+        }
+        return Json(MostrarProductos);
+    }
 
 }

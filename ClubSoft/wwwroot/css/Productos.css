@@ -1,11 +1,18 @@
-.btn-primary,  .btn-danger {
-    opacity: 0;
-    transition: opacity 0.1s ease-in;
-  }
-  
-  tr:hover .btn-primary, tr:hover .btn-danger {
-    opacity: 1;
-  }
+.btn-primary, .btn-danger {
+  opacity: 0;
+  transition: opacity 0.1s ease-in;
+}
+
+tr:hover .btn-primary, tr:hover .btn-danger {
+  opacity: 1;
+}
+
+/* Cuando la pantalla es de 768px o menos, los botones tendrán opacidad fija */
+@media (max-width: 768px) {
+.btn-primary, .btn-danger {
+  opacity: 1;
+}
+}
 
 .boton-color {
     background-color: rgb(12, 12, 86);

@@ -60,8 +60,12 @@ public class SocioAdherentesController : Controller
 
         return View();
     }
+    public IActionResult InformeSocios()
+    {
+          return View();
+    }
 
-    public JsonResult ListadoSociosAdherentes()
+   public JsonResult ListadoSociosAdherentes()
     {
         List<VistaSociosAdherentes> MostrarSociosAdherentes = new List<VistaSociosAdherentes>();
         var listadoPersonas = _context.Personas.OrderBy(n => n.Nombre).ToList();
@@ -139,5 +143,34 @@ public class SocioAdherentesController : Controller
         _context.SaveChanges();
 
         return Json(true);
+    }
+
+     public JsonResult InformePorSocios()
+    {
+        List<VistaSociosAdherentes> MostrarSociosAdherentes = new List<VistaSociosAdherentes>();
+        var listadoPersonas = _context.Personas.OrderBy(n => n.Nombre).ToList();
+        var listadoSociosTitulares = _context.SocioTitulares.ToList();
+        var listadoSociosAdherentes = _context.SocioAdherentes.ToList();
+
+        foreach (var socioAdherente in listadoSociosAdherentes)
+        {
+            var sociosTitulares = listadoSociosTitulares.FirstOrDefault(t => t.SocioTitularID == socioAdherente.SocioTitularID);
+            var personasTitulares = sociosTitulares != null ? listadoPersonas.FirstOrDefault(t => t.PersonaID == sociosTitulares.PersonaID) : null;
+            var personasAdherentes = listadoPersonas.FirstOrDefault(t => t.PersonaID == socioAdherente.PersonaID);
+
+            if (personasTitulares != null)
+            {
+                var socioAdherenteMostar = new VistaSociosAdherentes
+                {
+                    SocioAdherenteID = socioAdherente.SocioAdherenteID,
+                    PersonaNombre = personasAdherentes.Nombre,
+                    PersonaApellido = personasAdherentes.Apellido,
+                    SocioTitularNombre = sociosTitulares != null ? sociosTitulares.Persona.Apellido + " " + sociosTitulares.Persona.Nombre : "",
+                };
+                MostrarSociosAdherentes.Add(socioAdherenteMostar);
+            }
+        }
+
+        return Json(MostrarSociosAdherentes);
     }
 }

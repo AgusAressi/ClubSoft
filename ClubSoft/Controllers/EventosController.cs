@@ -33,6 +33,12 @@ public class EventosController : Controller
         return View();
 
     }
+    
+    public IActionResult InformeEventos()
+    {
+          return View();
+
+    }
 
     public JsonResult ListadoEventos()
     {
@@ -121,6 +127,33 @@ public class EventosController : Controller
         _context.SaveChanges();
 
         return Json(true);
+    }
+
+        public JsonResult InformePorEventos()
+    {
+        List<VistaTipoEventos> EventosMostar = new List<VistaTipoEventos>();
+        var listadoEventos = _context.Eventos.ToList();
+        var listadoTipoEventos = _context.TipoEventos.ToList();
+        var listadoLugares = _context.Lugares.ToList();
+
+        foreach (var evento in listadoEventos)
+        {
+            var tipoEvento = listadoTipoEventos.Where(t => t.TipoEventoID == evento.TipoEventoID).Single();
+            var lugar = listadoLugares.Where(t => t.LugarID == evento.LugarID).Single();
+
+            var eventoMostar = new VistaTipoEventos
+            {
+                EventoID = evento.EventoID,
+                Descripcion = evento.Descripcion,
+                LugarID = evento.LugarID,
+                TipoEventoID = evento.TipoEventoID,
+                NombreTipoEvento = tipoEvento.Nombre,
+                NombreLugar = lugar.Nombre
+
+            };
+            EventosMostar.Add(eventoMostar);
+        }
+        return Json(EventosMostar);
     }
 }
 

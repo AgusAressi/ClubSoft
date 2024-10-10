@@ -7,6 +7,16 @@ html {
     font-size: 16px;
   }
 }
+@media (max-width: 550px) {
+  .ocultar-en-550px {
+      display: none;
+  }
+}
+@media (max-width: 768px) {
+  .ocultar-en-768px {
+      display: none;
+  }
+}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;

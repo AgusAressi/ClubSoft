@@ -27,11 +27,11 @@ function ListadoProductos(){
                 contenidoTabla += `
                 <tr>
                     <td>${producto.nombre}</td>
-                    <td>${precioFormateado}</td>
+                    <td class="ocultar-en-768px">${precioFormateado}</td>
                     <td class="text-center">${producto.cantidad}</td>
-                    <td class="text-center">${producto.descripcion}</td>
-                    <td class="text-center">${producto.nombreTipoProducto}</td>
-                    <td class="text-center">
+                    <td class="text-center ocultar-en-768px">${producto.descripcion}</td>
+                    <td class="text-center ocultar-en-768px">${producto.nombreTipoProducto}</td>
+                    <td class="text-center ">
                         <input type="checkbox" class="form-check-input" ${producto.estado ? 'checked' : ''} disabled />
                     </td>
                     <td class="text-center">` +

@@ -26,11 +26,11 @@ function ListadoPersonas(pagina = 1) {
                 contenidoTabla += `
                 <tr>
                     <td>${persona.apellido}, ${persona.nombre}</td>
-                    <td>${persona.dni}</td>
-                    <td>${persona.direccion}, ${persona.nombreLocalidad}, ${persona.nombreProvincia}</td>
-                    <td>${persona.telefono}</td>
-                    <td>${persona.email}</td>
-                    <td>${persona.rolNombre}</td>
+                    <td class="ocultar-en-768px">${persona.dni}</td>
+                    <td class="ocultar-en-768px">${persona.direccion}, ${persona.nombreLocalidad}, ${persona.nombreProvincia}</td>
+                    <td class="ocultar-en-768px">${persona.telefono}</td>
+                    <td class="ocultar-en-768px">${persona.email}</td>
+                    <td class="ocultar-en-768px">${persona.rolNombre}</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${persona.personaID}, '${persona.usuarioID}')">
                     <i class="fa-solid fa-pen-to-square"></i>
