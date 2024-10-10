@@ -310,7 +310,7 @@ function AbrirEditar(PersonaID) {
             document.getElementById("UsuarioID").value = persona.usuario.id;
             document.getElementById("PersonaEmail").value = persona.usuario.email; 
             document.getElementById("PersonaUserName").value = persona.usuario.userName;
-            document.getElementById("PersonaContraseña").value = ''; 
+            document.getElementById("PersonaContraseña").value = persona.usuario.password; 
             $("#RolID").val(persona.usuario.rol);
 
             // Mostrar modal y cambiar título
@@ -323,11 +323,10 @@ function AbrirEditar(PersonaID) {
     });
 }
 
-function EliminarPersona(PersonaID, UsuarioID) {
-
+function EliminarPersona(PersonaID) {
     Swal.fire({
-        title: "¿Está seguro que quiere eliminar a esta persona?",
-        text: "No podrás recuperarlo!",
+        title: "¿Está seguro que quiere eliminar a la persona?",
+        text: "¡No podrás recuperarla!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -336,35 +335,35 @@ function EliminarPersona(PersonaID, UsuarioID) {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            // Primero elimina la persona
             $.ajax({
                 url: '../../Personas/EliminarPersona',
-                data: { personaID: PersonaID },
+                data: {
+                    PersonaID: PersonaID,
+                },
                 type: 'POST',
                 dataType: 'json',
                 success: function (resultado) {
-                    // Si la persona se elimina correctamente, elimina el usuario
-                    $.ajax({
-                        url: '../../Users/EliminarUsuario',
-                        data: { UsuarioID: UsuarioID },
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function (resultadoUsuario) {
-                            Swal.fire({
-                                title: "Eliminado!",
-                                text: "La persona y su usuario se eliminaron correctamente",
-                                icon: "success",
-                                confirmButtonColor: "#3085d6"
-                            });
-                            ListadoPersonas();
-                        },
-                        error: function (xhr, status) {
-                            console.log('Disculpe, existió un problema al eliminar el usuario.');
-                        }
-                    });
+                    if (resultado.success) {
+                        // Si se eliminó correctamente, mostrar éxito
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "La persona se eliminó correctamente",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        ListadoPersonas();
+                    } else {
+                        // Si no se puede eliminar, mostrar el mensaje con la razón
+                        Swal.fire({
+                            title: "No se puede eliminar!",
+                            text: resultado.message, 
+                            icon: "error",
+                            confirmButtonColor: "#3085d6"
+                        });
+                    }
                 },
                 error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al eliminar la persona.');
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
                 }
             });
         }

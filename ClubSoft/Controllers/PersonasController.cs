@@ -188,19 +188,13 @@ public class PersonasController : Controller
 
     public JsonResult TraerPersona(int? PersonaID)
     {
-        // Verificamos si se proporcionó un ID de persona
-        if (PersonaID == null)
-        {
-            return Json(new { error = "El ID de la persona es requerido" });
-        }
-
         // Realizamos la consulta uniendo Personas con AspNetUsers y obteniendo el rol
         var personaporID = (from p in _context.Personas
-                            join u in _context.Users // AspNetUsers se llama "Users" en Identity
+                            join u in _context.Users
                             on p.UsuarioID equals u.Id // Relacionamos UsuarioID con Id de AspNetUsers
-                            join ur in _context.UserRoles // AspNetUserRoles para obtener el rol del usuario
+                            join ur in _context.UserRoles // para obtener el rol del usuario
                             on u.Id equals ur.UserId
-                            join r in _context.Roles // AspNetRoles para obtener el nombre del rol
+                            join r in _context.Roles // para obtener el nombre del rol
                             on ur.RoleId equals r.Id
                             where p.PersonaID == PersonaID
                             select new
@@ -214,10 +208,10 @@ public class PersonasController : Controller
                                 p.LocalidadID,
                                 Usuario = new
                                 {
-                                    u.Id, // ID del usuario (AspNetUsers)
+                                    u.Id,
                                     u.UserName,
                                     u.Email,
-                                    Rol = r.Id // Obtenemos el nombre del rol del usuario
+                                    Rol = r.Id
                                 }
                             }).FirstOrDefault();
 
@@ -227,18 +221,40 @@ public class PersonasController : Controller
             return Json(new { error = "Persona no encontrada" });
         }
 
-        // Devolvemos los datos de la persona y el usuario asociado con el rol
         return Json(personaporID);
     }
 
     public JsonResult EliminarPersona(int PersonaID)
     {
-        
+        // Buscar la persona
         var persona = _context.Personas.Find(PersonaID);
-        _context.Remove(persona);
+
+        if (persona == null)
+        {
+            return Json(new { success = false, message = "Persona no encontrada" });
+        }
+
+        // Verificar si está registrada como SocioTitular
+        var socioTitular = _context.SocioTitulares.FirstOrDefault(st => st.PersonaID == PersonaID);
+        if (socioTitular != null)
+        {
+            // Retorna un mensaje de error si es un SocioTitular
+            return Json(new { success = false, message = "La persona esta registrada como Socio Titular." });
+        }
+
+        // Verificar si está registrada como SocioAdherente
+        var socioAdherente = _context.SocioAdherentes.FirstOrDefault(sa => sa.PersonaID == PersonaID);
+        if (socioAdherente != null)
+        {
+            // Retorna un mensaje de error si es un SocioAdherente
+            return Json(new { success = false, message = "La persona esta registrada como Socio Adherente." });
+        }
+
+        // Si no está en ninguna de las tablas, eliminar la persona
+        _context.Personas.Remove(persona);
         _context.SaveChanges();
 
-        return Json(true);
+        return Json(new { success = true, message = "Persona eliminada correctamente." });
     }
 
 }
