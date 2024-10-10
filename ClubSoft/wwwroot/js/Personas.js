@@ -115,6 +115,7 @@ function LimpiarModal() {
     document.getElementById("errorMensajeEmail").style.display = "none";
     document.getElementById("PersonaContraseña").value = "";
     document.getElementById("errorMensajeContraseña").style.display = "none";
+    document.getElementById("errorMensajeContraseña2").style.display = "none";
     document.getElementById("PersonaUserName").value = "";
     document.getElementById("errorMensajeUserName").style.display = "none";
     document.getElementById("RolID").value = 0;
@@ -171,17 +172,27 @@ function GuardarRegistro() {
 
     if (telefono === "") {
         document.getElementById("errorMensajeTelefono").style.display = "block";
+        document.getElementById("errorMensajeTelefono2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
-    } else {
-        document.getElementById("errorMensajeTelefono").style.display = "none";
-    }
+    } 
+    // Validación si el Telefono tiene menos de 8 caracteres
+    else if (telefono.length < 8) {
+        document.getElementById("errorMensajeTelefono").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeTelefono2").style.display = "block";
+        isValid = false;
+    } 
 
     if (dni === "") {
         document.getElementById("errorMensajeDNI").style.display = "block";
+        document.getElementById("errorMensajeDNI2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
-    } else {
-        document.getElementById("errorMensajeDNI").style.display = "none";
-    }
+    } 
+    // Validación si el DNI tiene menos de 7 caracteres
+    else if (dni.length < 7) {
+        document.getElementById("errorMensajeDNI").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeDNI2").style.display = "block";
+        isValid = false;
+    } 
 
     if (localidadID === "0") {
         document.getElementById("errorMensajeLocalidad").style.display = "block";
@@ -206,10 +217,15 @@ function GuardarRegistro() {
 
     if (password === "") {
         document.getElementById("errorMensajeContraseña").style.display = "block";
+        document.getElementById("errorMensajeContraseña2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
-    } else {
-        document.getElementById("errorMensajeContraseña").style.display = "none";
-    }
+    } 
+    // Validación si la contraseña tiene menos de 6 caracteres
+    else if (password.length < 6) {
+        document.getElementById("errorMensajeContraseña").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeContraseña2").style.display = "block";
+        isValid = false;
+    } 
 
     if (rol === "0") {
         document.getElementById("errorMensajeRol").style.display = "block";

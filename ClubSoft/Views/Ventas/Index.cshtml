@@ -1,130 +1,46 @@
 @{
-  ViewData["Title"] = "Ventas";
+    ViewData["Title"] = "Ventas";
 }
 <link rel="stylesheet" href="~/css/Ventas.css" asp-append-version="true" />
 
 <div class="p-3">
-  @*TABLA*@
-  <div class="mt-2" style="heigth: 100%;">
-    <div class="card shadow-sm">
-      <div class="card-header row m-0 p-2">
-        <div class="col-md-6 d-flex align-items-center">
-          <button type="button" class="btn boton-color" onclick="NuevaVenta()" data-bs-toggle="modal"
-            data-bs-target="#ModalVentas">
-            <i class="fa-solid fa-plus fa-2x"></i>
-          </button>
-        </div>
-        <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
-          <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>VENTAS</h3>
-        </div>
-      </div>
-      <div class="card-body mb-5">
-        <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Nº Venta</th>
-                <th>Cliente</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Estado</th>
+    <!-- Tabla de ventas -->
+    <div class="mt-2" style="height: 100%;">
+        <div class="card shadow-sm">
+            <div class="card-header row m-0 p-2">
+                <div class="col-md-6 d-flex align-items-center">
+                    <button type="button" class="btn boton-color"
+                        onclick="window.location.href='@Url.Action("NuevaVenta", "Ventas")'">
+                        <i class="fa-solid fa-plus fa-2x"></i>
+                    </button>
 
-                <th style="width: 70px"></th>
-                <th style="width: 70px"></th>
-              </tr>
-            </thead>
-            <tbody id="tbody-Ventas">
-            </tbody>
-          </table>
+                </div>
+                <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+                    <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>VENTAS</h3>
+                </div>
+            </div>
+            <div class="card-body mb-5">
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nº Venta</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-Ventas">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
+  
 
-  @* MODAL *@
-  <div class="modal" tabindex="-1" id="ModalVentas">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content container-modal">
-        <div class="modal-header">
-          <h5 class="modal-title text-color" id="ModalTitulo"></h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="container">
-              <input type="hidden" id="VentaID" value="0" />
-              <div class="row">
-                <div class="mb-2 col-md-4">
-                    <label for="TipoProductoID" class="form-label fw-bold">Tipo De Producto</label>
-                    <div class="input-group">
-                        @Html.DropDownList("TipoProductoID", null, new { @class = "form-control", @id = "TipoProductoID" })
-                    </div>
-                </div>
-
-                <div class="mb-2 col-md-4">
-                    <label for="ProductoID" class="form-label fw-bold">Producto</label>
-                    <div class="input-group">
-                        @Html.DropDownList("ProductoID", null, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-                
-                <div class="mb-2 col-md-2">
-                  <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
-                  <input type="number" class="form-control" id="Cantidad" style="text-transform: uppercase"
-                    placeholder="">
-                </div>
-                <div class="mb-2 col-md-2 d-flex align-items-end">
-                  <button type="button" onclick="AgregarProducto()" class="btn boton-color">Agregar Producto</button>
-                </div>
-                <div class="mb-2 col-md-5">
-                  <label for="Cliente" class="form-label fw-bold">Cliente</label>
-                  <input type="text" class="form-control" id="Cliente" style="text-transform: uppercase" placeholder="">
-                </div>
-                <div class="mb-2 col-md-8">
-                  <h5><b>Productos vendidos hasta el momento</b></h5>
-                </div>
-                <div class="mb-2 col-md-4 text-end">
-                  <button type="button" class="btn boton-color" onclick="ComfirmarVenta()">
-                    Confirmar Venta
-                  </button>
-                  <button type="button" class="btn boton-color" onclick="()">
-                    Cancelar Venta
-                  </button>
-
-                </div>
-                <div class="mb-2 col-md-12 table-responsive">
-                  <table class="table table-hover align-middle">
-                    <thead>
-                      <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Total</th>
-                        <th style="width: 70px;"></th>
-                      </tr>
-                    </thead>
-                    <tbody id="Tabla-Detalle">
-                    </tbody>
-                  </table>
-                  <p class="text-end">Total: <span id="total-price">$0.00</span></p>
-                </div>
-
-
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
-            data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-@section Scripts {
-  <script src="~/js/Ventas.js"></script>
-}
+    @section Scripts {
+        <script src="~/js/Ventas.js"></script>
+    }
