@@ -143,7 +143,7 @@ function GuardarRegistro() {
     let userName = document.getElementById("PersonaUserName").value;
     let email = document.getElementById("PersonaEmail").value;
     let password = document.getElementById("PersonaContraseña").value;
-    let rol = document.getElementById("RolID").value;
+    let rol = document.getElementById("RolID").options[document.getElementById("RolID").selectedIndex].text;;
     let tipoSocio = document.getElementById("TipoSocio").value;
     let socioTitularID = document.getElementById("SocioTitularID").value;
     let socioAdherenteID = document.getElementById("SocioAdherenteID").value;
@@ -176,24 +176,24 @@ function GuardarRegistro() {
 
     if (telefono === "") {
         document.getElementById("errorMensajeTelefono").style.display = "block";
-        document.getElementById("errorMensajeTelefono2").style.display = "none"; // Oculta el otro mensaje de error
+        document.getElementById("errorMensajeTelefono2").style.display = "none"; 
         isValid = false;
     } 
-    // Validación si el Telefono tiene menos de 8 caracteres
+    
     else if (telefono.length < 8) {
-        document.getElementById("errorMensajeTelefono").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeTelefono").style.display = "none"; 
         document.getElementById("errorMensajeTelefono2").style.display = "block";
         isValid = false;
     } 
 
     if (dni === "") {
         document.getElementById("errorMensajeDNI").style.display = "block";
-        document.getElementById("errorMensajeDNI2").style.display = "none"; // Oculta el otro mensaje de error
+        document.getElementById("errorMensajeDNI2").style.display = "none"; 
         isValid = false;
     } 
-    // Validación si el DNI tiene menos de 7 caracteres
+    
     else if (dni.length < 7) {
-        document.getElementById("errorMensajeDNI").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeDNI").style.display = "none"; 
         document.getElementById("errorMensajeDNI2").style.display = "block";
         isValid = false;
     } 
@@ -224,7 +224,7 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeContraseña2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
     } 
-    // Validación si la contraseña tiene menos de 6 caracteres
+    
     else if (password.length < 6) {
         document.getElementById("errorMensajeContraseña").style.display = "none"; // Oculta el mensaje de contraseña vacía
         document.getElementById("errorMensajeContraseña2").style.display = "block";
@@ -238,23 +238,20 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeRol").style.display = "none";
     }
 
-    if (tipoSocio === "0") {
+
+    if (rol === "SOCIO" && tipoSocio === "0") {
         document.getElementById("errorMensajeTipoSocio").style.display = "block";
         isValid = false;
     } else {
         document.getElementById("errorMensajeTipoSocio").style.display = "none";
     }
 
-    if (tipoSocio == "2" && socioTitularID === "") {
+    if (rol === "SOCIO" && tipoSocio == "2" && socioTitularID === "") {
         document.getElementById("errorMensajeSocioTitular").style.display = "block";
         isValid = false;
     } else {
         document.getElementById("errorMensajeSocioTitular").style.display = "none";
     }
-
-    // if (!isValid) {
-    //     return;
-    // }
 
      // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
      let data = {

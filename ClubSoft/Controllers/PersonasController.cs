@@ -117,8 +117,9 @@ public class PersonasController : Controller
     )
     {
         string resultado = "";
-
-        rol = "SOCIO";
+        Nombre = Nombre.ToUpper();
+        Apellido = Apellido.ToUpper();
+        Direccion = Direccion.ToUpper();
 
         //SI EL USUARIO ID ES VACIO, QUIERE DECIR QUE VAMOS A CREAR UN USUARIO NUEVO Y DEMAS REGISTROS
         if (UsuarioID == "0")
