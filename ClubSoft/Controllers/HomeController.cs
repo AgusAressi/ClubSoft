@@ -16,12 +16,18 @@ public class HomeController : Controller
     private ApplicationDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _rolManager;
+    
 
-    public IActionResult Index()
+     public IActionResult Index()
     {
+        // Si el usuario está autenticado, redirigir a la vista Inicio
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Inicio");
+        }
+        
         return View();
     }
-    
     
     public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> rolManager)
     {
@@ -34,6 +40,7 @@ public class HomeController : Controller
     
     public async Task<IActionResult> Inicio()
     {
+
         await CrearRolesyPrimerUsuario();
         // Una vez creado el primer usuario comentar
         var usuarioLogueadoID = _userManager.GetUserId(HttpContext.User);
@@ -106,6 +113,8 @@ public class HomeController : Controller
 
         return Json(creado);
     }
+
+    
     
     public IActionResult Privacy()
     {
