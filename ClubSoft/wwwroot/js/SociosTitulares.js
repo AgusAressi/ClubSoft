@@ -1,4 +1,3 @@
-////////////////////////////// <!-- SOCIOS TITULARES-->
 window.onload = ListadoSociosTitulares();
 function ListadoSociosTitulares(){
     $.ajax({

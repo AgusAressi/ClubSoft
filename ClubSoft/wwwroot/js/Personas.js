@@ -96,7 +96,7 @@ function generarPaginacion(totalPages, currentPage) {
 }
 
 
-function LimpiarModal(){
+function LimpiarModal() {
     document.getElementById("PersonaID").value = 0;
     document.getElementById("PersonaNombre").value = "";
     document.getElementById("PersonaApellido").value = "";
@@ -115,13 +115,19 @@ function LimpiarModal(){
     document.getElementById("errorMensajeEmail").style.display = "none";
     document.getElementById("PersonaContraseña").value = "";
     document.getElementById("errorMensajeContraseña").style.display = "none";
+    document.getElementById("errorMensajeContraseña2").style.display = "none";
     document.getElementById("PersonaUserName").value = "";
     document.getElementById("errorMensajeUserName").style.display = "none";
+    document.getElementById("RolID").value = 0;
     document.getElementById("errorMensajeRol").style.display = "none";
-
+    document.getElementById("TipoSocio").value = 0;
+    document.getElementById("errorMensajeTipoSocio").style.display = "none";
+    document.getElementById("SocioTitularID").value = 0;
+    document.getElementById("errorMensajeSocioTitular").style.display = "none";
+    document.getElementById("tipoSocioSection").style.display = "none";
 }
 
-function NuevaPersona(){
+function NuevaPersona() {
     $("#ModalTitulo").text("Nueva Persona");
 }
 
@@ -129,7 +135,7 @@ function GuardarRegistro() {
     let personaID = document.getElementById("PersonaID").value;
     let nombre = document.getElementById("PersonaNombre").value;
     let apellido = document.getElementById("PersonaApellido").value;
-    let direccion = document.getElementById("PersonaDireccion").value; 
+    let direccion = document.getElementById("PersonaDireccion").value;
     let telefono = document.getElementById("PersonaTelefono").value;
     let dni = document.getElementById("PersonaDni").value;
     let localidadID = document.getElementById("LocalidadID").value;
@@ -138,9 +144,15 @@ function GuardarRegistro() {
     let email = document.getElementById("PersonaEmail").value;
     let password = document.getElementById("PersonaContraseña").value;
     let rol = document.getElementById("RolID").value;
+    let tipoSocio = document.getElementById("TipoSocio").value;
+    let socioTitularID = document.getElementById("SocioTitularID").value;
+    let socioAdherenteID = document.getElementById("SocioAdherenteID").value;
 
+
+    console.log(personaID, nombre, apellido, direccion, telefono, dni, localidadID, usuarioID, userName, email, password, rol, tipoSocio, socioTitularID, socioAdherenteID);
     let isValid = true;
 
+    // Validaciones de campos vacíos
     if (nombre === "") {
         document.getElementById("errorMensajeNombre").style.display = "block";
         isValid = false;
@@ -164,17 +176,27 @@ function GuardarRegistro() {
 
     if (telefono === "") {
         document.getElementById("errorMensajeTelefono").style.display = "block";
+        document.getElementById("errorMensajeTelefono2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
-    } else {
-        document.getElementById("errorMensajeTelefono").style.display = "none";
-    }
+    } 
+    // Validación si el Telefono tiene menos de 8 caracteres
+    else if (telefono.length < 8) {
+        document.getElementById("errorMensajeTelefono").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeTelefono2").style.display = "block";
+        isValid = false;
+    } 
 
     if (dni === "") {
         document.getElementById("errorMensajeDNI").style.display = "block";
+        document.getElementById("errorMensajeDNI2").style.display = "none"; // Oculta el otro mensaje de error
         isValid = false;
-    } else {
-        document.getElementById("errorMensajeDNI").style.display = "none";
-    }
+    } 
+    // Validación si el DNI tiene menos de 7 caracteres
+    else if (dni.length < 7) {
+        document.getElementById("errorMensajeDNI").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeDNI2").style.display = "block";
+        isValid = false;
+    } 
 
     if (localidadID === "0") {
         document.getElementById("errorMensajeLocalidad").style.display = "block";
@@ -183,121 +205,144 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeLocalidad").style.display = "none";
     }
 
-    if (!isValid) {
-        return;
+    if (userName === "") {
+        document.getElementById("errorMensajeUserName").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeUserName").style.display = "none";
+    }
+
+    if (email === "") {
+        document.getElementById("errorMensajeEmail").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeEmail").style.display = "none";
+    }
+
+    if (password === "") {
+        document.getElementById("errorMensajeContraseña").style.display = "block";
+        document.getElementById("errorMensajeContraseña2").style.display = "none"; // Oculta el otro mensaje de error
+        isValid = false;
+    } 
+    // Validación si la contraseña tiene menos de 6 caracteres
+    else if (password.length < 6) {
+        document.getElementById("errorMensajeContraseña").style.display = "none"; // Oculta el mensaje de contraseña vacía
+        document.getElementById("errorMensajeContraseña2").style.display = "block";
+        isValid = false;
+    } 
+
+    if (rol === "0") {
+        document.getElementById("errorMensajeRol").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeRol").style.display = "none";
+    }
+
+    if (tipoSocio === "0") {
+        document.getElementById("errorMensajeTipoSocio").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeTipoSocio").style.display = "none";
+    }
+
+    if (tipoSocio == "2" && socioTitularID === "") {
+        document.getElementById("errorMensajeSocioTitular").style.display = "block";
+        isValid = false;
+    } else {
+        document.getElementById("errorMensajeSocioTitular").style.display = "none";
+    }
+
+    // if (!isValid) {
+    //     return;
+    // }
+
+     // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
+     let data = {
+        personaID: personaID,
+        nombre: nombre,
+        apellido: apellido,
+        direccion: direccion,
+        telefono: telefono,
+        dni: dni,
+        localidadID: localidadID,
+        usuarioID: usuarioID,
+        userName: userName,
+        email: email,
+        password: password,
+        rol: rol,
+        tipoSocio: tipoSocio,
+        socioAdherenteID: socioAdherenteID
+    };
+
+    if (tipoSocio == "2") {
+        data.socioTitularID = socioTitularID;
     }
 
     $.ajax({
-        url: '../../Users/GuardarUsuario',
-        data: {
-            UserName: userName,
-            Email: email,
-            Password: password,
-            Rol: rol
-        },
+        url: '../../Personas/GuardarRegistro',
+        data: data,
         type: 'POST',
         dataType: 'json',
-        success: function (usuarioResultado) {
-            if (usuarioResultado.success) {
-                let usuarioID = usuarioResultado.usuarioID;
-                    // Guardar datos de Persona con el UsuarioID generado
-                    $.ajax({
-                        url: '../../Personas/GuardarRegistro',
-                        data: { 
-                            PersonaID: personaID,
-                            Nombre: nombre,
-                            Apellido: apellido,
-                            Direccion: direccion, 
-                            Telefono: telefono,
-                            DNI: dni,
-                            LocalidadID: localidadID,
-                            UsuarioID: usuarioID // Asociamos el UsuarioID con la Persona
-                        },
-                    type: 'POST',
-                    dataType: 'json',  
-                    success: function (resultado) {
-                        console.log(resultado);
-                        Swal.fire({
-                            position: "bottom-end",
-                            icon: "success",
-                            title: "Registro guardado correctamente!",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                        ListadoPersonas(); 
-                    },
-                    error: function (xhr, status, error) {
-                        console.log('Disculpe, existió un problema al guardar la persona');
-                    }
-                });
-            } else {
-                console.log('Disculpe, existió un problema al guardar el usuario');
-            }
+        success: function (resultado) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            ListadoPersonas();
         },
-        error: function (xhr, status, error) {
-            console.log('Disculpe, existió un problema al guardar el usuario');
+        error: function (xhr, status) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Hubo un problema al guardar el registro",
+                showConfirmButton: true
+            });
+            console.log('Disculpe, existió un problema al guardar el registro');
         }
     });
 }
 
-function AbrirEditar(PersonaID, UsuarioID) {
-    // Primer AJAX para obtener los datos de la persona
+function AbrirEditar(PersonaID) {
     $.ajax({
         url: '../../Personas/TraerPersona',
-        data: { 
-            personaID: PersonaID,
+        data: {
+            PersonaID: PersonaID,
         },
         type: 'POST',
         dataType: 'json',
-        success: function (personasConId) { 
-            let persona = personasConId[0];
-
-            document.getElementById("PersonaID").value = PersonaID;
+        success: function (personaporID) {
+            let persona = personaporID;
+            
+            document.getElementById("PersonaID").value = persona.personaID;
             document.getElementById("PersonaNombre").value = persona.nombre;
             document.getElementById("PersonaApellido").value = persona.apellido;
             document.getElementById("PersonaDireccion").value = persona.direccion;
             document.getElementById("PersonaTelefono").value = persona.telefono;
             document.getElementById("PersonaDni").value = persona.dni;
             document.getElementById("LocalidadID").value = persona.localidadID;
+            document.getElementById("UsuarioID").value = persona.usuario.id;
+            document.getElementById("PersonaEmail").value = persona.usuario.email; 
+            document.getElementById("PersonaUserName").value = persona.usuario.userName;
+            document.getElementById("PersonaContraseña").value = persona.usuario.password; 
+            $("#RolID").val(persona.usuario.rol);
 
-            // Segundo AJAX para obtener los datos del usuario
-            $.ajax({
-                url: '../../Users/EditarUsuario',
-                data: { 
-                    UsuarioID: UsuarioID,
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (usuarioporID) { 
-                    let usuario = usuarioporID[0];
-                    
-                    document.getElementById("UsuarioID").value = UsuarioID;
-                    document.getElementById("PersonaEmail").value = usuario.email;
-                    document.getElementById("PersonaUserName").value = usuario.userName;
-                    document.getElementById("PersonaContraseña").value = usuario.contraseña;
-                    document.getElementById("RolID").value = usuario.rolID;
-                
-                    $("#ModalPersonas").modal("show");
-                    $("#ModalTitulo").text("Editar Persona y Usuario");
-                },
-
-                error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al consultar el registro del usuario.');
-                }
-            });
+            // Mostrar modal y cambiar título
+            $("#ModalPersonas").modal("show");
+            $("#ModalTitulo").text("Editar Persona y Usuario");
         },
-
         error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
+            console.log('Disculpe, existió un problema al consultar el registro del usuario.');
         }
     });
 }
 
-function EliminarPersona(PersonaID, UsuarioID) {
-
+function EliminarPersona(PersonaID) {
     Swal.fire({
-        title: "¿Está seguro que quiere eliminar a esta persona?",
-        text: "No podrás recuperarlo!",
+        title: "¿Está seguro que quiere eliminar a la persona?",
+        text: "¡No podrás recuperarla!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -306,35 +351,35 @@ function EliminarPersona(PersonaID, UsuarioID) {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            // Primero elimina la persona
             $.ajax({
                 url: '../../Personas/EliminarPersona',
-                data: { personaID: PersonaID },
+                data: {
+                    PersonaID: PersonaID,
+                },
                 type: 'POST',
                 dataType: 'json',
                 success: function (resultado) {
-                    // Si la persona se elimina correctamente, elimina el usuario
-                    $.ajax({
-                        url: '../../Users/EliminarUsuario',
-                        data: { UsuarioID: UsuarioID },
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function (resultadoUsuario) {
-                            Swal.fire({
-                                title: "Eliminado!",
-                                text: "La persona y su usuario se eliminaron correctamente",
-                                icon: "success",
-                                confirmButtonColor: "#3085d6"
-                            });
-                            ListadoPersonas();
-                        },
-                        error: function (xhr, status) {
-                            console.log('Disculpe, existió un problema al eliminar el usuario.');
-                        }
-                    });
+                    if (resultado.success) {
+                        // Si se eliminó correctamente, mostrar éxito
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "La persona se eliminó correctamente",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        ListadoPersonas();
+                    } else {
+                        // Si no se puede eliminar, mostrar el mensaje con la razón
+                        Swal.fire({
+                            title: "No se puede eliminar!",
+                            text: resultado.message, 
+                            icon: "error",
+                            confirmButtonColor: "#3085d6"
+                        });
+                    }
                 },
                 error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al eliminar la persona.');
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
                 }
             });
         }
@@ -349,10 +394,10 @@ function Imprimir() {
 
     // Agregar un título al documento
     var titulo = "Personas";
-    doc.setFontSize(16);  
-    doc.setFont("helvetica", "bold");  
-    doc.text(titulo, 14, 20); 
-    
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(titulo, 14, 20);
+
 
     // Función para agregar contenido de página, incluyendo el pie de página
     var pageContent = function (data) {
@@ -378,18 +423,18 @@ function Imprimir() {
     var res = doc.autoTableHtmlToJson(elem);
 
     // Eliminar las últimas dos columnas de "editar" y "eliminar"
-    res.columns.splice(-2, 2); 
+    res.columns.splice(-2, 2);
     res.data = res.data.map(row => row.slice(0, -2));
 
     // Configurar autoTable
     doc.autoTable(res.columns, res.data, {
-        startY: 30, 
+        startY: 30,
         addPageContent: pageContent,
         theme: 'grid',
         headStyles: {
-            fillColor: [64, 64, 64],  
-            textColor: [255, 0, 0],   
-            fontStyle: 'bold',        
+            fillColor: [64, 64, 64],
+            textColor: [255, 0, 0],
+            fontStyle: 'bold',
         },
         columnStyles: {
             0: { halign: 'center', cellWidth: 'auto', fontSize: 7 },
@@ -413,3 +458,29 @@ function Imprimir() {
     x.document.write(iframe);
     x.document.close();
 }
+
+function toggleSocioTitular() {
+    var tipoSocio = document.getElementById("TipoSocio").value;
+    var socioTitular = document.getElementById("SocioTitularID");
+
+    if (tipoSocio == "2") { // ADHERENTE seleccionado
+        socioTitular.disabled = false; // Habilitar la selección de Socio Titular
+    } else {
+        socioTitular.disabled = true; // Deshabilitar la selección de Socio Titular
+        socioTitular.selectedIndex = 0; // Resetear la selección a [SELECCIONE]
+    }
+}
+
+function toggleTipoSocio() {
+    var rolName = document.getElementById("RolID").options[document.getElementById("RolID").selectedIndex].text;
+    var tipoSocioSection = document.getElementById("tipoSocioSection");
+
+    // Verificar si el valor seleccionado es el rol con nombre "SOCIO"
+    if (rolName === "SOCIO") {
+        tipoSocioSection.style.display = "block"; // Mostrar
+    } else {
+        tipoSocioSection.style.display = "none"; // Ocultar
+    }
+}
+
+

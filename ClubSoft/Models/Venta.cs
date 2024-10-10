@@ -21,7 +21,7 @@ public class Venta
 
 public enum Estado
 {
-     Temporal = 1,
+     Temporal = 0,
      Confirmado,
      Anulado
 }
@@ -37,4 +37,12 @@ public class VistaVentas
      public string? NombrePersona { get; set; }
      public string? ApellidoPersona { get; set; }
 
+}
+
+public class VentaProductoDTO
+{
+    public int ProductoID { get; set; }
+    public string? Nombre { get; set; }
+    public decimal Precio { get; set; }
+    public int Cantidad { get; set; }
 }

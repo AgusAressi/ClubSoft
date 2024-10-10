@@ -47,3 +47,8 @@ tr:hover .btn-primary, tr:hover .btn-danger {
 .text-color {
 color: white;
 }
+
+#SocioTitularID:disabled {
+  cursor: not-allowed; /* Cambia el cursor a "no permitido" */
+  background-color: #e9ecef;
+}

@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = "Nueva Venta";
+}
+<link rel="stylesheet" href="~/css/Ventas.css" asp-append-version="true" />
+
+<div class="p-3">
+    <div class="mt-2" style="height: 100%;">
+        <div class="card shadow-sm">
+            <h3 class="card-header text-end"><i class="fa-solid fa-table pe-2"></i>NUEVA VENTA</h3>
+            <div>
+                <div class="card-body" style="height: 450px; overflow-y: auto;">
+                    <form id="formVentaTemporal">
+                        <input type="hidden" id="VentaID" value="0" />
+                        <input type="hidden" id="UsuarioID" value="@User.Identity?.Name" />
+                        <div class="row">
+                            <!-- Cliente -->
+                            <div class="mb-2 col-md-4">
+                                <label for="PersonaID" class="form-label fw-bold">Cliente</label>
+                                <div class="input-group">
+                                    @Html.DropDownList("PersonaID", null, new
+                                        {
+                                            @class = "form-control",
+                                            @id =
+                                             "PersonaID"
+                                        })
+                                </div>
+                            </div>
+                            <!-- Fecha -->
+                            <div class="mb-2 col-md-4">
+                                <label for="fecha" class="form-label fw-bold">Fecha</label>
+                                <input type="date" id="fecha" name="fecha" class="form-control">
+                            </div>
+                        </div>
+                        <hr class="mb-3">
+                        <div class="row">
+                            <!-- Tipo de Producto -->
+                            <div class="mb-2 col-md-4">
+                                <label for="TipoProductoID" class="form-label fw-bold">Tipo De Producto</label>
+                                <div class="input-group">
+                                    @Html.DropDownList("TipoProductoID", null, new
+                                        {
+                                            @class = "form-control",
+                                            @id =
+                                             "TipoProductoID"
+                                        })
+                                </div>
+                            </div>
+                            <!-- Producto -->
+                            <div class="mb-2 col-md-4">
+                                <label for="ProductoID" class="form-label fw-bold">Producto</label>
+                                <div class="input-group">
+                                    @Html.DropDownList("ProductoID", null, new
+                                        {
+                                            @class = "form-control",
+                                            @id =
+                                             "ProductoID"
+                                        })
+                                </div>
+                            </div>
+                            <!-- Cantidad -->
+                            <div class="mb-2 col-md-2">
+                                <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
+                                <input type="number" class="form-control" id="Cantidad" min="1" value="1">
+                            </div>
+                            <!-- Botón Agregar -->
+                            <div class="mb-2 col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary"
+                                    onclick="AgregarProducto()">Agregar</button>
+                            </div>
+
+                        </div>
+                        <hr class="mb-3">
+                        <!-- Tabla de Productos -->
+                        <h5>Productos Vendidos</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Total</th>
+                                        <th class="text-end"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="Tabla-Detalle">
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Total: <span id="total-price">$0.00</span></h3>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button type="button" class="btn boton-color" onclick="CancelarVenta()">
+                                Cancelar
+                            </button>
+                            <button type="button" class="btn boton-color" onclick="ConfirmarVenta()">
+                            Confirmar
+                            </button>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+@section Scripts {
+    <script src="~/js/NuevaVenta.js"></script>
+}

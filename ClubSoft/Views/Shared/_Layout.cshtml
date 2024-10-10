@@ -29,7 +29,7 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home"
                         asp-action="Inicio"><i class="fa-solid fa-house pe-2"></i>Inicio</a>
-                    
+
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Personas"
                         asp-action="Index"><i class="fas fa-users pe-2"></i>Personas</a>
 
@@ -86,12 +86,28 @@
                                 asp-action="InformeProductos">Informe Productos</a>
                         </div>
                     </div>
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="CuentaCorrientes"
-                        asp-action="Index"><i class="fa-solid fa-pen-to-square pe-2"></i>Cuentas Corrientes</a>
-                        <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Cobros"
-                        asp-action="Index"><i class="fa-solid fa-wallet pe-2"></i>Cobros</a>
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Ventas"
-                        asp-action="Index"><i class="fa-solid fa-cart-shopping pe-2"></i>Ventas</a>
+
+                    <!-- Dropdown para Ventas -->
+                    <div class="list-group-item p-0">
+                        <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                            data-bs-toggle="collapse" href="#ventasMenu" role="button" aria-expanded="false"
+                            aria-controls="ventasMenu">
+                            <span><i class="fa-solid fa-cart-shopping pe-2"></i>Ventas</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse bg-light mx-2 rounded" id="ventasMenu">
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Ventas"
+                        asp-action="NuevaVenta">Nueva Venta</a>
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Ventas"
+                                asp-action="Index">Listado</a>                          
+                        </div>
+                    </div>
+
+                    <a class="list-group-item list-group-item-action text-light" asp-area=""
+                        asp-controller="CuentaCorrientes" asp-action="Index"><i
+                            class="fa-solid fa-pen-to-square pe-2"></i>Cuentas Corrientes</a>
+                    
+                    
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias"
                         asp-action="Index"><i class="fas fa-map-marker-alt pe-2"></i>Provincias</a>
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Localidades"
@@ -127,12 +143,13 @@
             </div>
         </div>
     }
-    else{
+    else
+    {
         <div>
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
