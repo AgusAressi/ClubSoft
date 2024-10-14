@@ -274,14 +274,20 @@ public class PersonasController : Controller
 
     public JsonResult TraerPersona(int? PersonaID)
     {
-        // Realizamos la consulta uniendo Personas con AspNetUsers y obteniendo el rol
         var personaporID = (from p in _context.Personas
                             join u in _context.Users
-                            on p.UsuarioID equals u.Id // Relacionamos UsuarioID con Id de AspNetUsers
-                            join ur in _context.UserRoles // para obtener el rol del usuario
+                            on p.UsuarioID equals u.Id
+                            join ur in _context.UserRoles
                             on u.Id equals ur.UserId
-                            join r in _context.Roles // para obtener el nombre del rol
+                            join r in _context.Roles
                             on ur.RoleId equals r.Id
+                            // Unir con SocioTitular y SocioAdherente para obtener el tipo de socio y socio titular
+                            join st in _context.SocioTitulares
+                            on p.PersonaID equals st.PersonaID into socioTitularGroup
+                            from socioTitular in socioTitularGroup.DefaultIfEmpty()
+                            join sa in _context.SocioAdherentes
+                            on p.PersonaID equals sa.PersonaID into socioAdherenteGroup
+                            from socioAdherente in socioAdherenteGroup.DefaultIfEmpty()
                             where p.PersonaID == PersonaID
                             select new
                             {
@@ -298,10 +304,11 @@ public class PersonasController : Controller
                                     u.UserName,
                                     u.Email,
                                     Rol = r.Id
-                                }
+                                },
+                                TipoSocio = socioTitular != null ? "TITULAR" : (socioAdherente != null ? "ADHERENTE" : null),
+                                SocioTitularID = socioAdherente != null ? (int?)socioAdherente.SocioTitularID : null
                             }).FirstOrDefault();
 
-        // Si no se encuentra la persona, devolvemos un error
         if (personaporID == null)
         {
             return Json(new { error = "Persona no encontrada" });

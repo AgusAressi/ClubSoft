@@ -312,7 +312,7 @@ function AbrirEditar(PersonaID) {
         dataType: 'json',
         success: function (personaporID) {
             let persona = personaporID;
-            
+        
             document.getElementById("PersonaID").value = persona.personaID;
             document.getElementById("PersonaNombre").value = persona.nombre;
             document.getElementById("PersonaApellido").value = persona.apellido;
@@ -321,12 +321,20 @@ function AbrirEditar(PersonaID) {
             document.getElementById("PersonaDni").value = persona.dni;
             document.getElementById("LocalidadID").value = persona.localidadID;
             document.getElementById("UsuarioID").value = persona.usuario.id;
-            document.getElementById("PersonaEmail").value = persona.usuario.email; 
+            document.getElementById("PersonaEmail").value = persona.usuario.email;
             document.getElementById("PersonaUserName").value = persona.usuario.userName;
-            document.getElementById("PersonaContraseña").value = persona.usuario.password; 
+            document.getElementById("PersonaContraseña").value = persona.usuario.password;
             $("#RolID").val(persona.usuario.rol);
-
-            // Mostrar modal y cambiar título
+        
+            // Asignar TipoSocio
+            if (persona.tipoSocio === "TITULAR") {
+                $("#TipoSocio").val("1");
+            } else if (persona.tipoSocio === "ADHERENTE") {
+                $("#TipoSocio").val("2");
+                $("#SocioTitularID").val(persona.socioTitularID).prop('disabled', false);
+            }
+        
+            toggleTipoSocio();
             $("#ModalPersonas").modal("show");
             $("#ModalTitulo").text("Editar Persona y Usuario");
         },
