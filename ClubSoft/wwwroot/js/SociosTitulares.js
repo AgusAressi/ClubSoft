@@ -58,41 +58,53 @@ function LimpiarModalSocioTitular(){
     document.getElementById("errorMensajePersona").style.display = "none";
 }
 
-function GuardarSocioTitular(){
+function GuardarSocioTitular() {
     let socioTitularID = document.getElementById("SocioTitularID").value;
     let personaID = document.getElementById("PersonaID").value;
     let errorMensajePersona = document.getElementById("errorMensajePersona");
 
-    if(personaID == "0") {
+    // Validación básica de campos
+    if (personaID == "0") {
         errorMensajePersona.style.display = "block";
         return;
     } else {
         errorMensajePersona.style.display = "none";
     }
-    
+
+    // Realizar la petición AJAX
     $.ajax({
         url: '../../SocioTitulares/GuardarSocioTitular',
-        data: { 
+        data: {
             socioTitularID: socioTitularID,
-            personaID: personaID,
+            personaID: personaID
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            }); 
-            ListadoSociosTitulares();
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                // Mostrar alerta de éxito
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: response.mensaje,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoSociosTitulares();
+            } else {
+                // Mostrar alerta de advertencia
+                Swal.fire({
+                    icon: "error",
+                    text: response.mensaje
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
+
 
 function EliminarSocioTitular(SocioTitularID){
     Swal.fire({

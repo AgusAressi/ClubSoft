@@ -57,12 +57,12 @@
               <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
               <input type="hidden" id="SocioTitularID" value="0" />
               <div class="mb-2">
-                <label for="PersonaID" class="form-label fw-bold">Seleccione una persona</label>
-                @Html.DropDownList("PersonaID", null, htmlAttributes: new { @class = "form-control" })
-                <span id="errorMensajePersona"
-                  style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                  <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una persona
-                </span>
+                  <label for="PersonaID" class="form-label fw-bold">Seleccione una persona</label>
+                  @Html.DropDownList("PersonaID", null, htmlAttributes: new { @class = "form-control" })
+                  <span id="errorMensajePersona"
+                      style="color:red; display:none; font-size: 15px; padding-left: 4px;">
+                      <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe seleccionar una persona
+                  </span>
               </div>
             </div>
           </form>
