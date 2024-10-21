@@ -116,36 +116,47 @@ function AbrirEditar(LocalidadID){
     });
 }
 
-function EliminarLocalidad(LocalidadID){
+function EliminarLocalidad(LocalidadID) {
     Swal.fire({
-        title: "¿Esta seguro que quiere eliminar la localidad?",
-        text: "No podrás recuperarlo!",
+        title: "¿Está seguro que quiere eliminar a la persona?",
+        text: "¡No podrás recuperarla!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!",
+        confirmButtonText: "Sí, eliminar!",
         cancelButtonText: "Cancelar"
     }).then((result) => {
-        if (result.isConfirmed) {            
+        if (result.isConfirmed) {
             $.ajax({
                 url: '../../Localidades/EliminarLocalidad',
                 data: {
-                    localidadID: LocalidadID,
+                    LocalidadID: LocalidadID,
                 },
                 type: 'POST',
                 dataType: 'json',
                 success: function (resultado) {
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: "La localidad se elimino correctamente",
-                        icon: "success",
-                        confirmButtonColor: "#3085d6"
-                    });           
-                    ListadoLocalidades();
+                    if (resultado.success) {
+                        // Si se eliminó correctamente, mostrar éxito
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "La localidad se eliminó correctamente",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        ListadoLocalidades();
+                    } else {
+                        // Si no se puede eliminar, mostrar el mensaje con la razón
+                        Swal.fire({
+                            title: "Ups!",
+                            text: resultado.message, 
+                            icon: "error",
+                            confirmButtonColor: "#3085d6"
+                        });
+                    }
                 },
                 error: function (xhr, status) {
-                console.log('Disculpe, existió un problema al eliminar el registro.');
+                    console.log('Disculpe, existió un problema al eliminar el registro.');
                 }
             });
         }

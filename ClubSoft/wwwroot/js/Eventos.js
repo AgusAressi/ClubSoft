@@ -112,7 +112,7 @@ function GuardarRegistro() {
         success: function (resultado) {
             console.log(resultado);
             Swal.fire({
-                position: "top-end",
+                position: "bottom-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,

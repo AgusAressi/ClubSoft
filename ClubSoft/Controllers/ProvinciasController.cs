@@ -4,6 +4,7 @@ using ClubSoft.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
 
@@ -71,14 +72,30 @@ public class ProvinciasController : Controller
         return Json(provinciaPorID.ToList());
     }
 
-     public JsonResult EliminarProvincia(int ProvinciaID)
-   {
-    var provincia = _context.Provincias.Find(ProvinciaID);
-    _context.Remove(provincia);
-    _context.SaveChanges();
+    public JsonResult EliminarProvincia(int ProvinciaID)
+    {
+        // Verificar si existen personas asociadas a la provincia
+        var personasAsociadas = _context.Personas
+            .Include(p => p.Localidad)
+            .Any(p => p.Localidad.ProvinciaID == ProvinciaID);
 
-    return Json(true);
-   }
+        if (personasAsociadas)
+        {
+            // Retornar un mensaje de error si hay personas asociadas
+            return Json(new { success = false, message = "No se puede eliminar la provincia porque hay personas asociadas." });
+        }
+
+        // Si no hay personas asociadas, proceder con la eliminación de la provincia
+        var provincia = _context.Provincias.Find(ProvinciaID);
+        if (provincia != null)
+        {
+            _context.Remove(provincia);
+            _context.SaveChanges();
+            return Json(new { success = true, message = "La provincia fue eliminada correctamente." });
+        }
+
+        return Json(new { success = false, message = "Provincia no encontrada." });
+    }
 }
 
 
