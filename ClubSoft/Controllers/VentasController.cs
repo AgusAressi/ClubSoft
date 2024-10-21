@@ -110,74 +110,81 @@ namespace ClubSoft.Controllers
         // Método para agregar productos a la venta temporal
         [HttpPost]
         public IActionResult AgregarProducto(int productoID, int cantidad, int ventaID)
-        {
-            var venta = _context.Ventas.FirstOrDefault(v => v.VentaID == ventaID && v.Estado == Estado.Temporal);
-            if (venta == null)
-            {
-                return Json(new { success = false, message = "Venta no encontrada o no es temporal." });
-            }
+{
+    // Verificar si la venta existe y es temporal
+    var venta = _context.Ventas
+        .FirstOrDefault(v => v.VentaID == ventaID && v.Estado == Estado.Temporal);
 
-            var producto = _context.Productos.FirstOrDefault(p => p.ProductoID == productoID);
-            if (producto == null)
-            {
-                return Json(new { success = false, message = "Producto no encontrado." });
-            }
+    if (venta == null)
+    {
+        return Json(new { success = false, message = "Venta no encontrada o no es temporal." });
+    }
 
-            // Crear un nuevo detalle de venta temporal
-            var detalleVenta = new DetalleVenta
-            {
-                VentaID = ventaID,
-                ProductoID = productoID,
-                Cantidad = cantidad,
-                Precio = producto.Precio,
-                SubTotal = producto.Precio * cantidad,
-                UsuarioID = User.Identity.Name
-            };
+    // Verificar si el producto existe
+    var producto = _context.Productos.FirstOrDefault(p => p.ProductoID == productoID);
+    if (producto == null)
+    {
+        return Json(new { success = false, message = "Producto no encontrado." });
+    }
 
-            _context.DetalleVentas.Add(detalleVenta);
-            _context.SaveChanges();
+    // Crear un nuevo detalle de venta
+    var detalleVenta = new DetalleVenta
+    {
+        VentaID = ventaID,
+        ProductoID = productoID,
+        Cantidad = cantidad,
+        Precio = producto.Precio,
+        SubTotal = producto.Precio * cantidad,
+        UsuarioID = User.Identity.Name
+    };
 
-            return Json(new { success = true, precio = producto.Precio });
-        }
+    _context.DetalleVentas.Add(detalleVenta);
+    _context.SaveChanges();
+
+    return Json(new { success = true, precio = producto.Precio });
+}
 
         // Método para confirmar la venta
         [HttpPost]
-        public IActionResult ConfirmarVenta(int ventaID)
+       public IActionResult ConfirmarVenta(int ventaID)
+{
+    using (var transaction = _context.Database.BeginTransaction())
+    {
+        try
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            // Verificar si la venta existe y es temporal
+            var venta = _context.Ventas
+                .FirstOrDefault(v => v.VentaID == ventaID && v.Estado == Estado.Temporal);
+
+            if (venta == null)
             {
-                try
-                {
-                    var venta = _context.Ventas
-                        .FirstOrDefault(v => v.VentaID == ventaID && v.Estado == Estado.Temporal);
-
-                    if (venta == null)
-                    {
-                        return Json(new { success = false, message = "Venta no encontrada o ya confirmada." });
-                    }
-
-                    var detallesVenta = _context.DetalleVentas
-                        .Where(dv => dv.VentaID == ventaID).ToList();
-
-                    if (!detallesVenta.Any())
-                    {
-                        return Json(new { success = false, message = "No se han agregado productos a la venta." });
-                    }
-
-                    // Cambiar el estado de la venta a Confirmado
-                    venta.Estado = Estado.Confirmado;
-                    _context.SaveChanges();
-                    transaction.Commit();
-
-                    return Json(new { success = true, redirectUrl = Url.Action("Index", "Ventas") });
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return Json(new { success = false, message = "Error al confirmar la venta: " + ex.Message });
-                }
+                return Json(new { success = false, message = "Venta no encontrada o ya confirmada." });
             }
+
+            // Obtener los detalles de la venta
+            var detallesVenta = _context.DetalleVentas
+                .Where(dv => dv.VentaID == ventaID).ToList();
+
+            if (!detallesVenta.Any())
+            {
+                return Json(new { success = false, message = "No se han agregado productos a la venta." });
+            }
+
+            // Cambiar el estado de la venta a Confirmado
+            venta.Estado = Estado.Confirmado;
+            _context.SaveChanges();
+            transaction.Commit();
+
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Ventas") });
         }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            return Json(new { success = false, message = "Error al confirmar la venta: " + ex.Message });
+        }
+    }
+}
+
 
         // Método para cancelar la venta
         [HttpPost]

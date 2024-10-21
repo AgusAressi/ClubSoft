@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // Función para agregar un producto
 function AgregarProducto() {
     let productoID = $("#ProductoID").val();
-    let cantidad = $("#Cantidad").val();
+    let cantidad = parseInt($("#Cantidad").val());
     let ventaID = $("#VentaID").val();
 
-    if (productoID === "" || cantidad === "") {
-        Swal.fire("Por favor, selecciona un producto y una cantidad.", "", "warning");
+    if (productoID === "0" || cantidad <= 0 || ventaID === "0" || ventaID === "") {
+        Swal.fire("Por favor, selecciona un producto, cantidad y asegúrate de que la venta temporal esté creada.", "", "warning");
         return;
     }
 
@@ -53,8 +53,21 @@ function AgregarProducto() {
         },
         success: function (result) {
             if (result.success) {
-                console.log("Producto agregado con éxito.");
-                // Actualizar el carrito o la lista de productos
+                // Actualizar la tabla con el nuevo producto
+                let productoNombre = $("#ProductoID option:selected").text();
+                let precio = result.precio;
+                let totalProducto = precio * cantidad;
+                let nuevaFila = `
+                    <tr>
+                        <td>${productoNombre}</td>
+                        <td>$${precio.toFixed(2)}</td>
+                        <td>${cantidad}</td>
+                        <td>$${totalProducto.toFixed(2)}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="EliminarProducto(this)">Eliminar</button></td>
+                    </tr>
+                `;
+                $("#Tabla-Detalle").append(nuevaFila);
+                LimpiarFormularioProducto();
             } else {
                 Swal.fire("Error", result.message, "error");
             }
@@ -88,38 +101,47 @@ $('#PersonaID').change(function () {
 
 // Función para guardar o actualizar venta temporal
 function GuardarVentaTemporal() {
-let personaID = $("#PersonaID").val(); // Cliente
-let fecha = $("#fecha").val(); // Fecha
+    let personaID = $("#PersonaID").val(); // Cliente
+    let fecha = $("#fecha").val(); // Fecha
 
-if (personaID === "" || fecha === "") {
-    Swal.fire("Completa los campos de Cliente y Fecha.", "", "warning");
-    return;
-}
-
-$.ajax({
-    url: '/Ventas/GuardarVentaTemporal',
-    type: 'POST',
-    data: {
-        PersonaID: personaID,
-        Fecha: fecha
-    },
-    success: function (result) {
-        if (result.success) {
-            console.log("Venta temporal guardada con ID: " + result.ventaID);
-        } else {
-            console.log("Error al guardar la venta temporal.");
-        }
-    },
-    error: function () {
-        console.log("Error en la solicitud.");
+    if (personaID === "" || fecha === "") {
+        Swal.fire("Completa los campos de Cliente y Fecha.", "", "warning");
+        return;
     }
-});
+
+    $.ajax({
+        url: '/Ventas/GuardarVentaTemporal',
+        type: 'POST',
+        data: {
+            PersonaID: personaID,
+            Fecha: fecha
+        },
+        success: function (response) {
+            if (response.success) {
+                // Asignar el nuevo ventaID generado
+                $("#VentaID").val(response.ventaID); // Asegúrate de que aquí se guarda el ID de la venta temporal
+                // Mostrar la segunda sección del formulario
+                document.getElementById("form-section-2").style.display = "block";
+                Swal.fire("Venta temporal creada.", "", "success");
+            } else {
+                Swal.fire(response.message, "", "error");
+            }
+        },
+        error: function () {
+            Swal.fire("Error al crear la venta temporal.", "", "error");
+        }
+    });
 }
 
 
 // Función para confirmar la venta
 function ConfirmarVenta() {
-    let ventaID = $('#ventaID').val(); // Asignar el ID de la venta temporal guardada
+    let ventaID = $('#VentaID').val(); // Asegúrate de que el ID se obtiene correctamente
+
+    if (!ventaID || ventaID === "0") {
+        Swal.fire("No hay venta temporal para confirmar.", "", "warning");
+        return;
+    }
 
     $.ajax({
         url: '/Ventas/ConfirmarVenta',
@@ -137,6 +159,7 @@ function ConfirmarVenta() {
         }
     });
 }
+
 
 // Función para cancelar la venta
 function CancelarVenta() {
