@@ -25,7 +25,7 @@ function InformePorEventos() {
                 contenidoTabla += `
                     <tr>
                     
-                        <td colspan="3"><strong>${nombreTipoEvento}</strong></td>
+                        <td colspan="3" style="background-color: #e0e0e0;"><strong>${nombreTipoEvento}</strong></td>
                         
                     </tr>
                 `;

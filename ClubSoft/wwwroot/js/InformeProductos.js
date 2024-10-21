@@ -24,9 +24,8 @@ function InformeListadoProductos() {
 
                 contenidoTabla += `
                     <tr>
-                    
-                        <td colspan="3"><strong>${nombreTipoProducto}</strong></td>
-                        
+                     <td colspan="3" style="background-color: #e0e0e0;"><strong>${nombreTipoProducto}</strong></td>
+
                     </tr>
                 `;
 

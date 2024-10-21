@@ -1,3 +1,4 @@
+window.onload = ListadoSociosAdherentes();
 function ListadoSociosAdherentes(){
     $.ajax({
         url: '../../SocioAdherentes/ListadoSociosAdherentes',

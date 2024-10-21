@@ -2,7 +2,7 @@ window.onload = InformePorSocios;
 
 function InformePorSocios() {
     $.ajax({
-        url: '../../SocioAdherente/InformePorSocios',
+        url: '../../SocioAdherentes/InformePorSocios',
         data: {},
         type: 'POST',
         dataType: 'json',
@@ -22,14 +22,15 @@ function InformePorSocios() {
             for (let socioTitularNombre in agrupadoPorTitular) {
                 contenidoTabla += `
                     <tr>
-                        <td colspan="3"><strong>${socioTitularNombre}</strong></td>
+                        <td colspan="3" style="background-color: #e0e0e0;"><strong>${socioTitularNombre}</strong></td>
                     </tr>
                 `;
 
+                // Iterar sobre los adherentes de cada socio titular
                 $.each(agrupadoPorTitular[socioTitularNombre], function (index, InformeSocios) {
                     contenidoTabla += `
                         <tr>
-                            <td></td>
+                            <td style="padding-left: 20px;"</td>
                             <td>${InformeSocios.personaNombre}, ${InformeSocios.personaApellido}</td>
                         </tr>
                     `;
