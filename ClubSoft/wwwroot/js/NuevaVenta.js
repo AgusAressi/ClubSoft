@@ -25,56 +25,24 @@ $(document).ready(function () {
     });
 });
 
+
 document.addEventListener('DOMContentLoaded', function() {
     var fechaInput = document.getElementById('fecha');
     fechaInput.valueAsDate = new Date();
 });
 
 
+// Función para agregar un producto
 function AgregarProducto() {
     let productoID = $("#ProductoID").val();
     let cantidad = parseInt($("#Cantidad").val());
-    let ventaID = $("#VentaID").val(); // Debe existir un ventaID antes de agregar productos.
-    let personaID = $("#PersonaID").val(); // ID del cliente
+    let ventaID = $("#VentaID").val();
 
-    if (productoID == "0" || cantidad <= 0) {
-        Swal.fire("Completa todos los campos.", "", "warning");
+    if (productoID === "0" || cantidad <= 0 || ventaID === "0" || ventaID === "") {
+        Swal.fire("Por favor, selecciona un producto, cantidad y asegúrate de que la venta temporal esté creada.", "", "warning");
         return;
     }
 
-    // Verificar si ya se ha creado la venta
-    if (ventaID == "0" || ventaID == "") {
-        // Crear la venta temporal si no existe
-        $.ajax({
-            url: '/Ventas/GuardarVentaTemporal',
-            type: 'POST',
-            data: {
-                PersonaID: personaID, // Pasamos el cliente
-                productos: [] // Inicialmente vacío
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Asignar el nuevo ventaID generado
-                    $("#VentaID").val(response.ventaID);
-                    ventaID = response.ventaID;
-
-                    // Llamar nuevamente a AgregarProducto con el ventaID creado
-                    agregarProductoConVentaID(ventaID, productoID, cantidad);
-                } else {
-                    Swal.fire(response.message, "", "error");
-                }
-            },
-            error: function () {
-                Swal.fire("Error al crear la venta temporal.", "", "error");
-            }
-        });
-    } else {
-        // Si la venta ya existe, agregar el producto directamente
-        agregarProductoConVentaID(ventaID, productoID, cantidad);
-    }
-}
-
-function agregarProductoConVentaID(ventaID, productoID, cantidad) {
     $.ajax({
         url: '/Ventas/AgregarProducto',
         type: 'POST',
@@ -83,11 +51,11 @@ function agregarProductoConVentaID(ventaID, productoID, cantidad) {
             cantidad: cantidad,
             ventaID: ventaID
         },
-        success: function (response) {
-            if (response.success) {
+        success: function (result) {
+            if (result.success) {
                 // Actualizar la tabla con el nuevo producto
                 let productoNombre = $("#ProductoID option:selected").text();
-                let precio = response.precio;
+                let precio = result.precio;
                 let totalProducto = precio * cantidad;
                 let nuevaFila = `
                     <tr>
@@ -101,11 +69,11 @@ function agregarProductoConVentaID(ventaID, productoID, cantidad) {
                 $("#Tabla-Detalle").append(nuevaFila);
                 LimpiarFormularioProducto();
             } else {
-                Swal.fire(response.message, "", "error");
+                Swal.fire("Error", result.message, "error");
             }
         },
         error: function () {
-            Swal.fire("Ocurrió un error al agregar el producto.", "", "error");
+            Swal.fire("Error", "No se pudo agregar el producto.", "error");
         }
     });
 }
@@ -122,49 +90,98 @@ function LimpiarFormularioProducto() {
     $("#ProductoID").append('<option value="0">[SELECCIONE UN PRODUCTO]</option>');
 }
 
+// Ejecutar función al cambiar cliente
+$('#PersonaID').change(function () {
+    let personaID = $(this).val();
 
-function ConfirmarVenta() {
-    let filasProductos = $("#tablaProductos tbody tr").length;
-    
-    if (filasProductos === 0) {
-        Swal.fire("No se han agregado productos a la venta.", "", "warning");
+    // Llamada para crear o actualizar la venta temporal del usuario
+    GuardarVentaTemporal();
+});
+
+
+// Función para guardar o actualizar venta temporal
+function GuardarVentaTemporal() {
+    let personaID = $("#PersonaID").val(); // Cliente
+    let fecha = $("#fecha").val(); // Fecha
+
+    if (personaID === "" || fecha === "") {
+        Swal.fire("Completa los campos de Cliente y Fecha.", "", "warning");
         return;
     }
 
-    let ventaID = $("#VentaID").val();
-
     $.ajax({
-        url: '/Ventas/ConfirmarVenta',
+        url: '/Ventas/GuardarVentaTemporal',
         type: 'POST',
-        data: { ventaID: ventaID },
+        data: {
+            PersonaID: personaID,
+            Fecha: fecha
+        },
         success: function (response) {
             if (response.success) {
-                window.location.href = response.redirectUrl;
+                // Asignar el nuevo ventaID generado
+                $("#VentaID").val(response.ventaID); // Asegúrate de que aquí se guarda el ID de la venta temporal
+                // Mostrar la segunda sección del formulario
+                document.getElementById("form-section-2").style.display = "block";
+                Swal.fire("Venta temporal creada.", "", "success");
             } else {
                 Swal.fire(response.message, "", "error");
             }
         },
         error: function () {
-            Swal.fire("Ocurrió un error al confirmar la venta.", "", "error");
+            Swal.fire("Error al crear la venta temporal.", "", "error");
         }
     });
 }
 
+
+// Función para confirmar la venta
+function ConfirmarVenta() {
+    let ventaID = $('#VentaID').val(); // Asegúrate de que el ID se obtiene correctamente
+
+    if (!ventaID || ventaID === "0") {
+        Swal.fire("No hay venta temporal para confirmar.", "", "warning");
+        return;
+    }
+
+    $.ajax({
+        url: '/Ventas/ConfirmarVenta',
+        type: 'POST',
+        data: { ventaID: ventaID },
+        success: function (result) {
+            if (result.success) {
+                window.location.href = result.redirectUrl;
+            } else {
+                Swal.fire("Error", result.message, "error");
+            }
+        },
+        error: function () {
+            Swal.fire("Error", "No se pudo confirmar la venta.", "error");
+        }
+    });
+}
+
+
+// Función para cancelar la venta
 function CancelarVenta() {
-    Swal.fire({
-        title: "¿Cancelar venta?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, cancelar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Resetear los input
-            $("#Tabla-Detalle").empty();
-            $("#total-price").text("$0.00");
+    let ventaID = $("#ventaID").val(); // ID de la venta temporal
+
+    $.ajax({
+        url: '/Ventas/CancelarVenta',
+        type: 'POST',
+        data: { ventaID: ventaID },
+        success: function (result) {
+            if (result.success) {
+                Swal.fire("Venta cancelada", "", "success");
+                // Vaciar los campos o redirigir a la vista de ventas
+            } else {
+                Swal.fire("Error", result.message, "error");
+            }
+        },
+        error: function () {
+            Swal.fire("Error", "No se pudo cancelar la venta.", "error");
         }
     });
 }
-
 function obtenerProductos() {
     let productos = [];
     $("#Tabla-Detalle tr").each(function () {
@@ -178,3 +195,16 @@ function obtenerProductos() {
     });
     return productos;
 }
+
+//SECCIONES DE CARGA DE DATOS
+
+document.getElementById("next-step-btn").addEventListener("click", function() {
+    var cliente = document.getElementById("PersonaID").value;
+    var fecha = document.getElementById("fecha").value;
+
+    if (cliente !== "" && fecha !== "") {
+        document.getElementById("form-section-2").style.display = "block"; // Mostrar la segunda sección
+    } else {
+        alert("Por favor, complete el cliente y la fecha.");
+    }
+});

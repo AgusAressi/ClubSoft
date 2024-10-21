@@ -109,22 +109,15 @@ function GuardarRegistro() {
         type: 'POST',
         dataType: 'json',   
         success: function (resultado) {
-            if (resultado.success) {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Registro guardado correctamente!",
-                    showConfirmButton: false,
-                    timer: 1000
-                });
-                ListadoEventos(); 
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: resultado.message,
-                });
-            }
+            console.log(resultado);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Registro guardado correctamente!",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            ListadoEventos(); 
         },
         error: function (xhr, status, error) {
             console.log('Disculpe, existió un problema al guardar el registro');

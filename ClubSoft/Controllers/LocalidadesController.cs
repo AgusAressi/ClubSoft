@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
 using static ClubSoft.Models.Localidad;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
 
@@ -118,14 +119,29 @@ public class LocalidadesController : Controller
         return Json(localidadporID.ToList());
     }
 
-     public JsonResult EliminarLocalidad(int LocalidadID)
-   {
-    var localidad = _context.Localidades.Find(LocalidadID);
-    _context.Remove(localidad);
-    _context.SaveChanges();
+    public JsonResult EliminarLocalidad(int LocalidadID)
+    {
+        // Verificar si existen personas asociadas a la provincia
+        var personasAsociadas = _context.Personas
+            .Any(p => p.LocalidadID == LocalidadID);
 
-    return Json(true);
-   }
+        if (personasAsociadas)
+        {
+            // Retornar un mensaje de error si hay personas asociadas
+            return Json(new { success = false, message = "No se puede eliminar la localidad porque hay personas asociadas." });
+        }
+
+        // Si no hay personas asociadas, proceder con la eliminación de la provincia
+        var localidad = _context.Localidades.Find(LocalidadID);
+        if (localidad != null)
+        {
+            _context.Remove(localidad);
+            _context.SaveChanges();
+            return Json(new { success = true, message = "La localidad fue eliminada correctamente." });
+        }
+
+        return Json(new { success = false, message = "Localidad no encontrada." });
+    }
 }
 
 
