@@ -117,8 +117,9 @@ public class PersonasController : Controller
     )
     {
         string resultado = "";
-
-        rol = "SOCIO";
+        Nombre = Nombre.ToUpper();
+        Apellido = Apellido.ToUpper();
+        Direccion = Direccion.ToUpper();
 
         //SI EL USUARIO ID ES VACIO, QUIERE DECIR QUE VAMOS A CREAR UN USUARIO NUEVO Y DEMAS REGISTROS
         if (UsuarioID == "0")
@@ -182,20 +183,111 @@ public class PersonasController : Controller
             }
         }    
 
+        //SI EL USUARIO ID NO ESTA VACIO QUIERE DECIR QUE VAMOS A EDITAR UN USUARIO
+        if (!string.IsNullOrEmpty(UsuarioID) && UsuarioID != "0")
+        {
+            // 1. Buscar el usuario y actualizar sus datos
+            var user = await _userManager.FindByIdAsync(UsuarioID);
+            if (user != null)
+            {
+                user.UserName = UserName;
+                user.Email = Email;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return Json(new { Success = false, message = "Error al actualizar el usuario" });
+                }
+
+                // Verificar si se debe cambiar el rol
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                if (!currentRoles.Contains(rol))
+                {
+                    await _userManager.RemoveFromRolesAsync(user, currentRoles); // Elimina roles anteriores
+                    await _userManager.AddToRoleAsync(user, rol); // Asigna el nuevo rol
+                }
+            }
+
+            // 2. Buscar la persona y actualizar sus datos
+            var persona = _context.Personas.FirstOrDefault(p => p.UsuarioID == UsuarioID);
+            if (persona != null)
+            {
+                persona.Nombre = Nombre;
+                persona.Apellido = Apellido;
+                persona.Direccion = Direccion;
+                persona.Telefono = Telefono;
+                persona.DNI = DNI;
+                persona.LocalidadID = LocalidadID;
+
+                _context.Personas.Update(persona);
+                _context.SaveChanges();
+            }
+
+            // 3. Actualizar SocioTitular o SocioAdherente
+            if (rol == "SOCIO")
+            {
+                if (TipoSocio == 1)
+                {
+                    // Verificar si la persona ya es un SocioTitular
+                    var socioTitular = _context.SocioTitulares.FirstOrDefault(s => s.PersonaID == persona.PersonaID);
+                    if (socioTitular == null)
+                    {
+                        // Si no es, crear uno nuevo
+                        socioTitular = new SocioTitular { PersonaID = persona.PersonaID };
+                        _context.SocioTitulares.Add(socioTitular);
+                    }
+                    else
+                    {
+                        // Si ya existe, actualizar si fuera necesario (en este caso no hay más campos para actualizar)
+                    }
+                }
+                else if (TipoSocio == 2)
+                {
+                    // Verificar si la persona ya es un SocioAdherente
+                    var socioAdherente = _context.SocioAdherentes.FirstOrDefault(s => s.PersonaID == persona.PersonaID);
+                    if (socioAdherente == null)
+                    {
+                        // Si no es, crear uno nuevo
+                        socioAdherente = new SocioAdherente
+                        {
+                            PersonaID = persona.PersonaID,
+                            SocioTitularID = SocioTitularID
+                        };
+                        _context.SocioAdherentes.Add(socioAdherente);
+                    }
+                    else
+                    {
+                        // Si ya existe, actualizar el SocioTitularID en caso de que haya cambiado
+                        socioAdherente.SocioTitularID = SocioTitularID;
+                        _context.SocioAdherentes.Update(socioAdherente);
+                    }
+                }
+
+                _context.SaveChanges();
+                resultado = TipoSocio == 1 ? "Socio Titular actualizado exitosamente" : "Socio Adherente actualizado exitosamente";
+            }
+        }
+        
         return Json(new { success = true, message = resultado });
     }
 
 
     public JsonResult TraerPersona(int? PersonaID)
     {
-        // Realizamos la consulta uniendo Personas con AspNetUsers y obteniendo el rol
         var personaporID = (from p in _context.Personas
                             join u in _context.Users
-                            on p.UsuarioID equals u.Id // Relacionamos UsuarioID con Id de AspNetUsers
-                            join ur in _context.UserRoles // para obtener el rol del usuario
+                            on p.UsuarioID equals u.Id
+                            join ur in _context.UserRoles
                             on u.Id equals ur.UserId
-                            join r in _context.Roles // para obtener el nombre del rol
+                            join r in _context.Roles
                             on ur.RoleId equals r.Id
+                            // Unir con SocioTitular y SocioAdherente para obtener el tipo de socio y socio titular
+                            join st in _context.SocioTitulares
+                            on p.PersonaID equals st.PersonaID into socioTitularGroup
+                            from socioTitular in socioTitularGroup.DefaultIfEmpty()
+                            join sa in _context.SocioAdherentes
+                            on p.PersonaID equals sa.PersonaID into socioAdherenteGroup
+                            from socioAdherente in socioAdherenteGroup.DefaultIfEmpty()
                             where p.PersonaID == PersonaID
                             select new
                             {
@@ -212,10 +304,11 @@ public class PersonasController : Controller
                                     u.UserName,
                                     u.Email,
                                     Rol = r.Id
-                                }
+                                },
+                                TipoSocio = socioTitular != null ? "TITULAR" : (socioAdherente != null ? "ADHERENTE" : null),
+                                SocioTitularID = socioAdherente != null ? (int?)socioAdherente.SocioTitularID : null
                             }).FirstOrDefault();
 
-        // Si no se encuentra la persona, devolvemos un error
         if (personaporID == null)
         {
             return Json(new { error = "Persona no encontrada" });
@@ -238,15 +331,12 @@ public class PersonasController : Controller
         var socioTitular = _context.SocioTitulares.FirstOrDefault(st => st.PersonaID == PersonaID);
         if (socioTitular != null)
         {
-            // Retorna un mensaje de error si es un SocioTitular
             return Json(new { success = false, message = "La persona esta registrada como Socio Titular." });
         }
-
         // Verificar si está registrada como SocioAdherente
         var socioAdherente = _context.SocioAdherentes.FirstOrDefault(sa => sa.PersonaID == PersonaID);
         if (socioAdherente != null)
         {
-            // Retorna un mensaje de error si es un SocioAdherente
             return Json(new { success = false, message = "La persona esta registrada como Socio Adherente." });
         }
 

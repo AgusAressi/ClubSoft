@@ -1,4 +1,8 @@
 window.onload = ListadoSociosAdherentes();
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca0f35fad6cf5c10de06b048f39f7c7774ae6e69
 function ListadoSociosAdherentes(){
     $.ajax({
         url: '../../SocioAdherentes/ListadoSociosAdherentes',
@@ -72,7 +76,8 @@ function GuardarSocioAdherente(){
     let errorMensajePersona = document.getElementById("errorMensajePersona");
     let socioTitularID = document.getElementById("SocioTitularID").value;
     let errorMensajeSocioTitular = document.getElementById("errorMensajeSocioTitular");
-    
+
+    // Validación básica de campos
     if(personaID == "0") {
         errorMensajePersona.style.display = "block";
         return;
@@ -85,31 +90,39 @@ function GuardarSocioAdherente(){
     } else {
         errorMensajeSocioTitular.style.display = "none";
     }
-    
+
     $.ajax({
         url: '../../SocioAdherentes/GuardarSocioAdherente',
         data: { 
             socioAdherenteID: socioAdherenteID,
             socioTitularID: socioTitularID,
-            personaID: personaID,
+            personaID: personaID
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            }); 
-            ListadoSociosAdherentes();
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: response.mensaje,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoSociosAdherentes();
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    text: response.mensaje
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
+
 
 function AbrirEditar(SocioAdherenteID){
     
