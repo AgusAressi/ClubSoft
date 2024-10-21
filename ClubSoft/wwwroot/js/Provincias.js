@@ -101,33 +101,43 @@ function AbrirEditar(ProvinciaID){
 }
 
 function EliminarProvnicia(ProvinciaID) {
-
     Swal.fire({
-        title: "¿Esta seguro que quiere eliminar la provincia?",
-        text: "No podrás recuperarlo!",
+        title: "¿Está seguro que quiere eliminar a la persona?",
+        text: "¡No podrás recuperarla!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!",
+        confirmButtonText: "Sí, eliminar!",
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
                 url: '../../Provincias/EliminarProvincia',
                 data: {
-                    provinciaID: ProvinciaID,
+                    ProvinciaID: ProvinciaID,
                 },
                 type: 'POST',
                 dataType: 'json',
                 success: function (resultado) {
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: "La provincia se elimino correctamente",
-                        icon: "success",
-                        confirmButtonColor: "#3085d6"
-                    });
-                    ListadoProvincias();
+                    if (resultado.success) {
+                        // Si se eliminó correctamente, mostrar éxito
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: "La provincia se eliminó correctamente",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        ListadoProvincias();
+                    } else {
+                        // Si no se puede eliminar, mostrar el mensaje con la razón
+                        Swal.fire({
+                            title: "Ups!",
+                            text: resultado.message, 
+                            icon: "error",
+                            confirmButtonColor: "#3085d6"
+                        });
+                    }
                 },
                 error: function (xhr, status) {
                     console.log('Disculpe, existió un problema al eliminar el registro.');

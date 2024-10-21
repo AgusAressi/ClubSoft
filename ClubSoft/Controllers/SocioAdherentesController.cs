@@ -87,7 +87,9 @@ public class SocioAdherentesController : Controller
         var listaTitulares = sociosTitulares.Select(st => new 
         {
             st.SocioTitularID,
-            NombreCompleto = st.Persona.Apellido + " " + st.Persona.Nombre
+            NombreCompleto = (st.Persona != null) 
+                ? (st.Persona.Apellido + " " + st.Persona.Nombre) 
+                : "[SIN ASIGNAR]"
         }).OrderBy(st => st.NombreCompleto);
 
         ViewBag.SocioTitularID = new SelectList(listaTitulares, "SocioTitularID", "NombreCompleto");

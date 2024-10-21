@@ -66,7 +66,7 @@ function GuardarRegistroLugar(){
         dataType: 'json',
         success: function (resultado) {
             Swal.fire({
-                position: "top-end",
+                position: "bottom-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
