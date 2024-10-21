@@ -1,8 +1,4 @@
 window.onload = ListadoSociosAdherentes();
-<<<<<<< HEAD
-=======
-
->>>>>>> ca0f35fad6cf5c10de06b048f39f7c7774ae6e69
 function ListadoSociosAdherentes(){
     $.ajax({
         url: '../../SocioAdherentes/ListadoSociosAdherentes',

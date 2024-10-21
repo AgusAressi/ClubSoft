@@ -44,30 +44,31 @@ function ListadoLocalidades(){
         }
     });
 }
-
-function GuardarRegistro(){
+function GuardarRegistro() {
     let localidadID = document.getElementById("LocalidadID").value;
     let nombre = document.getElementById("LocalidadNombre").value.trim(); // Elimina espacios en blanco
     let provinciaID = document.getElementById("ProvinciaID").value;
-    let errorMensajeLocalidad = document.getElementById("errorMensajeLocalidad");
-    let errorMensajeProvincia = document.getElementById("errorMensajeProvincia");
 
     // Validar si el campo de localidad está vacío
-    if(nombre == "") {
-        errorMensajeLocalidad.style.display = "block";
+    if (nombre == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'El nombre de la localidad no puede estar vacío',
+        });
         return;
-    } else {
-        errorMensajeLocalidad.style.display = "none";
     }
 
     // Validar si no se ha seleccionado una provincia
-    if(provinciaID == "0") {
-        errorMensajeProvincia.style.display = "block";
+    if (provinciaID == "0") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Provincia no seleccionada',
+            text: 'Debe seleccionar una provincia',
+        });
         return;
-    } else {
-        errorMensajeProvincia.style.display = "none";
     }
-    
+
     $.ajax({
         url: '../../Localidades/GuardarLocalidad',
         data: { 
@@ -76,21 +77,30 @@ function GuardarRegistro(){
             provinciaID: provinciaID
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            }); 
-            ListadoLocalidades();
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoLocalidades();
+            } else {
+                // Si ya existe la localidad o está asociada a otra provincia
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al guardar',
+                    text: response.message,  // "LA LOCALIDAD YA EXISTE EN ESTA PROVINCIA" o "LA LOCALIDAD NO PUEDE ASOCIARSE A MÁS DE UNA PROVINCIA"
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
 
 function AbrirEditar(LocalidadID){

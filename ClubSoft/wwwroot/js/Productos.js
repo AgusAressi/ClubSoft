@@ -77,16 +77,15 @@ function LimpiarModal(){
 function NuevoProducto(){
     $("#ModalTitulo").text("Nuevo Producto");
 }
-
 function GuardarRegistro() {
     let productoID = document.getElementById("ProductoID").value;
-    let nombre = document.getElementById("ProductoNombre").value;
+    let nombre = document.getElementById("ProductoNombre").value.trim();
     let precio = document.getElementById("ProductoPrecio").value;
     let cantidad = document.getElementById("ProductoCantidad").value;
     let descripcion = document.getElementById("ProductoDescripcion").value; 
     let estado = document.getElementById("ProductoEstado").value; 
     let tipoProductoID = document.getElementById("TipoProductoID").value;
-    
+
     let isValid = true;
 
     if (nombre === "") {
@@ -131,28 +130,36 @@ function GuardarRegistro() {
             Nombre: nombre,
             Precio: precio,
             Cantidad: cantidad,
-            Descripcion:descripcion,
+            Descripcion: descripcion,
             Estado: estado,
             TipoProductoID: tipoProductoID
         },
         type: 'POST',
         dataType: 'json',   
-        success: function (resultado) {
-            console.log(resultado);
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoProductos(); 
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoProductos(); 
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message, // Mensaje de error devuelto por el servidor
+                });
+            }
         },
         error: function (xhr, status, error) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
     });    
 }
+
 
 
 function AbrirEditar(ProductoID){

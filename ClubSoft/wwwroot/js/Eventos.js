@@ -59,7 +59,6 @@ function LimpiarModal(){
 function NuevoEvento(){
     $("#ModalTitulo").text("Nuevo Evento");
 }
-
 function GuardarRegistro() {
     let eventoID = document.getElementById("EventoID").value;
     let tipoEvento = document.getElementById("TipoEventoID").value;
@@ -110,21 +109,29 @@ function GuardarRegistro() {
         type: 'POST',
         dataType: 'json',   
         success: function (resultado) {
-            console.log(resultado);
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoEventos(); 
+            if (resultado.success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Registro guardado correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoEventos(); 
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: resultado.message,
+                });
+            }
         },
         error: function (xhr, status, error) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
     });    
 }
+
 
 function AbrirEditar(EventoID){
     $.ajax({
