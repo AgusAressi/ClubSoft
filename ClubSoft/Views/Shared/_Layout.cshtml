@@ -103,6 +103,22 @@
                         </div>
                     </div>
 
+                    <!-- Dropdown para Cobros -->
+                    <div class="list-group-item p-0">
+                        <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                            data-bs-toggle="collapse" href="#cobrosMenu" role="button" aria-expanded="false"
+                            aria-controls="cobrosMenu">
+                            <span><i class="fa-solid fa-cash-register pe-2"></i>Cobros</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse bg-light mx-2 rounded" id="cobrosMenu">
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Cobros"
+                        asp-action="NuevoCobro">Nuevo Cobro</a>
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Cobros"
+                                asp-action="Index">Listado</a>                          
+                        </div>
+                    </div>
+
                     <a class="list-group-item list-group-item-action text-light" asp-area=""
                         asp-controller="CuentaCorrientes" asp-action="Index"><i
                             class="fa-solid fa-pen-to-square pe-2"></i>Cuentas Corrientes</a>
