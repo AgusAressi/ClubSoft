@@ -39,20 +39,21 @@ function ListadoProvincias(){
         }
     });
 }
-
-function GuardarRegistro(){
+function GuardarRegistro() {
     let provinciaID = document.getElementById("ProvinciaID").value;
     let nombre = document.getElementById("ProvinciaNombre").value.trim(); // Elimina espacios en blanco
     let errorMensaje = document.getElementById("errorMensaje");
 
     // Validar si el campo está vacío
-    if(nombre === "") {
-        errorMensaje.style.display = "block";
+    if (nombre === "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'El nombre de la provincia no puede estar vacío',
+        });
         return;
-    } else {
-        errorMensaje.style.display = "none";
     }
-    
+
     $.ajax({
         url: '../../Provincias/GuardarProvincia',
         data: { 
@@ -60,22 +61,32 @@ function GuardarRegistro(){
             Nombre: nombre           
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            }); 
-            ListadoProvincias();
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoProvincias();
+            } else {
+                // Mostrar mensaje con SweetAlert si la provincia ya existe
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Provincia existente',
+                    text: response.message, // "LA PROVINCIA YA EXISTE"
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
+
 
 function AbrirEditar(ProvinciaID){
     

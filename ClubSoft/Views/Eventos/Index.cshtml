@@ -6,27 +6,27 @@
 
 <div class="p-3">
     @* TABLA *@
-    <div class="mt-2" style="heigth: 100%;">
-        <div class="card shadow-sm">
-            <div class="card-header row m-0 p-2">
-                <div class="col-md-6 d-flex align-items-center">
-                    <button type="button" class="btn boton-color" onclick="NuevoEvento()" data-bs-toggle="modal"
-                        data-bs-target="#ModalEventos">
-                        <i class="fa-solid fa-plus fa-2x"></i>
-                    </button>
-                </div>
-                <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
-                    <h3 class="m-0"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
-                </div>
+   <div class="mt-2" style="height: 100%;">
+    <div class="card shadow-sm">
+        <div class="card-header row m-0 p-2">
+            <div class="col-md-6 d-flex align-items-center">
+                <button type="button" class="btn boton-color" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
+                    <i class="fa-solid fa-plus fa-2x"></i>
+                </button>
             </div>
+            <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+                <h3 class="m-0"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+            </div>
+        </div>
 
-            <div class="card-body">
-                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-                    <div class="row" id="card-Eventos"></div>
-                </div>
+        <div class="card-body">
+            <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                <div class="d-flex justify-content-center flex-wrap" id="card-Eventos"></div>
             </div>
         </div>
     </div>
+</div>
+
 
     @* MODAL AGREGAR *@
     <div class="modal" tabindex="-1" id="ModalEventos">
