@@ -1,30 +1,46 @@
 window.onload = ListadoSociosTitulares();
-function ListadoSociosTitulares(){
+
+let currentPageSociosTitulares = 1;
+const itemsPerPageSociosTitulares = 9; // Número de socios por página, ajustable
+let totalPagesSociosTitulares = 1;
+
+function ListadoSociosTitulares(pagina = 1) {
     $.ajax({
         url: '../../SocioTitulares/ListadoSociosTitulares',
-        data: { 
-         },
         type: 'POST',
         dataType: 'json',
         success: function (MostrarSocios) {
             $("#ModalSocioTitular").modal("hide");
             LimpiarModalSocioTitular();
+
+            // Calcular el total de páginas
+            totalPagesSociosTitulares = Math.ceil(MostrarSocios.length / itemsPerPageSociosTitulares);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageSociosTitulares;
+            const endIndex = startIndex + itemsPerPageSociosTitulares;
+            const datosPagina = MostrarSocios.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(MostrarSocios, function (index, MostrarSociosTitulares) {                  
+            // Recorrer los socios de la página actual
+            $.each(datosPagina, function (index, MostrarSociosTitulares) {
                 contenidoTabla += `
                 <tr>
                     <td>${MostrarSociosTitulares.personaApellido}, ${MostrarSociosTitulares.personaNombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarSocioTitular(${MostrarSociosTitulares.socioTitularID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
+                        <button type="button" class="btn btn-danger" onclick="EliminarSocioTitular(${MostrarSociosTitulares.socioTitularID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td> 
                 </tr>
-             `;           
+                `;
             });
 
             document.getElementById("tbody-sociostitulares").innerHTML = contenidoTabla;
+
+            // Generar la paginación
+            generarPaginacionSociosTitulares(totalPagesSociosTitulares, pagina);
 
             // Filtro de búsqueda
             document.getElementById('searchInput').addEventListener('input', function () {
@@ -43,10 +59,36 @@ function ListadoSociosTitulares(){
 
         },  
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar los socios titulares');
         }
     });
 }
+
+function generarPaginacionSociosTitulares(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosTitulares(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosTitulares(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosTitulares(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
 
 function NuevoSocioTitular(){
     $("#ModalSocioTitularTitulo").text("Nuevo Socio Titular");
