@@ -21,7 +21,7 @@ function ListadoVentas() {
                     <td>${VentaMostrar.estado}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})">
-                            <i class="fa-solid fa-eye"></i>
+                            <i class="fa-solid fa-pencil"></i>
                         </button>
                     </td>
                 </tr>`;
