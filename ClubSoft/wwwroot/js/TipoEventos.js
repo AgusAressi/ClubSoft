@@ -38,8 +38,7 @@ function ListadoTipoEventos(){
             alert('Disculpe, existió un problema al deshabilitar');
         }
     });
-}
-function GuardarRegistro() {
+}function GuardarRegistro() {
     const tipoEventoID = document.getElementById("TipoEventoID").value;
     const nombre = document.getElementById("TipoEventoNombre").value.trim();
     const errorMensaje = document.getElementById("errorMensaje");
@@ -60,12 +59,14 @@ function GuardarRegistro() {
         success: function (resultado) {
             if (resultado.success) {
                 Swal.fire({
-                    position: "bottom-end",
+                    position: "center", // Cambiado a "center"
                     icon: "success",
                     title: "Registro guardado correctamente!",
                     showConfirmButton: false,
                     timer: 1000
                 });
+
+                
                 ListadoTipoEventos();
             } else {
                 // Mostrar alerta si el tipo de evento ya existe
@@ -73,6 +74,7 @@ function GuardarRegistro() {
                     icon: 'error',
                     title: 'Error',
                     text: resultado.message, // Mensaje de error devuelto por el servidor
+                    position: "center" // Cambiado a "center"
                 });
             }
         },
