@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Gráficos";
+}
+
+<div class="p-3 row" style="height: 100%;">
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color: rgb(206, 204, 204);"> <!-- Fondo gris claro -->
+            <div class="card-body">
+                <h5 class="card-title text-center">Cantidad de Socios</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <div class="card" style="background-color:rgb(206, 204, 204)"> <!-- Fondo gris claro -->
+            <div class="card-body">
+                <h5 class="card-title text-center">Total de Ventas</h5>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm col-md-6" style="max-height: 400px;"> 
+        <h3 class="card-header text-end">
+            <i class="fa-solid fa-table pe-2"></i>SOCIOS POR LOCALIDAD</h3>
+        <div class="card-body" style="position: relative; height: 300px;"> 
+            <canvas id="grafico-socio"></canvas>
+        </div>
+         
+</div>
+
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/Graficos.js"></script>
+}
