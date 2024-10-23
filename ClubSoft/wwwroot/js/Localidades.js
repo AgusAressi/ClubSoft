@@ -1,7 +1,7 @@
 window.onload = ListadoLocalidades();
 
 let currentPageLocalidades = 1;
-const itemsPerPageLocalidades = 6; // Número de localidades por página, ajustable
+const itemsPerPageLocalidades = 5;
 let totalPagesLocalidades = 1;
 
 function ListadoLocalidades(pagina = 1) {
@@ -25,7 +25,7 @@ function ListadoLocalidades(pagina = 1) {
             // Recorrer las localidades de la página actual
             $.each(datosPagina, function (index, localidad) {
                 contenidoTabla += `
-                <tr>
+                <tr >
                     <td>${localidad.nombre}</td>
                     <td>${localidad.nombreProvincia}</td>
                     <td class="text-center">

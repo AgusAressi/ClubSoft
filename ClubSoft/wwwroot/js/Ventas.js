@@ -11,14 +11,13 @@ function ListadoVentas() {
             let contenidoTabla = ``;
 
             $.each(VentasMostrar, function (index, VentaMostrar) {
-
+                
                 contenidoTabla += `
                 <tr>
                     <td>${VentaMostrar.ventaID}</td>
                     <td>${VentaMostrar.nombrePersona}, ${VentaMostrar.apellidoPersona}</td>
                     <td>${VentaMostrar.fecha}</td>
                     <td>${VentaMostrar.total}</td>
-                    <td>${VentaMostrar.estado}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})">
                             <i class="fa-solid fa-pencil"></i>

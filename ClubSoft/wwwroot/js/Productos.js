@@ -1,7 +1,7 @@
 window.onload = ListadoProductos();
 
 let currentPageProductos = 1;
-const itemsPerPageProductos = 9;
+const itemsPerPageProductos = 7;
 let totalPagesProductos = 1;
 
 function ListadoProductos(pagina = 1) {

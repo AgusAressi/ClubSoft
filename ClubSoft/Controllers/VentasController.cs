@@ -41,7 +41,7 @@ namespace ClubSoft.Controllers
                     NombrePersona = venta.Persona.Nombre,
                     ApellidoPersona = venta.Persona.Apellido,
                     Total = venta.Total,
-                    Fecha = venta.Fecha,
+                    Fecha = venta.Fecha.ToString("dd/MM/yyyy"),
                     Estado = venta.Estado.ToString()
 
 

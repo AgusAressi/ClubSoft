@@ -1,7 +1,7 @@
 window.onload = ListadoProvincias();
 
 let currentPage = 1;
-const itemsPerPage = 6; // Puedes ajustar el número de elementos por página
+const itemsPerPage = 5;
 let totalPages = 1;
 
 function ListadoProvincias(pagina = 1) {
