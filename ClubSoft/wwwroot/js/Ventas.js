@@ -22,15 +22,18 @@ function ListadoVentas(pagina = 1) {
 
             // Recorrer las ventas de la página actual
             $.each(datosPagina, function (index, VentaMostrar) {
+                // Formatear el total como moneda en ARS
+                let totalFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(VentaMostrar.total);
+
                 contenidoTabla += `
-                <tr>
-                    <td>${VentaMostrar.ventaID}</td>
-                    <td>${VentaMostrar.nombrePersona}, ${VentaMostrar.apellidoPersona}</td>
+                <tr class="text-center">
+                    <td># ${VentaMostrar.ventaID}</td>
+                    <td>${VentaMostrar.apellidoPersona}, ${VentaMostrar.nombrePersona}</td>
                     <td>${VentaMostrar.fecha}</td>
-                    <td>${VentaMostrar.total}</td>
+                    <td>${totalFormateado}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})">
-                            <i class="fa-solid fa-pencil"></i>
+                            <i class="fa-solid fa-list"></i>
                         </button>
                     </td>
                 </tr>`;
@@ -40,7 +43,6 @@ function ListadoVentas(pagina = 1) {
 
             // Generar la paginación
             generarPaginacionVentas(totalPagesVentas, pagina);
-
         },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al cargar las ventas');
