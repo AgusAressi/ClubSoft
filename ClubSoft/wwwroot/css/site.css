@@ -1,5 +1,8 @@
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
+  padding: 0;
 }
 
 @media (min-width: 768px) {
@@ -7,36 +10,35 @@ html {
     font-size: 16px;
   }
 }
-@media (max-width: 550px) {
-  .ocultar-en-550px {
-      display: none;
-  }
-}
-@media (max-width: 768px) {
-  .ocultar-en-768px {
-      display: none;
-  }
-}
-
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-  padding: 0;
-}
 
 body {
-   margin-bottom: 60px; 
+  margin-bottom: 60px;
+}
+
+@media (max-width: 550px) {
+  .ocultar-en-550px {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .ocultar-en-768px {
+    display: none;
+  }
+}
+
+.btn:focus, 
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .menuhover {
   font-size: 14px;
-    transition: all 0.3s ease-in-out;
-    position: relative;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
 .menuhover:hover {
@@ -45,4 +47,3 @@ body {
   margin-right: 5px;
   margin-left: 5px;
 }
-

@@ -1,44 +1,82 @@
 window.onload = ListadoProvincias();
 
+let currentPage = 1;
+const itemsPerPage = 6; // Puedes ajustar el número de elementos por página
+let totalPages = 1;
 
-function ListadoProvincias(){
+function ListadoProvincias(pagina = 1) {
     $.ajax({
         url: '../../Provincias/ListadoProvincias',
-        data: {  },
         type: 'POST',
         dataType: 'json',
         success: function (traerTodasLasProvincias) {
             LimpiarInput();
+
+            // Calcular el total de páginas
+            totalPages = Math.ceil(traerTodasLasProvincias.length / itemsPerPage);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const datosPagina = traerTodasLasProvincias.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
-            
-            $.each(traerTodasLasProvincias, function (index, traerTodasLasProvincias) {  
-                
+
+            // Recorrer las provincias de la página actual
+            $.each(datosPagina, function (index, provincia) {
                 contenidoTabla += `
                 <tr>
-                    <td>${traerTodasLasProvincias.nombre}</td>
+                    <td>${provincia.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodasLasProvincias.provinciaID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${provincia.provinciaID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${traerTodasLasProvincias.provinciaID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </td> 
-                </tr>
-             `;
-
+                        <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${provincia.provinciaID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
             });
 
             document.getElementById("tbody-Provincias").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacion(totalPages, pagina);
         },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar las provincias');
         }
     });
 }
+
+function generarPaginacion(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
+
 function GuardarRegistro() {
     let provinciaID = document.getElementById("ProvinciaID").value;
     let nombre = document.getElementById("ProvinciaNombre").value.trim(); // Elimina espacios en blanco

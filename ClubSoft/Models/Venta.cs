@@ -15,6 +15,8 @@ public class Venta
      public string? UsuarioID { get; set; } //quien registra la venta
 
 
+     public virtual Persona Persona { get; set; }
+
      public virtual ICollection<DetalleVenta> DetalleVentas { get; set; }
 
 }

@@ -1,49 +1,82 @@
 window.onload = ListadoLocalidades();
 
+let currentPageLocalidades = 1;
+const itemsPerPageLocalidades = 6; // Número de localidades por página, ajustable
+let totalPagesLocalidades = 1;
 
-function ListadoLocalidades(){
+function ListadoLocalidades(pagina = 1) {
     $.ajax({
         url: '../../Localidades/ListadoLocalidades',
-        data: { 
-         },
         type: 'POST',
         dataType: 'json',
         success: function (LocalidadesMostar) {
             LimpiarInput();
+
+            // Calcular el total de páginas
+            totalPagesLocalidades = Math.ceil(LocalidadesMostar.length / itemsPerPageLocalidades);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageLocalidades;
+            const endIndex = startIndex + itemsPerPageLocalidades;
+            const datosPagina = LocalidadesMostar.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(LocalidadesMostar, function (index, LocalidadesMostar) {  
-                
+            // Recorrer las localidades de la página actual
+            $.each(datosPagina, function (index, localidad) {
                 contenidoTabla += `
                 <tr>
-                    <td>${LocalidadesMostar.nombre}</td>
-                    <td>${LocalidadesMostar.nombreProvincia}</td>
+                    <td>${localidad.nombre}</td>
+                    <td>${localidad.nombreProvincia}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${LocalidadesMostar.localidadID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${localidad.localidadID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${LocalidadesMostar.localidadID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
+                        <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${localidad.localidadID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td> 
-                </tr>
-             `;
-
-               
+                </tr>`;
             });
 
             document.getElementById("tbody-Localidades").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacionLocalidades(totalPagesLocalidades, pagina);
         },
-
-       
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar las localidades');
         }
     });
 }
+
+function generarPaginacionLocalidades(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoLocalidades(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoLocalidades(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoLocalidades(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
 function GuardarRegistro() {
     let localidadID = document.getElementById("LocalidadID").value;
     let nombre = document.getElementById("LocalidadNombre").value.trim(); // Elimina espacios en blanco
@@ -172,6 +205,8 @@ function EliminarLocalidad(LocalidadID) {
         }
     });
 }
+
+
 
 function LimpiarInput() {
      document.getElementById("LocalidadID").value = 0;

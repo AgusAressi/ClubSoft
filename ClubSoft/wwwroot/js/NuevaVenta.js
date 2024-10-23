@@ -26,7 +26,7 @@ $(document).ready(function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var fechaInput = document.getElementById('fecha');
     fechaInput.valueAsDate = new Date();
 });
@@ -63,10 +63,18 @@ function AgregarProducto() {
                         <td>$${precio.toFixed(2)}</td>
                         <td>${cantidad}</td>
                         <td>$${totalProducto.toFixed(2)}</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="EliminarProducto(this)">Eliminar</button></td>
+                        <td><button class="btn btn-danger btn-sm" onclick="EliminarProducto(this)">
+                        <i class="fa-solid fa-trash"></i>
+                        </button>
+                        </td>
                     </tr>
                 `;
                 $("#Tabla-Detalle").append(nuevaFila);
+
+                // Actualizar el total de la venta
+                actualizarTotalVenta();
+
+                // Limpiar el formulario
                 LimpiarFormularioProducto();
             } else {
                 Swal.fire("Error", result.message, "error");
@@ -79,9 +87,27 @@ function AgregarProducto() {
 }
 
 
+// Función para actualizar el total de la venta
+function actualizarTotalVenta() {
+    let total = 0;
+
+    // Sumar los totales de los productos en la tabla
+    $("#Tabla-Detalle tr").each(function () {
+        let totalProducto = parseFloat($(this).find("td:nth-child(4)").text().replace("$", ""));
+        total += totalProducto;
+    });
+
+    // Actualizar el total en el DOM
+    $("#total-price").text(`$${total.toFixed(2)}`);
+}
+
+
+// Función para eliminar un producto y actualizar el total
 function EliminarProducto(button) {
     $(button).closest("tr").remove();
+    actualizarTotalVenta();
 }
+
 
 function LimpiarFormularioProducto() {
     $("#TipoProductoID").val("0");
@@ -122,7 +148,6 @@ function GuardarVentaTemporal() {
                 $("#VentaID").val(response.ventaID); // Asegúrate de que aquí se guarda el ID de la venta temporal
                 // Mostrar la segunda sección del formulario
                 document.getElementById("form-section-2").style.display = "block";
-                Swal.fire("Venta temporal creada.", "", "success");
             } else {
                 Swal.fire(response.message, "", "error");
             }
@@ -149,7 +174,15 @@ function ConfirmarVenta() {
         data: { ventaID: ventaID },
         success: function (result) {
             if (result.success) {
-                window.location.href = result.redirectUrl;
+                Swal.fire({
+                    title: "Venta confirmada",
+                    text: "La venta ha sido confirmada exitosamente.",
+                    icon: "success",
+                    timer: 2500, 
+                    showConfirmButton: false 
+                }).then(() => {
+                    window.location.href = result.redirectUrl;
+                });
             } else {
                 Swal.fire("Error", result.message, "error");
             }
@@ -160,10 +193,9 @@ function ConfirmarVenta() {
     });
 }
 
-
 // Función para cancelar la venta
 function CancelarVenta() {
-    let ventaID = $("#ventaID").val(); // ID de la venta temporal
+    let ventaID = $("#VentaID").val(); // ID de la venta temporal
 
     $.ajax({
         url: '/Ventas/CancelarVenta',
@@ -171,8 +203,17 @@ function CancelarVenta() {
         data: { ventaID: ventaID },
         success: function (result) {
             if (result.success) {
-                Swal.fire("Venta cancelada", "", "success");
-                // Vaciar los campos o redirigir a la vista de ventas
+                Swal.fire("Venta cancelada", "", "warning").then(() => {
+                    // Aquí vacías los campos de los inputs
+                    $('#VentaID').val('0');
+                    $('#fecha').val(''); // Reemplaza con el ID correcto de tu input de fecha
+                    $('#PersonaID').val('0'); // Reemplaza con el ID correcto de tu input de cliente
+                    // Vaciar la tabla de productos
+                    $('#Tabla-Detalle').empty();
+
+                    // Reiniciar el total
+                    $('#total-price').text('$0.00');
+                });
             } else {
                 Swal.fire("Error", result.message, "error");
             }
@@ -182,6 +223,7 @@ function CancelarVenta() {
         }
     });
 }
+
 function obtenerProductos() {
     let productos = [];
     $("#Tabla-Detalle tr").each(function () {
@@ -198,7 +240,7 @@ function obtenerProductos() {
 
 //SECCIONES DE CARGA DE DATOS
 
-document.getElementById("next-step-btn").addEventListener("click", function() {
+document.getElementById("next-step-btn").addEventListener("click", function () {
     var cliente = document.getElementById("PersonaID").value;
     var fecha = document.getElementById("fecha").value;
 
