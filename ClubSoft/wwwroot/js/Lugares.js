@@ -45,14 +45,12 @@ function LimpiarInput() {
     document.getElementById("LugarNombre").value = "";
 }
 
-
-function GuardarRegistroLugar(){
+function GuardarRegistroLugar() {
     const lugarID = document.getElementById("LugarID").value;
     const nombre = document.getElementById("LugarNombre").value.trim();
     const errorMensajeLugar = document.getElementById("errorMensajeLugar");
 
-
-    if(nombre == "") {
+    if (nombre === "") {
         errorMensajeLugar.style.display = "block";
         return;
     } else {
@@ -65,20 +63,30 @@ function GuardarRegistroLugar(){
         type: 'POST',
         dataType: 'json',
         success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoLugaresEventos();
+            if (resultado.success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Registro guardado correctamente!",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoLugaresEventos();
+            } else {
+                // Mostrar alerta si el lugar ya existe
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resultado.message, // Mensaje de error devuelto por el servidor
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
     });
 }
+
 
 
 function AbrirEditar(lugarID){

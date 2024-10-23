@@ -1,61 +1,82 @@
 window.onload = ListadoSociosAdherentes();
-<<<<<<< HEAD
-=======
 
->>>>>>> ca0f35fad6cf5c10de06b048f39f7c7774ae6e69
-function ListadoSociosAdherentes(){
+let currentPageSocios = 1;
+const itemsPerPageSocios = 9; // Número de socios por página, ajustable
+let totalPagesSocios = 1;
+
+function ListadoSociosAdherentes(pagina = 1) {
     $.ajax({
         url: '../../SocioAdherentes/ListadoSociosAdherentes',
-        data: { 
-         },
         type: 'POST',
         dataType: 'json',
         success: function (MostrarSocios) {
             $("#ModalSocioAdherente").modal("hide");
             LimpiarModalSocioAdherente();
+
+            // Calcular el total de páginas
+            totalPagesSocios = Math.ceil(MostrarSocios.length / itemsPerPageSocios);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageSocios;
+            const endIndex = startIndex + itemsPerPageSocios;
+            const datosPagina = MostrarSocios.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(MostrarSocios, function (index, MostrarSociosAdherentes) {                  
+            // Recorrer los socios de la página actual
+            $.each(datosPagina, function (index, MostrarSociosAdherentes) {
                 contenidoTabla += `
                 <tr>
                     <td>${MostrarSociosAdherentes.personaApellido}, ${MostrarSociosAdherentes.personaNombre}</td>
                     <td>${MostrarSociosAdherentes.socioTitularNombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarSociosAdherentes.socioAdherenteID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarSociosAdherentes.socioAdherenteID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarSocioAdherente(${MostrarSociosAdherentes.socioAdherenteID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
+                        <button type="button" class="btn btn-danger" onclick="EliminarSocioAdherente(${MostrarSociosAdherentes.socioAdherenteID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td> 
                 </tr>
-             `;           
+                `;
             });
 
             document.getElementById("tbody-sociosadherentes").innerHTML = contenidoTabla;
 
-            // Filtro de búsqueda
-            document.getElementById('searchInput').addEventListener('input', function () {
-                var filter = this.value.toLowerCase();
-                var rows = document.querySelectorAll('#tbody-sociosadherentes tr');
-
-                rows.forEach(function (row) {
-                    var nombreCompleto = row.cells[0].textContent.toLowerCase();
-                    if (nombreCompleto.includes(filter)) {
-                        row.style.display = ''; // muestra la fila si coincide
-                    } else {
-                        row.style.display = 'none'; // ocultar la fila si no coincide
-                    }
-                });
-            });
-
-        },  
+            // Generar la paginación
+            generarPaginacionSociosAdherentes(totalPagesSocios, pagina);
+        },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar los socios adherentes');
         }
     });
+}
+
+function generarPaginacionSociosAdherentes(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosAdherentes(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosAdherentes(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoSociosAdherentes(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
 }
 
 function NuevoSocioAdherente(){

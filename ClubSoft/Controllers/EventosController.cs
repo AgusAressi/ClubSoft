@@ -68,46 +68,55 @@ public class EventosController : Controller
         }
         return Json(EventosMostar);
     }
+public JsonResult GuardarEvento(
+    int EventoID,
+    string Descripcion,
+    DateTime FechaEvento,
+    int LugarID,
+    int TipoEventoID
+)
+{
+    string resultado = "";
+    Descripcion = Descripcion.ToUpper();
 
-    public JsonResult GuardarEvento(
-       int EventoID,
-       string Descripcion,
-       DateTime FechaEvento,
-       int LugarID,
-       int TipoEventoID
-       )
+    // Verificar si ya existe un evento con la misma descripción
+    var eventoExistente = _context.Eventos
+        .Any(e => e.Descripcion == Descripcion && e.EventoID != EventoID);
+
+    if (eventoExistente)
     {
-        string resultado = "";
-        Descripcion = Descripcion.ToUpper();
-        if (EventoID == 0)
-        {
-            var evento = new Evento
-            {
-                Descripcion = Descripcion,
-                FechaEvento = FechaEvento,
-                LugarID = LugarID,
-                TipoEventoID = TipoEventoID
-            };
-            _context.Add(evento);
-            _context.SaveChanges();
-
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
-        }
-        else
-        {
-            var editarEvento = _context.Eventos.Where(e => e.EventoID == EventoID).SingleOrDefault();
-            if (editarEvento != null)
-            {
-                editarEvento.EventoID = EventoID;
-                editarEvento.Descripcion = Descripcion;
-                editarEvento.FechaEvento = FechaEvento;
-                editarEvento.LugarID = LugarID;
-                editarEvento.TipoEventoID = TipoEventoID;
-                _context.SaveChanges();
-            }
-        }
-        return Json(resultado);
+        return Json(new { success = false, message = "Ya existe un evento con ese nombre." });
     }
+
+    if (EventoID == 0)
+    {
+        var evento = new Evento
+        {
+            Descripcion = Descripcion,
+            FechaEvento = FechaEvento,
+            LugarID = LugarID,
+            TipoEventoID = TipoEventoID
+        };
+        _context.Add(evento);
+        _context.SaveChanges();
+        resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
+    }
+    else
+    {
+        var editarEvento = _context.Eventos.Where(e => e.EventoID == EventoID).SingleOrDefault();
+        if (editarEvento != null)
+        {
+            editarEvento.Descripcion = Descripcion;
+            editarEvento.FechaEvento = FechaEvento;
+            editarEvento.LugarID = LugarID;
+            editarEvento.TipoEventoID = TipoEventoID;
+            _context.SaveChanges();
+        }
+    }
+    
+    return Json(new { success = true, message = resultado });
+}
+
 
     public JsonResult TraerEvento(int? EventoID)
     {
