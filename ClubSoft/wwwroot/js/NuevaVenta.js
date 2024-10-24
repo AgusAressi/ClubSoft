@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('#TipoProductoID').change(function () {
         var tipoProductoID = $(this).val();
         $("#ProductoID").empty();
+        $("#Cantidad").val("1"); // Establecer la cantidad por defecto en 1
 
         $.ajax({
             url: '/Ventas/ComboProducto',
@@ -38,8 +39,9 @@ function AgregarProducto() {
     let cantidad = parseInt($("#Cantidad").val());
     let ventaID = $("#VentaID").val();
 
-    if (productoID === "0" || cantidad <= 0 || ventaID === "0" || ventaID === "") {
-        Swal.fire("Por favor, selecciona un producto, cantidad y asegúrate de que la venta temporal esté creada.", "", "warning");
+    // Validar que la cantidad no sea menor a 1
+    if (productoID === "0" || cantidad < 1 || ventaID === "0" || ventaID === "") {
+        Swal.fire( "Ups!","La cantidad del producto no puede ser menor a 1", "warning");
         return;
     }
 
