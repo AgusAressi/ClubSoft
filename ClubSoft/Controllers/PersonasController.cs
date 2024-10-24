@@ -52,6 +52,7 @@ public class PersonasController : Controller
         }).OrderBy(st => st.NombreCompleto);
 
         ViewBag.SocioTitularID = new SelectList(listaTitulares, "SocioTitularID", "NombreCompleto");
+        
 
         return View();
     }

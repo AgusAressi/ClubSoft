@@ -27,38 +27,40 @@ public class TipoEventosController : Controller
         }
         return Json(traerTodasLosTiposEventos);
     }
+public JsonResult GuardarTipoEvento(int TipoEventoID, string Nombre)
+{
+    string resultado = "";
+    Nombre = Nombre.ToUpper();
 
-    public JsonResult GuardarTipoEvento(
-       int TipoEventoID,
-       string Nombre
-       )
+    // Verificar si el tipo de evento ya existe
+    if (_context.TipoEventos.Any(te => te.Nombre == Nombre && te.TipoEventoID != TipoEventoID))
     {
-        string resultado = "";
-        Nombre = Nombre.ToUpper();
-
-        if (TipoEventoID == 0)
-        {
-            var tipoevento = new TipoEvento
-            {
-                Nombre = Nombre
-            };
-            _context.Add(tipoevento);
-            _context.SaveChanges();
-
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
-        }
-        else
-        {
-            var editarTipoEvento = _context.TipoEventos.Where(e => e.TipoEventoID == TipoEventoID).SingleOrDefault();
-            if (editarTipoEvento != null)
-            {
-                editarTipoEvento.TipoEventoID = TipoEventoID;
-                editarTipoEvento.Nombre = Nombre;
-                _context.SaveChanges();
-            }
-        }
-        return Json(resultado);
+        return Json(new { success = false, message = "Ya existe un tipo de evento con este nombre." });
     }
+
+    if (TipoEventoID == 0)
+    {
+        var tipoevento = new TipoEvento
+        {
+            Nombre = Nombre
+        };
+        _context.Add(tipoevento);
+        _context.SaveChanges();
+
+        resultado = "¡Tipo de evento guardado correctamente!";
+    }
+    else
+    {
+        var editarTipoEvento = _context.TipoEventos.Where(e => e.TipoEventoID == TipoEventoID).SingleOrDefault();
+        if (editarTipoEvento != null)
+        {
+            editarTipoEvento.Nombre = Nombre;
+            _context.SaveChanges();
+        }
+    }
+    return Json(new { success = true, message = resultado });
+}
+
 
     public JsonResult TraerTipoEvento(int? TipoEventoID)
     {
@@ -92,37 +94,41 @@ public class TipoEventosController : Controller
     }
 
 
-    public JsonResult GuardarLugarEvento(
-       int LugarID,
-       string Nombre
-       )
+public JsonResult GuardarLugarEvento(int LugarID, string Nombre)
+{
+    string resultado = "";
+    Nombre = Nombre.ToUpper();
+
+    // Verificar si el lugar ya existe
+    if (_context.Lugares.Any(l => l.Nombre == Nombre && l.LugarID != LugarID))
     {
-        string resultado = "";
-        Nombre = Nombre.ToUpper();
-
-        if (LugarID == 0)
-        {
-            var lugarevento = new Lugar
-            {
-                Nombre = Nombre
-            };
-            _context.Add(lugarevento);
-            _context.SaveChanges();
-
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
-        }
-        else
-        {
-            var editarLugarEvento = _context.Lugares.Where(l => l.LugarID == LugarID).SingleOrDefault();
-            if (editarLugarEvento != null)
-            {
-                editarLugarEvento.LugarID = LugarID;
-                editarLugarEvento.Nombre = Nombre;
-                _context.SaveChanges();
-            }
-        }
-        return Json(resultado);
+        return Json(new { success = false, message = "El lugar ya existe." });
     }
+
+    if (LugarID == 0)
+    {
+        var lugarevento = new Lugar
+        {
+            Nombre = Nombre
+        };
+        _context.Add(lugarevento);
+        _context.SaveChanges();
+
+        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+    }
+    else
+    {
+        var editarLugarEvento = _context.Lugares.Where(l => l.LugarID == LugarID).SingleOrDefault();
+        if (editarLugarEvento != null)
+        {
+            editarLugarEvento.Nombre = Nombre; // Solo actualiza el nombre
+            _context.SaveChanges();
+            resultado = "EL REGISTRO SE ACTUALIZÓ CORRECTAMENTE";
+        }
+    }
+    return Json(new { success = true, message = resultado });
+}
+
 
 
     public JsonResult TraerLugarEvento(int? LugarID)

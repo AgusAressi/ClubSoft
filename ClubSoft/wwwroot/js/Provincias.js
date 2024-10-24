@@ -1,58 +1,97 @@
 window.onload = ListadoProvincias();
 
+let currentPage = 1;
+const itemsPerPage = 5;
+let totalPages = 1;
 
-function ListadoProvincias(){
+function ListadoProvincias(pagina = 1) {
     $.ajax({
         url: '../../Provincias/ListadoProvincias',
-        data: {  },
         type: 'POST',
         dataType: 'json',
         success: function (traerTodasLasProvincias) {
             LimpiarInput();
+
+            // Calcular el total de páginas
+            totalPages = Math.ceil(traerTodasLasProvincias.length / itemsPerPage);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const datosPagina = traerTodasLasProvincias.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
-            
-            $.each(traerTodasLasProvincias, function (index, traerTodasLasProvincias) {  
-                
+
+            // Recorrer las provincias de la página actual
+            $.each(datosPagina, function (index, provincia) {
                 contenidoTabla += `
                 <tr>
-                    <td>${traerTodasLasProvincias.nombre}</td>
+                    <td>${provincia.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodasLasProvincias.provinciaID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${provincia.provinciaID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${traerTodasLasProvincias.provinciaID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </td> 
-                </tr>
-             `;
-
+                        <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${provincia.provinciaID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
             });
 
             document.getElementById("tbody-Provincias").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacion(totalPages, pagina);
         },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar las provincias');
         }
     });
 }
 
-function GuardarRegistro(){
+function generarPaginacion(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProvincias(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
+
+function GuardarRegistro() {
     let provinciaID = document.getElementById("ProvinciaID").value;
     let nombre = document.getElementById("ProvinciaNombre").value.trim(); // Elimina espacios en blanco
     let errorMensaje = document.getElementById("errorMensaje");
 
     // Validar si el campo está vacío
-    if(nombre === "") {
-        errorMensaje.style.display = "block";
+    if (nombre === "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo vacío',
+            text: 'El nombre de la provincia no puede estar vacío',
+        });
         return;
-    } else {
-        errorMensaje.style.display = "none";
     }
-    
+
     $.ajax({
         url: '../../Provincias/GuardarProvincia',
         data: { 
@@ -60,22 +99,32 @@ function GuardarRegistro(){
             Nombre: nombre           
         },
         type: 'POST',
-        dataType: 'json',   
-        success: function (resultado) {
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            }); 
-            ListadoProvincias();
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoProvincias();
+            } else {
+                // Mostrar mensaje con SweetAlert si la provincia ya existe
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Provincia existente',
+                    text: response.message, // "LA PROVINCIA YA EXISTE"
+                });
+            }
         },
         error: function (xhr, status) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
-    });    
+    });
 }
+
 
 function AbrirEditar(ProvinciaID){
     

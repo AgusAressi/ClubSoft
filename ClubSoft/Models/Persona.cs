@@ -18,6 +18,8 @@ public class Persona
 
     public virtual Localidad Localidad { get; set; }
 
+    public virtual ICollection<Venta> Ventas { get; set; }
+
     public virtual ICollection<CuentaCorriente> CuentaCorrientes { get; set; }
 
 }

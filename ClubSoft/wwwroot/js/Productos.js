@@ -1,18 +1,30 @@
 window.onload = ListadoProductos();
 
-function ListadoProductos(){
+let currentPageProductos = 1;
+const itemsPerPageProductos = 7;
+let totalPagesProductos = 1;
+
+function ListadoProductos(pagina = 1) {
     $.ajax({
         url: '../../Productos/ListadoProductos',
-        data: {  },
         type: 'POST',
         dataType: 'json',
         success: function (MostarProductos) {
             $("#ModalProductos").modal("hide");
             LimpiarModal();
 
+            // Calcular el total de páginas
+            totalPagesProductos = Math.ceil(MostarProductos.length / itemsPerPageProductos);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageProductos;
+            const endIndex = startIndex + itemsPerPageProductos;
+            const datosPagina = MostarProductos.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(MostarProductos, function (index, producto) {  
+            // Recorrer los productos de la página actual
+            $.each(datosPagina, function (index, producto) {  
                 
                 // Formatear el precio como moneda
                 let precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(producto.precio);
@@ -53,11 +65,38 @@ function ListadoProductos(){
 
             document.getElementById("tbody-Productos").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacionProductos(totalPagesProductos, pagina);
         },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar los productos');
         }
     });
+}
+
+function generarPaginacionProductos(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProductos(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProductos(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoProductos(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
 }
 
 function LimpiarModal(){
@@ -77,16 +116,15 @@ function LimpiarModal(){
 function NuevoProducto(){
     $("#ModalTitulo").text("Nuevo Producto");
 }
-
 function GuardarRegistro() {
     let productoID = document.getElementById("ProductoID").value;
-    let nombre = document.getElementById("ProductoNombre").value;
+    let nombre = document.getElementById("ProductoNombre").value.trim();
     let precio = document.getElementById("ProductoPrecio").value;
     let cantidad = document.getElementById("ProductoCantidad").value;
     let descripcion = document.getElementById("ProductoDescripcion").value; 
     let estado = document.getElementById("ProductoEstado").value; 
     let tipoProductoID = document.getElementById("TipoProductoID").value;
-    
+
     let isValid = true;
 
     if (nombre === "") {
@@ -131,28 +169,36 @@ function GuardarRegistro() {
             Nombre: nombre,
             Precio: precio,
             Cantidad: cantidad,
-            Descripcion:descripcion,
+            Descripcion: descripcion,
             Estado: estado,
             TipoProductoID: tipoProductoID
         },
         type: 'POST',
         dataType: 'json',   
-        success: function (resultado) {
-            console.log(resultado);
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoProductos(); 
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                ListadoProductos(); 
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message, // Mensaje de error devuelto por el servidor
+                });
+            }
         },
         error: function (xhr, status, error) {
             console.log('Disculpe, existió un problema al guardar el registro');
         }
     });    
 }
+
 
 
 function AbrirEditar(ProductoID){

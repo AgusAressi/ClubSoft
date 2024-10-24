@@ -49,41 +49,64 @@ public class LocalidadesController : Controller
             LocalidadesMostar.Add(localidadMostar);
         }
         return Json(LocalidadesMostar);
-    }
-    public JsonResult GuardarLocalidad(
-       int LocalidadID,
-       string? Nombre,
-       int ProvinciaID
-       
-       )
-    {
-        string resultado = "";
-        Nombre = Nombre.ToUpper();
-        if (LocalidadID == 0)
-        {
-            var localidad = new Localidad
-            {
-                Nombre = Nombre,
-                ProvinciaID = ProvinciaID
-            };
-            _context.Add(localidad);
-            _context.SaveChanges();
+    }public JsonResult GuardarLocalidad(int LocalidadID, string Nombre, int ProvinciaID)
+{
+    string resultado = "";
 
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
-        }
-         else
-         {
-             var editarLocalidad = _context.Localidades.Where(e => e.LocalidadID == LocalidadID).SingleOrDefault();
-             if (editarLocalidad != null)
-             {
-                 editarLocalidad.LocalidadID = LocalidadID;
-                 editarLocalidad.Nombre = Nombre;
-                 editarLocalidad.ProvinciaID = ProvinciaID;
-                 _context.SaveChanges();
-             }
-         }
-        return Json(resultado);
+    // Convertir el nombre a mayúsculas
+    Nombre = Nombre.ToUpper();
+
+    // Verificar si ya existe una localidad con el mismo nombre en la misma provincia
+    var localidadExistente = _context.Localidades
+        .Where(l => l.Nombre == Nombre && l.ProvinciaID == ProvinciaID && l.LocalidadID != LocalidadID)
+        .SingleOrDefault();
+
+    if (localidadExistente != null)
+    {
+        resultado = "Localidad existente";
+        return Json(new { success = false, message = resultado });
     }
+
+    // Verificar si la localidad está siendo asociada a otra provincia
+    var localidadEnOtraProvincia = _context.Localidades
+        .Where(l => l.Nombre == Nombre && l.LocalidadID != LocalidadID && l.ProvinciaID != ProvinciaID)
+        .SingleOrDefault();
+
+    if (localidadEnOtraProvincia != null)
+    {
+        resultado = "Esa localidad no puede asociarse a más de una provincia";
+        return Json(new { success = false, message = resultado });
+    }
+
+    // Si LocalidadID es 0, es un nuevo registro, caso contrario, es una actualización
+    if (LocalidadID == 0)
+    {
+        var nuevaLocalidad = new Localidad
+        {
+            Nombre = Nombre,
+            ProvinciaID = ProvinciaID
+        };
+        _context.Add(nuevaLocalidad);
+        resultado = "¡Localidad registrada correctamente!";
+    }
+    else
+    {
+        var localidadEditar = _context.Localidades
+            .Where(l => l.LocalidadID == LocalidadID)
+            .SingleOrDefault();
+
+        if (localidadEditar != null)
+        {
+            localidadEditar.Nombre = Nombre;
+            localidadEditar.ProvinciaID = ProvinciaID;
+        }
+        resultado = "Localidad actualizada correctamente";
+    }
+
+    _context.SaveChanges();
+    return Json(new { success = true, message = resultado });
+}
+
 
      public JsonResult TraerLocalidad(int? LocalidadID)
     {

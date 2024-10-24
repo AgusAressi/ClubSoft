@@ -31,7 +31,7 @@ function InformePorSocios() {
                     contenidoTabla += `
                         <tr>
                             <td style="padding-left: 20px;"</td>
-                            <td>${InformeSocios.personaNombre}, ${InformeSocios.personaApellido}</td>
+                            <td>${InformeSocios.personaApellido}, ${InformeSocios.personaNombre}</td>
                         </tr>
                     `;
                 });

@@ -15,6 +15,8 @@ public class Venta
      public string? UsuarioID { get; set; } //quien registra la venta
 
 
+     public virtual Persona Persona { get; set; }
+
      public virtual ICollection<DetalleVenta> DetalleVentas { get; set; }
 
 }
@@ -31,7 +33,7 @@ public enum Estado
 public class VistaVentas
 {
      public int VentaID { get; set; }
-     public DateTime Fecha { get; set; }
+     public string Fecha { get; set; }
      public string? Estado { get; set; }
      public decimal? Total { get; set; }
      public string? NombrePersona { get; set; }

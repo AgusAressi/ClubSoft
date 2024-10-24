@@ -59,7 +59,6 @@ function LimpiarModal(){
 function NuevoEvento(){
     $("#ModalTitulo").text("Nuevo Evento");
 }
-
 function GuardarRegistro() {
     let eventoID = document.getElementById("EventoID").value;
     let tipoEvento = document.getElementById("TipoEventoID").value;
@@ -112,7 +111,7 @@ function GuardarRegistro() {
         success: function (resultado) {
             console.log(resultado);
             Swal.fire({
-                position: "bottom-end",
+                position: "top-end",
                 icon: "success",
                 title: "Registro guardado correctamente!",
                 showConfirmButton: false,
@@ -125,6 +124,7 @@ function GuardarRegistro() {
         }
     });    
 }
+
 
 function AbrirEditar(EventoID){
     $.ajax({

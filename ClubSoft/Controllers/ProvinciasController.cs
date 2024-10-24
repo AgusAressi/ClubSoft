@@ -31,35 +31,49 @@ public class ProvinciasController : Controller
         return Json(traerTodasLasProvincias);
     }
 
-    public JsonResult GuardarProvincia(
-       int ProvinciaID,
-       string Nombre
-       )
-    {
-        string resultado = "";
-        Nombre = Nombre.ToUpper();
+public JsonResult GuardarProvincia(int ProvinciaID, string Nombre)
+{
+    string resultado = "";
+    Nombre = Nombre.ToUpper();
 
-        if (ProvinciaID == 0)
-        {
-            var provincia = new Provincia
-            {
-                Nombre = Nombre
-            };
-            _context.Add(provincia);
-            _context.SaveChanges();
-        }
-         else
-         {
-             var editarProvincia = _context.Provincias.Where(e => e.ProvinciaID == ProvinciaID).SingleOrDefault();
-             if (editarProvincia != null)
-             {
-                 editarProvincia.ProvinciaID = ProvinciaID;
-                 editarProvincia.Nombre = Nombre;
-                 _context.SaveChanges();
-             }
-         }
-        return Json(resultado);
+    // Verificar si ya existe una provincia con el mismo nombre
+    var provinciaExistente = _context.Provincias
+        .Where(p => p.Nombre == Nombre && p.ProvinciaID != ProvinciaID)
+        .SingleOrDefault();
+
+    if (provinciaExistente != null)
+    {
+        resultado = "La Provincia ya esta registrada";
+        return Json(new { success = false, message = resultado });
     }
+
+    // Si no existe, guarda o edita la provincia
+    if (ProvinciaID == 0)
+    {
+        var provincia = new Provincia
+        {
+            Nombre = Nombre
+        };
+        _context.Add(provincia);
+        _context.SaveChanges();
+
+        resultado = "¡Provincia registrada correctamente!";
+    }
+    else
+    {
+        var editarProvincia = _context.Provincias.Where(e => e.ProvinciaID == ProvinciaID).SingleOrDefault();
+        if (editarProvincia != null)
+        {
+            editarProvincia.Nombre = Nombre;
+            _context.SaveChanges();
+
+            resultado = "Provincia actualizada correctamente";
+        }
+    }
+
+    return Json(new { success = true, message = resultado });
+}
+
 
      public JsonResult TraerProvincia(int? ProvinciaID)
     {
