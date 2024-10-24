@@ -63,7 +63,7 @@ public class LocalidadesController : Controller
 
     if (localidadExistente != null)
     {
-        resultado = "LA LOCALIDAD YA EXISTE EN ESTA PROVINCIA";
+        resultado = "Localidad existente";
         return Json(new { success = false, message = resultado });
     }
 
@@ -74,7 +74,7 @@ public class LocalidadesController : Controller
 
     if (localidadEnOtraProvincia != null)
     {
-        resultado = "LA LOCALIDAD NO PUEDE ASOCIARSE A MÁS DE UNA PROVINCIA";
+        resultado = "Esa localidad no puede asociarse a más de una provincia";
         return Json(new { success = false, message = resultado });
     }
 
@@ -87,7 +87,7 @@ public class LocalidadesController : Controller
             ProvinciaID = ProvinciaID
         };
         _context.Add(nuevaLocalidad);
-        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+        resultado = "¡Localidad registrada correctamente!";
     }
     else
     {
@@ -100,7 +100,7 @@ public class LocalidadesController : Controller
             localidadEditar.Nombre = Nombre;
             localidadEditar.ProvinciaID = ProvinciaID;
         }
-        resultado = "EL REGISTRO SE ACTUALIZÓ CORRECTAMENTE";
+        resultado = "Localidad actualizada correctamente";
     }
 
     _context.SaveChanges();

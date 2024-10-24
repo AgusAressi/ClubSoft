@@ -88,7 +88,7 @@ public class ProductosController : Controller
 
         if (productoEditar != null && productoEditar.TipoProductoID != TipoProductoID)
         {
-            return Json(new { success = false, message = "NO SE PUEDE CAMBIAR EL TIPO DE PRODUCTO" });
+            return Json(new { success = false, message = "No se puede cambiar el tipo de producto" });
         }
     }
 
@@ -106,7 +106,7 @@ public class ProductosController : Controller
         };
         _context.Add(producto);
         _context.SaveChanges();
-        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+        resultado = "¡Producto guardado correctamente!";
     }
     else // Si es una actualización
     {
@@ -120,7 +120,7 @@ public class ProductosController : Controller
             editarProducto.Estado = Estado;
             editarProducto.TipoProductoID = TipoProductoID;
             _context.SaveChanges();
-            resultado = "EL REGISTRO SE ACTUALIZÓ CORRECTAMENTE";
+            resultado = "Producto actualizado correctamente";
         }
     }
 

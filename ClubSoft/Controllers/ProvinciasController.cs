@@ -43,7 +43,7 @@ public JsonResult GuardarProvincia(int ProvinciaID, string Nombre)
 
     if (provinciaExistente != null)
     {
-        resultado = "LA PROVINCIA YA EXISTE";
+        resultado = "La Provincia ya esta registrada";
         return Json(new { success = false, message = resultado });
     }
 
@@ -57,7 +57,7 @@ public JsonResult GuardarProvincia(int ProvinciaID, string Nombre)
         _context.Add(provincia);
         _context.SaveChanges();
 
-        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+        resultado = "¡Provincia registrada correctamente!";
     }
     else
     {
@@ -67,7 +67,7 @@ public JsonResult GuardarProvincia(int ProvinciaID, string Nombre)
             editarProvincia.Nombre = Nombre;
             _context.SaveChanges();
 
-            resultado = "EL REGISTRO SE ACTUALIZÓ CORRECTAMENTE";
+            resultado = "Provincia actualizada correctamente";
         }
     }
 

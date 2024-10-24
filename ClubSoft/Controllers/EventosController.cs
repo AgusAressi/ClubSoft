@@ -99,7 +99,7 @@ public JsonResult GuardarEvento(
         };
         _context.Add(evento);
         _context.SaveChanges();
-        resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
+        resultado = "¡Evento guardado correctamente!";
     }
     else
     {

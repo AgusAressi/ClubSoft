@@ -45,7 +45,7 @@ public class TipoProductosController : Controller
             _context.Add(tipoproducto);
             _context.SaveChanges();
 
-            resultado = "EL REGISTRO SE GUARDO CORRECTAMENTE";
+            resultado = "¡Tipo de producto guardado correctamente!";
         }
         else
         {
