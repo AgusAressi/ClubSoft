@@ -146,6 +146,11 @@ function GuardarVentaTemporal() {
             if (response.success) {
                 // Asignar el nuevo ventaID generado
                 $("#VentaID").val(response.ventaID); // Asegúrate de que aquí se guarda el ID de la venta temporal
+
+                // Deshabilitar los campos de cliente y fecha
+                $("#PersonaID").prop('disabled', true);
+                $("#fecha").prop('disabled', true);
+
                 // Mostrar la segunda sección del formulario
                 document.getElementById("form-section-2").style.display = "block";
             } else {
@@ -153,7 +158,7 @@ function GuardarVentaTemporal() {
             }
         },
         error: function () {
-            Swal.fire("Error al crear la venta temporal.", "", "error");
+            Swal.fire("Ups!", "Ocurrió un error y no se puede seguir con la venta", "error");
         }
     });
 }
@@ -161,10 +166,15 @@ function GuardarVentaTemporal() {
 
 // Función para confirmar la venta
 function ConfirmarVenta() {
-    let ventaID = $('#VentaID').val(); // Asegúrate de que el ID se obtiene correctamente
+    let ventaID = $('#VentaID').val();
+    let cliente = $('#PersonaID').val();
 
     if (!ventaID || ventaID === "0") {
-        Swal.fire("No hay venta temporal para confirmar.", "", "warning");
+        Swal.fire("No se puede confirmar la venta.", "", "warning");
+        return;
+    }
+    if (!cliente || cliente === "0") {
+        Swal.fire("No se puede confirmar la venta.", "Debe seleccionar un cliente", "warning");
         return;
     }
 
@@ -206,8 +216,13 @@ function CancelarVenta() {
                 Swal.fire("Venta cancelada", "", "warning").then(() => {
                     // Aquí vacías los campos de los inputs
                     $('#VentaID').val('0');
-                    $('#fecha').val(''); // Reemplaza con el ID correcto de tu input de fecha
+                   
                     $('#PersonaID').val('0'); // Reemplaza con el ID correcto de tu input de cliente
+                    // Habilitar los inputs de fecha y PersonaID
+                    $('#fecha').prop('disabled', false);
+                    $('#PersonaID').prop('disabled', false);
+                    // Mostrar la segunda sección del formulario
+                    document.getElementById("form-section-2").style.display = "none";
                     // Vaciar la tabla de productos
                     $('#Tabla-Detalle').empty();
 
