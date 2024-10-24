@@ -52,18 +52,19 @@ namespace ClubSoft.Controllers
         }
 
         public IActionResult ObtenerDetalleVenta(int id)
-{
-    var detalles = _context.DetalleVentas
-        .Where(dv => dv.VentaID == id)
-        .Select(dv => new {
-            dv.Producto.Nombre,
-            dv.Precio,
-            dv.Cantidad,
-            SubTotal = dv.Cantidad * dv.Precio
-        }).ToList();
+        {
+            var detalles = _context.DetalleVentas
+                .Where(dv => dv.VentaID == id)
+                .Select(dv => new
+                {
+                    dv.Producto.Nombre,
+                    dv.Precio,
+                    dv.Cantidad,
+                    SubTotal = dv.Cantidad * dv.Precio
+                }).ToList();
 
-    return Json(detalles);
-}
+            return Json(detalles);
+        }
 
 
         // Método para inicializar la vista de Nueva Venta
