@@ -39,3 +39,21 @@
      
     
   }
+
+.login-responsivo {
+  margin: 0 auto; /* Centra horizontalmente */
+  padding: 20px; /* Añade algo de espacio alrededor */
+}
+
+@media (max-width: 576px) {
+  .login-responsivo {
+      width: 100%; /* Ajusta el ancho al 100% en pantallas pequeñas */
+      padding: 10px; /* Reduce el padding en pantallas pequeñas */
+  }
+  .login-responsivo .form-floating label {
+      font-size: 0.9rem; /* Ajusta el tamaño de la etiqueta */
+  }
+  .login-responsivo h1 {
+      font-size: 1.5rem; /* Ajusta el tamaño del título */
+  }
+}
