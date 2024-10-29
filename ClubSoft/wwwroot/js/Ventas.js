@@ -30,10 +30,15 @@ function ListadoVentas(pagina = 1) {
                     <td># ${VentaMostrar.ventaID}</td>
                     <td>${VentaMostrar.apellidoPersona}, ${VentaMostrar.nombrePersona}</td>
                     <td>${VentaMostrar.fecha}</td>
-                    <td>${totalFormateado}</td>
+                    <td class="text-end">${totalFormateado}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})">
                             <i class="fa-solid fa-list"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                    <button type="button" class="btn btn-danger" onclick="EliminarVenta(${VentaMostrar.ventaID})">
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>`;
@@ -86,12 +91,14 @@ function AbrirDetalleVenta(ventaID) {
             let contenidoDetalle = ``;
 
             $.each(detalleVenta, function (index, detalle) {
+                let precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(detalle.precio);
+                let subTotalFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(detalle.subTotal);
                 contenidoDetalle += `
                 <tr>
                     <td>${detalle.nombre}</td>
-                    <td>${detalle.precio}</td>
-                    <td>${detalle.cantidad}</td>
-                    <td>${detalle.subTotal}</td>
+                    <td class="text-end">${precioFormateado}</td>
+                    <td class="text-center">${detalle.cantidad}</td>
+                    <td class="text-end">${subTotalFormateado}</td>
                 </tr>`;
             });
 
@@ -100,6 +107,38 @@ function AbrirDetalleVenta(ventaID) {
         },
         error: function (xhr, status) {
             alert('Error al cargar los detalles de la venta');
+        }
+    });
+}
+
+function EliminarVenta(ventaID) {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esto marcará la venta como eliminada.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Ventas/EliminarVenta',
+                type: 'POST',
+                data: { ventaID: ventaID },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire("Venta eliminada", "", "success").then(() => {
+                            // Opcionalmente redirigir o actualizar la vista
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire("Error", response.message, "error");
+                    }
+                },
+                error: function () {
+                    Swal.fire("Error", "No se pudo eliminar la venta.", "error");
+                }
+            });
         }
     });
 }

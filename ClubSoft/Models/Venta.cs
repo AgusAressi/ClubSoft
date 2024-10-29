@@ -25,7 +25,9 @@ public enum Estado
 {
      Temporal = 0,
      Confirmado,
-     Anulado
+     Anulado,
+     Pagado,
+     Eliminado
 }
 
 

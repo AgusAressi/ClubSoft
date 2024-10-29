@@ -37,3 +37,22 @@
   background-color:  rgb(12, 12, 86);
   color: white
 }
+
+.container-modal {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+
+} 
+
+.modal-header {
+  background-color: rgb(12, 12, 86);
+}
+
+.text-color {
+  color: white;
+  }
+
+ 

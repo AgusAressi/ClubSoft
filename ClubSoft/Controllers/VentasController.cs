@@ -28,7 +28,10 @@ namespace ClubSoft.Controllers
         public JsonResult ListadoVentas()
         {
             List<VistaVentas> VentasMostrar = new List<VistaVentas>();
-            var listadoVentas = _context.Ventas.ToList();
+            var listadoVentas = _context.Ventas
+            .Where(v => v.Estado != Estado.Eliminado) // Excluir ventas eliminadas
+            .ToList();
+
 
             var listadoPersonas = _context.Personas.ToList();
             foreach (var venta in listadoVentas)
@@ -282,6 +285,32 @@ namespace ClubSoft.Controllers
 
             return Json(precio);
         }
+
+        [HttpPost]
+public IActionResult EliminarVenta(int ventaID)
+{
+    // Buscar la venta por su ID
+    var venta = _context.Ventas.FirstOrDefault(v => v.VentaID == ventaID);
+
+    if (venta == null)
+    {
+        return Json(new { success = false, message = "Venta no encontrada." });
+    }
+
+    // Cambiar el estado de la venta a 'Eliminado'
+    venta.Estado = Estado.Eliminado;
+
+    try
+    {
+        _context.SaveChanges();
+        return Json(new { success = true });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { success = false, message = "Error al eliminar la venta: " + ex.Message });
+    }
+}
+
     }
 }
 

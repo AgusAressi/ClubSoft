@@ -39,7 +39,7 @@ function ListadoProductos(pagina = 1) {
                 contenidoTabla += `
                 <tr>
                     <td>${producto.nombre}</td>
-                    <td class="ocultar-en-768px">${precioFormateado}</td>
+                    <td class="ocultar-en-768px text-end">${precioFormateado}</td>
                     <td class="text-center">${producto.cantidad}</td>
                     <td class="text-center ocultar-en-768px">${producto.descripcion}</td>
                     <td class="text-center ocultar-en-768px">${producto.nombreTipoProducto}</td>
