@@ -1,43 +1,79 @@
 window.onload = ListadoTipoProductos();
 
+let itemsPerPageTipoProductos = 5;  // Número de productos por página
+let totalPagesTipoProductos = 0;  // Total de páginas (se calculará dinámicamente)
 
-function ListadoTipoProductos(){
+function ListadoTipoProductos(pagina = 1) {
     $.ajax({
         url: '../../TipoProductos/ListadoTipoProductos',
-        data: {  },
         type: 'POST',
         dataType: 'json',
         success: function (traerTodosLosTiposDeProductos) {
-             LimpiarInput();
+            // Limpiar el input antes de mostrar nuevos datos
+            LimpiarInput();
+
+            // Calcular el total de páginas
+            totalPagesTipoProductos = Math.ceil(traerTodosLosTiposDeProductos.length / itemsPerPageTipoProductos);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageTipoProductos;
+            const endIndex = startIndex + itemsPerPageTipoProductos;
+            const datosPagina = traerTodosLosTiposDeProductos.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
-            
-            $.each(traerTodosLosTiposDeProductos, function (index, traerTodosLosTiposDeProductos) {  
-                
+
+            // Recorrer los productos de la página actual
+            $.each(datosPagina, function (index, tipoProducto) {
                 contenidoTabla += `
                 <tr>
-                    <td>${traerTodosLosTiposDeProductos.nombre}</td>
+                    <td>${tipoProducto.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodosLosTiposDeProductos.tipoProductoID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${tipoProducto.tipoProductoID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarTipoProducto(${traerTodosLosTiposDeProductos.tipoProductoID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </td> 
-                </tr>
-             `;
-
+                        <button type="button" class="btn btn-danger" onclick="EliminarTipoProducto(${tipoProducto.tipoProductoID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
             });
 
             document.getElementById("tbody-TipoProductos").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacionTipoProductos(totalPagesTipoProductos, pagina);
         },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar los tipos de productos');
         }
     });
+}
+
+function generarPaginacionTipoProductos(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoProductos(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoProductos(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoProductos(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
 }
 
 function GuardarRegistro(){

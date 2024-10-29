@@ -1,0 +1,9 @@
+.espaciado-superior {
+    margin-top: 30px; /* Ajusta el valor según el espaciado que desees */
+}
+
+.card-grafico {
+    border: 3px solid #7f7878; /* Borde gris */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+

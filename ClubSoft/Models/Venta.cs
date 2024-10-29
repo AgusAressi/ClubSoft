@@ -9,10 +9,10 @@ public class Venta
      [Key]
      public int VentaID { get; set; }
      public DateTime Fecha { get; set; }
-     public int PersonaID { get; set; } //CLIENTE
+     public int PersonaID { get; set; }
      public Estado Estado { get; set; }
      public decimal? Total { get; set; }
-     public string? UsuarioID { get; set; } //quien registra la venta
+     public string? UsuarioID { get; set; }
 
 
      public virtual Persona Persona { get; set; }
@@ -27,7 +27,7 @@ public enum Estado
      Confirmado,
      Anulado,
      Pagado,
-     Eliminado
+     Eliminado,
 }
 
 

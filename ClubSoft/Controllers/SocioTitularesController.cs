@@ -146,7 +146,7 @@ public class SocioTitularesController : Controller
             _context.Add(socioTitular);
             _context.SaveChanges();
 
-            resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+            resultado = "¡Socio Titular guardado correctamente!";
         }
 
         return Json(new { success = true, mensaje = resultado });

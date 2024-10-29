@@ -1,44 +1,82 @@
 window.onload = ListadoTipoEventos();
 
+let itemsPerPageTipoEventos = 6;  // Número de eventos por página
+let totalPagesTipoEventos = 0; 
 
-function ListadoTipoEventos(){
+function ListadoTipoEventos(pagina = 1) {
     $.ajax({
         url: '../../TipoEventos/ListadoTipoEventos',
-        data: {  },
         type: 'POST',
         dataType: 'json',
         success: function (traerTodosLosTiposDeEventos) {
+            // Limpiar el input antes de mostrar nuevos datos
             LimpiarInput();
+
+            // Calcular el total de páginas
+            totalPagesTipoEventos = Math.ceil(traerTodosLosTiposDeEventos.length / itemsPerPageTipoEventos);
+
+            // Obtener los datos de la página actual
+            const startIndex = (pagina - 1) * itemsPerPageTipoEventos;
+            const endIndex = startIndex + itemsPerPageTipoEventos;
+            const datosPagina = traerTodosLosTiposDeEventos.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
-            
-            $.each(traerTodosLosTiposDeEventos, function (index, traerTodosLosTiposDeEventos) {  
-                
+
+            // Recorrer los eventos de la página actual
+            $.each(datosPagina, function (index, tipoEvento) {
                 contenidoTabla += `
                 <tr>
-                    <td>${traerTodosLosTiposDeEventos.nombre}</td>
+                    <td>${tipoEvento.nombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${traerTodosLosTiposDeEventos.tipoEventoID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${tipoEvento.tipoEventoID})">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarTipoEvento(${traerTodosLosTiposDeEventos.tipoEventoID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </td> 
-                </tr>
-             `;
-
+                        <button type="button" class="btn btn-danger" onclick="EliminarTipoEvento(${tipoEvento.tipoEventoID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
             });
 
             document.getElementById("tbody-TipoEventos").innerHTML = contenidoTabla;
 
+            // Generar la paginación
+            generarPaginacionTipoEventos(totalPagesTipoEventos, pagina);
         },
         error: function (xhr, status) {
-            alert('Disculpe, existió un problema al deshabilitar');
+            alert('Disculpe, existió un problema al cargar los tipos de eventos');
         }
     });
-}function GuardarRegistro() {
+}
+
+function generarPaginacionTipoEventos(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoEventos(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoEventos(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoTipoEventos(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion").innerHTML = paginacion;
+}
+
+function GuardarRegistro() {
     const tipoEventoID = document.getElementById("TipoEventoID").value;
     const nombre = document.getElementById("TipoEventoNombre").value.trim();
     const errorMensaje = document.getElementById("errorMensaje");

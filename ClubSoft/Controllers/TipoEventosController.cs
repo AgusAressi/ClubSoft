@@ -47,7 +47,7 @@ public JsonResult GuardarTipoEvento(int TipoEventoID, string Nombre)
         _context.Add(tipoevento);
         _context.SaveChanges();
 
-        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+        resultado = "¡Tipo de evento guardado correctamente!";
     }
     else
     {

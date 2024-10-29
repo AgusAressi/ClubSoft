@@ -145,7 +145,7 @@ public JsonResult GuardarSocioAdherente(
 
     if (existeSocioAdherente)
     {
-        resultado = "EL SOCIO QUE QUIERES INGRESAR YA ESTA REGISTRADO COMO SOCIO ADHERENTE";
+        resultado = "El socio que quieres ingresar ya esta asociado a otro socio titular";
         return Json(new { success = false, mensaje = resultado });
     }
 
@@ -159,7 +159,7 @@ public JsonResult GuardarSocioAdherente(
         _context.Add(socioAdherente);
         _context.SaveChanges();
 
-        resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
+        resultado = "¡Socio Adherente guardado correctamente!";
     }
     else
     {
@@ -173,7 +173,7 @@ public JsonResult GuardarSocioAdherente(
             editarSocioAdherente.PersonaID = PersonaID;
             _context.SaveChanges();
 
-            resultado = "EL REGISTRO SE ACTUALIZÓ CORRECTAMENTE";
+            resultado = "Socio Adherente editado correctamente";
         }
     }
 

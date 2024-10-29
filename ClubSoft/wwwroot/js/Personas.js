@@ -125,6 +125,7 @@ function LimpiarModal() {
     document.getElementById("SocioTitularID").value = 0;
     document.getElementById("errorMensajeSocioTitular").style.display = "none";
     document.getElementById("tipoSocioSection").style.display = "none";
+    document.getElementById("errorMensajeEmail2").style.display = "none";
 }
 
 function NuevaPersona() {
@@ -147,9 +148,7 @@ function GuardarRegistro() {
     let tipoSocio = document.getElementById("TipoSocio").value;
     let socioTitularID = document.getElementById("SocioTitularID").value;
     let socioAdherenteID = document.getElementById("SocioAdherenteID").value;
-
-
-    console.log(personaID, nombre, apellido, direccion, telefono, dni, localidadID, usuarioID, userName, email, password, rol, tipoSocio, socioTitularID, socioAdherenteID);
+    
     let isValid = true;
 
     // Validaciones de campos vacíos
@@ -178,25 +177,21 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeTelefono").style.display = "block";
         document.getElementById("errorMensajeTelefono2").style.display = "none"; 
         isValid = false;
-    } 
-    
-    else if (telefono.length < 8) {
+    } else if (telefono.length < 8) {
         document.getElementById("errorMensajeTelefono").style.display = "none"; 
         document.getElementById("errorMensajeTelefono2").style.display = "block";
         isValid = false;
-    } 
+    }
 
     if (dni === "") {
         document.getElementById("errorMensajeDNI").style.display = "block";
         document.getElementById("errorMensajeDNI2").style.display = "none"; 
         isValid = false;
-    } 
-    
-    else if (dni.length < 7) {
+    } else if (dni.length < 7) {
         document.getElementById("errorMensajeDNI").style.display = "none"; 
         document.getElementById("errorMensajeDNI2").style.display = "block";
         isValid = false;
-    } 
+    }
 
     if (localidadID === "0") {
         document.getElementById("errorMensajeLocalidad").style.display = "block";
@@ -212,24 +207,29 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeUserName").style.display = "none";
     }
 
+    // Validación de formato de email
+    let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (email === "") {
         document.getElementById("errorMensajeEmail").style.display = "block";
         isValid = false;
+    } else if (!emailPattern.test(email)) {
+        document.getElementById("errorMensajeEmail").style.display = "none";
+        document.getElementById("errorMensajeEmail2").style.display = "block"; // Mensaje para formato incorrecto
+        isValid = false;
     } else {
         document.getElementById("errorMensajeEmail").style.display = "none";
+        document.getElementById("errorMensajeEmail2").style.display = "none";
     }
 
     if (password === "") {
         document.getElementById("errorMensajeContraseña").style.display = "block";
-        document.getElementById("errorMensajeContraseña2").style.display = "none"; // Oculta el otro mensaje de error
+        document.getElementById("errorMensajeContraseña2").style.display = "none";
         isValid = false;
-    } 
-    
-    else if (password.length < 6) {
-        document.getElementById("errorMensajeContraseña").style.display = "none"; // Oculta el mensaje de contraseña vacía
+    } else if (password.length < 6) {
+        document.getElementById("errorMensajeContraseña").style.display = "none";
         document.getElementById("errorMensajeContraseña2").style.display = "block";
         isValid = false;
-    } 
+    }
 
     if (rol === "0") {
         document.getElementById("errorMensajeRol").style.display = "block";
@@ -237,7 +237,6 @@ function GuardarRegistro() {
     } else {
         document.getElementById("errorMensajeRol").style.display = "none";
     }
-
 
     if (rol === "SOCIO" && tipoSocio === "0") {
         document.getElementById("errorMensajeTipoSocio").style.display = "block";
@@ -253,8 +252,13 @@ function GuardarRegistro() {
         document.getElementById("errorMensajeSocioTitular").style.display = "none";
     }
 
-     // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
-     let data = {
+    // Si alguna validación falla, detener el proceso
+    if (!isValid) {
+        return; 
+    }
+
+    // Ajustar los datos enviados, omitiendo socioTitularID si no es necesario
+    let data = {
         personaID: personaID,
         nombre: nombre,
         apellido: apellido,
@@ -301,6 +305,7 @@ function GuardarRegistro() {
         }
     });
 }
+
 
 function AbrirEditar(PersonaID) {
     $.ajax({

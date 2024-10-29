@@ -66,7 +66,7 @@
                                 <!-- Cantidad -->
                                 <div class="mb-2 col-md-2">
                                     <label for="Cantidad" class="form-label fw-bold">Cantidad</label>
-                                    <input type="number" class="form-control" id="Cantidad" min="1" value="1">
+                                    <input type="number" id="Cantidad" name="Cantidad" value="1" min="1" class="form-control" />
                                 </div>
                                 <!-- Botón Agregar -->
                                 <div class="mb-2 col-md-2 d-flex align-items-end">
@@ -97,7 +97,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-md-6">
-                            <h3>Total: <span id="total-price">$0.00</span></h3>
+                            <h4>TOTAL: <span id="total-price">$0.00</span></h4>
                         </div>
                         <div class="col-md-6 text-end">
                             <button type="button" class="btn btn-danger" onclick="CancelarVenta()">Cancelar</button>
