@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Informes";
+}
+<link rel="stylesheet" href="~/css/Inicio.css" asp-append-version="true" />
+
+<div class="container mt-5">
+    <div class="row justify-content-start">
+        <div class="col-md-3 mb-4">
+            <div class="card custom-card d-flex align-items-center">
+                <div class="card-body">
+                    <h5 class="titulo-card">Socios Adherentes por Titulares</h5>
+                    <div class="text-end w-100">
+                        <a class="btn btn-primary" asp-area="" asp-controller="SocioAdherentes" asp-action="InformeSocios">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card custom-card d-flex align-items-center">
+                <div class="card-body">
+                    <h5 class="titulo-card">Eventos por Tipos de Eventos</h5>
+                    <div class="text-end w-100">
+                        <a class="btn btn-primary" asp-area="" asp-controller="Eventos" asp-action="InformeEventos">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card custom-card d-flex align-items-center">
+                <div class="card-body">
+                    <h5 class="titulo-card">Productos por Tipos de Productos</h5>
+                    <div class="text-end w-100">
+                        <a class="btn btn-primary" asp-area="" asp-controller="Productos" asp-action="InformeProductos">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
