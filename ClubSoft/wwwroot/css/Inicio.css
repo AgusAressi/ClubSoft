@@ -24,3 +24,19 @@
         font-size: 1.25rem; /* Reducir el tamaño del título en móvil */
     }
 }
+.custom-container {
+    background-color: white; /* Fondo gris claro */
+    border: 2px solid #eef0f1; /* Borde azul claro */
+    border-radius: 8px;
+    padding: 20px 30px; /* Espacio interior */
+    max-width: 1240px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado y espacio a los lados */
+    box-shadow: 6px 6px 6px 2px rgba(51, 53, 56, 0.2);
+}
+.contenedor2{
+    max-width: 1240px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado y espacio a los lados */
+}
+body{
+    background-color: #f7f7f7;
+}
