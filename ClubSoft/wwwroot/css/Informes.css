@@ -1,0 +1,39 @@
+.custom-card {
+    background-color: #f8f9fa; /* Fondo gris claro */
+    border-left: 7px solid #0d6efd; /* Borde azul oscuro y grueso a la izquierda */
+    border-radius: 0.5rem; /* Border-radius estándar de Bootstrap */
+    /* Elimina la altura fija para permitir que la tarjeta ajuste el contenido */
+}
+
+/* Estilos por defecto para títulos */
+.titulo-card {
+    font-size: 1.5rem;
+}
+
+/* Estilos responsivos para dispositivos móviles */
+@media (max-width: 768px) {
+    .custom-card {
+        background-color: #e9ecef; /* Fondo ligeramente más oscuro en móvil */
+        border-left: 5px solid #0d6efd; /* Borde más delgado */
+        /* Se puede agregar un padding para un espaciado adicional si es necesario */
+        padding: 20px; /* Espaciado interno para el contenido */
+        /* Altura auto permite que se ajuste al contenido */
+    }
+
+    .titulo-card {
+        font-size: 1.25rem; /* Reducir el tamaño del título en móvil */
+    }
+}
+.custom-container {
+    background-color: white; /* Fondo gris claro */
+    border: 2px solid #eef0f1; /* Borde azul claro */
+    border-radius: 8px;
+    padding: 20px 30px; /* Espacio interior */
+    max-width: 1240px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado y espacio a los lados */
+    box-shadow: 6px 6px 6px 2px rgba(51, 53, 56, 0.2);
+}
+.contenedor2{
+    max-width: 1240px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado y espacio a los lados */
+}
