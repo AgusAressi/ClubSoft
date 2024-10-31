@@ -26,7 +26,7 @@ public class ProductosController : Controller
 
         return View();
     }
-     public IActionResult InformeProductos()
+    public IActionResult InformeProductos()
     {
         return View();
     }
@@ -56,76 +56,76 @@ public class ProductosController : Controller
         return Json(MostrarProductos);
     }
 
-   public JsonResult GuardarRegistro(
-    int ProductoID,
-    string Nombre,
-    decimal Precio,
-    decimal Cantidad,
-    string Descripcion,
-    bool Estado,
-    int TipoProductoID)
-{
-    string resultado = "";
-    Nombre = Nombre.ToUpper();
-    Descripcion = Descripcion.ToUpper();
-
-    // Verificar si el producto ya existe
-    var productoExistente = _context.Productos
-        .Where(p => p.Nombre == Nombre && p.ProductoID != ProductoID)
-        .SingleOrDefault();
-
-    if (productoExistente != null)
+    public JsonResult GuardarRegistro(
+     int ProductoID,
+     string Nombre,
+     decimal Precio,
+     decimal Cantidad,
+     string Descripcion,
+     bool Estado,
+     int TipoProductoID)
     {
-        return Json(new { success = false, message = "EL PRODUCTO YA EXISTE" });
-    }
+        string resultado = "";
+        Nombre = Nombre.ToUpper();
+        Descripcion = Descripcion.ToUpper();
 
-    // Si es una actualización, verificar si se está intentando cambiar el tipo de producto
-    if (ProductoID != 0)
-    {
-        var productoEditar = _context.Productos
-            .Where(p => p.ProductoID == ProductoID)
+        // Verificar si el producto ya existe
+        var productoExistente = _context.Productos
+            .Where(p => p.Nombre == Nombre && p.ProductoID != ProductoID)
             .SingleOrDefault();
 
-        if (productoEditar != null && productoEditar.TipoProductoID != TipoProductoID)
+        if (productoExistente != null)
         {
-            return Json(new { success = false, message = "No se puede cambiar el tipo de producto" });
+            return Json(new { success = false, message = "EL PRODUCTO YA EXISTE" });
         }
-    }
 
-    // Si ProductoID es 0, es un nuevo registro
-    if (ProductoID == 0)
-    {
-        var producto = new Producto
+        // Si es una actualización, verificar si se está intentando cambiar el tipo de producto
+        if (ProductoID != 0)
         {
-            Nombre = Nombre,
-            Precio = Precio,
-            Cantidad = Cantidad,
-            Descripcion = Descripcion,
-            Estado = Estado,
-            TipoProductoID = TipoProductoID
-        };
-        _context.Add(producto);
-        _context.SaveChanges();
-        resultado = "¡Producto guardado correctamente!";
-    }
-    else // Si es una actualización
-    {
-        var editarProducto = _context.Productos.Where(p => p.ProductoID == ProductoID).SingleOrDefault();
-        if (editarProducto != null)
+            var productoEditar = _context.Productos
+                .Where(p => p.ProductoID == ProductoID)
+                .SingleOrDefault();
+
+            if (productoEditar != null && productoEditar.TipoProductoID != TipoProductoID)
+            {
+                return Json(new { success = false, message = "No se puede cambiar el tipo de producto" });
+            }
+        }
+
+        // Si ProductoID es 0, es un nuevo registro
+        if (ProductoID == 0)
         {
-            editarProducto.Nombre = Nombre;
-            editarProducto.Precio = Precio;
-            editarProducto.Cantidad = Cantidad;
-            editarProducto.Descripcion = Descripcion;
-            editarProducto.Estado = Estado;
-            editarProducto.TipoProductoID = TipoProductoID;
+            var producto = new Producto
+            {
+                Nombre = Nombre,
+                Precio = Precio,
+                Cantidad = Cantidad,
+                Descripcion = Descripcion,
+                Estado = Estado,
+                TipoProductoID = TipoProductoID
+            };
+            _context.Add(producto);
             _context.SaveChanges();
-            resultado = "Producto actualizado correctamente";
+            resultado = "¡Producto guardado correctamente!";
         }
-    }
+        else // Si es una actualización
+        {
+            var editarProducto = _context.Productos.Where(p => p.ProductoID == ProductoID).SingleOrDefault();
+            if (editarProducto != null)
+            {
+                editarProducto.Nombre = Nombre;
+                editarProducto.Precio = Precio;
+                editarProducto.Cantidad = Cantidad;
+                editarProducto.Descripcion = Descripcion;
+                editarProducto.Estado = Estado;
+                editarProducto.TipoProductoID = TipoProductoID;
+                _context.SaveChanges();
+                resultado = "Producto actualizado correctamente";
+            }
+        }
 
-    return Json(new { success = true, message = resultado });
-}
+        return Json(new { success = true, message = resultado });
+    }
 
     public JsonResult TraerProducto(int? ProductoID)
     {
@@ -147,21 +147,21 @@ public class ProductosController : Controller
     }
 
     public JsonResult OcultarActivarProducto(int? ProductoID, int Accion)
+    {
+        var producto = _context.Productos.Find(ProductoID);
+        if (Accion == 1)
         {
-            var producto = _context.Productos.Find(ProductoID);
-            if (Accion == 1)
-            {
-                producto.Estado = true;
-            }
-            else
-            {
-                producto.Estado = false;
-            }
-            _context.SaveChanges();
-            return Json(true);
+            producto.Estado = true;
         }
+        else
+        {
+            producto.Estado = false;
+        }
+        _context.SaveChanges();
+        return Json(true);
+    }
 
-         public JsonResult InformeListadoProductos(int? id)
+    public JsonResult InformeListadoProductos(int? id)
     {
         List<VistaTipoProductos> MostrarProductos = new List<VistaTipoProductos>();
         var listadoProductos = _context.Productos.OrderBy(n => n.Nombre).ToList();

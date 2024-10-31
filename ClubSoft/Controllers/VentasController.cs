@@ -23,6 +23,10 @@ namespace ClubSoft.Controllers
             return View();
         }
 
+        public IActionResult InformesVentas()
+        {
+            return View();
+        }
 
         [HttpGet]
         public JsonResult ListadoVentas()
@@ -287,30 +291,63 @@ namespace ClubSoft.Controllers
         }
 
         [HttpPost]
-public IActionResult EliminarVenta(int ventaID)
-{
-    // Buscar la venta por su ID
-    var venta = _context.Ventas.FirstOrDefault(v => v.VentaID == ventaID);
+        public IActionResult EliminarVenta(int ventaID)
+        {
+            // Buscar la venta por su ID
+            var venta = _context.Ventas.FirstOrDefault(v => v.VentaID == ventaID);
 
-    if (venta == null)
-    {
-        return Json(new { success = false, message = "Venta no encontrada." });
-    }
+            if (venta == null)
+            {
+                return Json(new { success = false, message = "Venta no encontrada." });
+            }
 
-    // Cambiar el estado de la venta a 'Eliminado'
-    venta.Estado = Estado.Eliminado;
+            // Cambiar el estado de la venta a 'Eliminado'
+            venta.Estado = Estado.Eliminado;
 
-    try
-    {
-        _context.SaveChanges();
-        return Json(new { success = true });
-    }
-    catch (Exception ex)
-    {
-        return Json(new { success = false, message = "Error al eliminar la venta: " + ex.Message });
-    }
-}
+            try
+            {
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar la venta: " + ex.Message });
+            }
+        }
 
+        [HttpPost]
+        public JsonResult InformeVentasPorCliente()
+        {
+            // Crear lista para almacenar la información de ventas
+            List<VistaVentas> VentasMostrar = new List<VistaVentas>();
+
+            var listadoVentas = _context.Ventas.Where(v => v.Estado != Estado.Eliminado).ToList();
+            var listadoPersonas = _context.Personas.ToList();
+
+         
+            foreach (var venta in listadoVentas)
+            {
+                
+                var persona = listadoPersonas.SingleOrDefault(p => p.PersonaID == venta.PersonaID);
+                if (persona != null)
+                {
+                
+                    var ventaMostrar = new VistaVentas
+                    {
+                        VentaID = venta.VentaID,
+                        NombrePersona = persona.Nombre,
+                        ApellidoPersona = persona.Apellido,
+                        Total = venta.Total,
+                        Fecha = venta.Fecha.ToString("dd/MM/yyyy"),
+                        Estado = venta.Estado.ToString()
+                    };
+
+                    VentasMostrar.Add(ventaMostrar);
+                }
+            }
+
+            return Json(VentasMostrar);
+        }
     }
 }
 
