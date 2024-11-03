@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Nuevo Cobro";
+}
+
+
+<div class="p-3">
+    <div class="mt-2">
+        <div class="card shadow-sm">
+            <h3 class="card-header text-end">
+                <i class="fa-solid fa-table pe-2"></i>NUEVO COBRO
+            </h3>
+            <div class="card-body">
+                <form id="formCobroTemporal">
+                    <input type="hidden" id="UsuarioID" value="@User.Identity?.Name" />
+                    <input type="hidden" id="CobroID" value="0" />
+
+                    <!-- Cliente y Fecha (Sección 1) -->
+                    <div class="row" id="section1">
+                        <div class="mb-2 col-md-4">
+                            <label for="PersonaID" class="form-label fw-bold">Cliente</label>
+                            <select id="PersonaID" class="form-control">
+                                <option value="">[SELECCIONE CLIENTE]</option>
+                                @foreach (var persona in ViewBag.PersonaID as SelectList)
+                                {
+                                    <option value="@persona.Value">@persona.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-2 col-md-4">
+                            <label for="fecha" class="form-label fw-bold">Fecha</label>
+                            <input type="date" id="fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Ventas y Botones Cobrar/Cancelar (Sección 2) -->
+                    <div class="mt-4" id="form-section-2" style="display:none;">
+                        <h5>Ventas del Cliente</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Seleccionar</th>
+                                        <th>Número de Venta</th>
+                                        <th>Fecha de Venta</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="Tabla-Detalle"></tbody>
+                            </table>
+                        </div>
+                        <!-- Botones Cobrar y Cancelar -->
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-success" id="btnCobrar" style="display:none;">Cobrar</button>
+                            <button type="button" class="btn btn-danger" id="btnCancelar" style="display:none;">Cancelar</button>
+                        </div>
+                        <p id="totalAcumulado" class="fw-bold mt-2">Total: $0.00</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/NuevoCobro.js"></script>

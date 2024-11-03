@@ -228,8 +228,11 @@
                             <h5 class="titulo-card">Cobros</h5>
                         </div>
                         <div class="text-end w-100">
-                            <a class="btn btn-primary" asp-controller="CuentaCorrientes" asp-action="Index">
-                                <i class="fas fa-arrow-right ml-2"></i>
+                            <a class="btn btn-primary" asp-controller="Cobros"
+                                asp-action="Index">
+                                 <i class="fa-solid fa-chevron-right ml-2"></i>
+                                </a>
+                               
                             </a>
                         </div>
                     </div>
@@ -265,9 +268,22 @@
         </div>
         <div class="card ml-2 shadow-sm col-md-5 ">
             <h3 class="card-header bg-white text-end">
-                <i class="fa-solid fa-cart-shopping pe-2"></i>Ventas Por Cliente
+                <i class="fa-solid fa-users pe-2"></i>ROLES 
             </h3>
             <div class="card-body">
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 15%;">Rol</th>
+                                <th class="text-end">Nombre</th>
+                                <th class="text-center">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-InformeRoles">
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>

@@ -21,6 +21,7 @@ public class Persona
     public virtual ICollection<Venta> Ventas { get; set; }
 
     public virtual ICollection<CuentaCorriente> CuentaCorrientes { get; set; }
+    public virtual ICollection<Cobro> Cobro { get; set; }
 
 }
 public class VistaPersonas

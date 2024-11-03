@@ -29,9 +29,21 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home"
                         asp-action="Inicio"><i class="fa-solid fa-house pe-2"></i>Inicio</a>
+<div class="list-group-item p-0">
+    <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+        data-bs-toggle="collapse" href="#personasMenu" role="button" aria-expanded="false"
+        aria-controls="personasMenu">
+        <span><i class="fas fa-users pe-2"></i>Personas</span>
+        <i class="fa-solid fa-chevron-down"></i>
+    </a>
+    <div class="collapse bg-light mx-2 rounded" id="personasMenu">
+        <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
+            asp-action="Index">Administrar Personas</a>
+        <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
+            asp-action="InformeRol">Informe Rol</a>
+    </div>
+</div>
 
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Personas"
-                        asp-action="Index"><i class="fas fa-users pe-2"></i>Personas</a>
 
                     <!-- Dropdown para Socios -->
                     <div class="list-group-item p-0">

@@ -57,6 +57,13 @@ public class PersonasController : Controller
         return View();
     }
 
+    
+    public IActionResult InformeRol()
+    {
+        return View();
+    }
+
+
     public JsonResult ListadoPersonas()
     {
         List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
@@ -347,5 +354,40 @@ public class PersonasController : Controller
 
         return Json(new { success = true, message = "Persona eliminada correctamente." });
     }
+
+    
+    public JsonResult InformePorRol()
+    {
+        List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
+        var listadoPersonas = _context.Personas.OrderBy(n => n.Nombre).ToList();
+        var listadoUsuarios = _context.Users.ToList();
+        var listadoUserRoles = _context.UserRoles.ToList();
+        var listadoRoles = _context.Roles.ToList();
+
+        foreach (var personas in listadoPersonas)
+        {
+            
+            var usuarios = listadoUsuarios.FirstOrDefault(t => t.Id == personas.UsuarioID);
+            var userRole = listadoUserRoles.FirstOrDefault(ur => ur.UserId == usuarios.Id);
+            var rol = userRole != null ? listadoRoles.FirstOrDefault(r => r.Id == userRole.RoleId) : null;
+
+            {
+                var personaMostar = new VistaPersonas
+                {
+                    PersonaID = personas.PersonaID,
+                    Nombre = personas.Nombre,
+                    Apellido = personas.Apellido,
+                    DNI = personas.DNI,
+                    UsuarioID = personas.UsuarioID,
+                    Email = usuarios.Email,
+                    RolNombre = rol != null ? rol.Name : "Sin Rol"
+                };
+                MostrarPersonas.Add(personaMostar);
+            }
+        }
+
+        return Json(MostrarPersonas);
+    }
+
 
 }
