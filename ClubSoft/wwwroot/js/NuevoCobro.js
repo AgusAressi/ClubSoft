@@ -80,7 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        Swal.fire("Éxito", "Cobro realizado con éxito", "success").then(() => {
+                        Swal.fire({
+                            title: "Venta confirmada",
+                            text: "La venta ha sido confirmada exitosamente.",
+                            icon: "success",
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // Redireccionar después de la alerta
                             window.location.href = "/Cobros/Index";
                         });
                     } else {

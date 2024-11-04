@@ -2,6 +2,8 @@
     ViewData["Title"] = "Nuevo Cobro";
 }
 
+<link rel="stylesheet" href="~/css/Cobros.css" asp-append-version="true" />
+
 
 <div class="p-3">
     <div class="mt-2">
@@ -51,7 +53,7 @@
                         </div>
                         <!-- Botones Cobrar y Cancelar -->
                         <div class="text-end mt-3">
-                            <button type="button" class="btn btn-success" id="btnCobrar" style="display:none;">Cobrar</button>
+                            <button type="button" class="btn boton-color" id="btnCobrar" style="display:none;">Cobrar</button>
                             <button type="button" class="btn btn-danger" id="btnCancelar" style="display:none;">Cancelar</button>
                         </div>
                         <p id="totalAcumulado" class="fw-bold mt-2">Total: $0.00</p>
