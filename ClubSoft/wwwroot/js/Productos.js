@@ -23,21 +23,23 @@ function ListadoProductos(pagina = 1) {
 
             let contenidoTabla = ``;
 
-            // Recorrer los productos de la página actual
             $.each(datosPagina, function (index, producto) {  
                 
                 // Formatear el precio como moneda
                 let precioFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(producto.precio);
-
+            
                 let botonOcultar = 
                     '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',1)"><i class="fa-solid fa-eye-slash"></i></button>';
-
+            
                 if (producto.estado) {
                     botonOcultar = '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',0)" ><i class="fa-solid fa-eye-slash"></i></button>';
                 }
-
+            
+                // Usar la clase 'estado-inactivo' solo si el producto está inactivo (estado === 0)
+                let claseEstado = producto.estado == 0 ? 'estado-inactivo' : '';
+            
                 contenidoTabla += `
-                <tr>
+                <tr class="${claseEstado}">
                     <td>${producto.nombre}</td>
                     <td class="ocultar-en-768px text-end">${precioFormateado}</td>
                     <td class="text-center">${producto.cantidad}</td>

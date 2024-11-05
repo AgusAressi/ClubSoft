@@ -81,3 +81,9 @@ border-color:rgb(194, 185, 185);
 background-color:  rgb(12, 12, 86);
 color: white
 }
+
+tr.estado-inactivo {
+  background-color: #3a3a3a0d !important; /* Fondo gris oscuro */
+  color: #c0c0c0 !important; /* Texto gris claro */
+  text-decoration: line-through; /* Texto tachado */
+}
