@@ -9,7 +9,6 @@ function ListadoTipoEventos(pagina = 1) {
         type: 'POST',
         dataType: 'json',
         success: function (traerTodosLosTiposDeEventos) {
-            // Limpiar el input antes de mostrar nuevos datos
             LimpiarInput();
 
             // Calcular el total de páginas
@@ -75,6 +74,12 @@ function generarPaginacionTipoEventos(totalPages, currentPage) {
 
     document.getElementById("paginacion").innerHTML = paginacion;
 }
+
+function LimpiarInput() {
+    document.getElementById("TipoEventoID").value = 0;
+    document.getElementById("TipoEventoNombre").value = "";
+}
+
 
 function GuardarRegistro() {
     const tipoEventoID = document.getElementById("TipoEventoID").value;
@@ -182,7 +187,3 @@ function EliminarTipoEvento(tipoEventoID) {
     });
 }
 
-function LimpiarInput() {
-     document.getElementById("TipoEventoID").value = 0;
-     document.getElementById("TipoEventoNombre").value = "";
-}

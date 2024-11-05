@@ -46,7 +46,7 @@ namespace ClubSoft.Controllers
                 p.PersonaID,
                 NombreCompleto = p.Apellido + " " + p.Nombre
             }), "PersonaID", "NombreCompleto");
-            
+
             return View();
         }
 
@@ -164,5 +164,32 @@ namespace ClubSoft.Controllers
             public string UsuarioId { get; set; }
             public DateTime Fecha { get; set; }
         }
+
+        [HttpPost]
+        public IActionResult EliminarCobro(int cobroID)
+        {
+            // Buscar el cobro por su ID
+            var cobro = _context.Cobros.FirstOrDefault(c => c.CobroID == cobroID);
+
+            if (cobro == null)
+            {
+                return Json(new { success = false, message = "Cobro no encontrado." });
+            }
+
+            // Cambiar el estado del cobro a 'Eliminado'
+            cobro.EstadoCobro = EstadoCobro.Eliminado;
+
+            try
+            {
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar el cobro: " + ex.Message });
+            }
+        }
     }
+
+
 }

@@ -21,5 +21,6 @@ public enum EstadoCobro
 {
      Temporal = 0,
      Confirmado,
-     Anulado
+     Anulado,
+     Eliminado
 }

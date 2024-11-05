@@ -61,14 +61,14 @@ function NuevoEvento(){
 }
 function GuardarRegistro() {
     let eventoID = document.getElementById("EventoID").value;
-    let tipoEvento = document.getElementById("TipoEventoID").value;
+    let tipoEventoID = document.getElementById("TipoEventoID").value;
     let descripcion = document.getElementById("DescripcionEvento").value;
     let fecha = document.getElementById("FechaEvento").value; 
     let lugarID = document.getElementById("LugarID").value;
     
     let isValid = true;
 
-    if (tipoEvento === "0") {
+    if (tipoEventoID === "0") {
         document.getElementById("errorMensajeTipoEvento").style.display = "block";
         isValid = false;
     } else {
@@ -104,7 +104,7 @@ function GuardarRegistro() {
             descripcion: descripcion,
             fechaEvento: fecha,
             lugarID: lugarID,
-            tipoEventoID: tipoEvento
+            tipoEventoID: tipoEventoID
         },
         type: 'POST',
         dataType: 'json',   

@@ -1,8 +1,8 @@
 window.onload = ListadoCobros();
 
 //VISTA LISTADO DE COBROS
-let itemsPerPageCobros = 7;  
-let totalPagesCobros = 0;  
+let itemsPerPageCobros = 7;
+let totalPagesCobros = 0;
 
 function ListadoCobros(pagina = 1) {
     $.ajax({
@@ -33,6 +33,11 @@ function ListadoCobros(pagina = 1) {
                         <td  class="text-center">${cobro.cliente}</td>
                         <td  class="text-center">${fechaFormateada}</td>
                         <td class="text-end">${totalFormateado}</td>
+                        <td class="text-center">
+                    <button type="button" class="btn btn-danger" onclick="EliminarCobro(${cobro.cobroID})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
                     </tr>`;
             });
 
@@ -78,6 +83,38 @@ function formatDate(dateString) {
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
     const year = date.getFullYear();
     return `${day}/${month}/${year}`; // Formato dd/MM/yyyy
+}
+
+function EliminarCobro(cobroID) {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esto marcará el cobro como eliminado.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Cobros/EliminarCobro',
+                type: 'POST',
+                data: { cobroID: cobroID },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire("Cobro eliminado", "", "success").then(() => {
+                            // Opcionalmente redirigir o actualizar la vista
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire("Error", response.message, "error");
+                    }
+                },
+                error: function () {
+                    Swal.fire("Error", "No se pudo eliminar el cobro.", "error");
+                }
+            });
+        }
+    });
 }
 
 
