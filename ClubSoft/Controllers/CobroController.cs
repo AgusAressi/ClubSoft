@@ -28,7 +28,7 @@ namespace ClubSoft.Controllers
         .Select(c => new
         {
             CobroID = c.CobroID,
-            Cliente = c.Persona.Apellido + " " + c.Persona.Nombre,
+            Cliente = c.Persona.Apellido + ", " + c.Persona.Nombre,
             Fecha = c.Fecha, // Enviar como DateTime
             Total = c.Total
         })

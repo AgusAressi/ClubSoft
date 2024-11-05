@@ -228,11 +228,10 @@
                             <h5 class="titulo-card">Cobros</h5>
                         </div>
                         <div class="text-end w-100">
-                            <a class="btn btn-primary" asp-controller="Cobros"
-                                asp-action="Index">
-                                 <i class="fa-solid fa-chevron-right ml-2"></i>
-                                </a>
-                               
+                            <a class="btn btn-primary" asp-controller="Cobros" asp-action="Index">
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+
                             </a>
                         </div>
                     </div>
@@ -242,16 +241,22 @@
     </div>
 </div>
 
-<div class="container mt-5 p-3 contenedor2">
-    <div class="row gap-5 justify-content-center">
-        <div class="card shadow-sm col-md-5">
-            <div class="card-header bg-white text-end">
-                <h3>
-                    <i class="fa-solid fa-cart-shopping pe-2"></i>Ventas Por Cliente
+<div class="container mt-2 p-3 contenedor2">
+    <div class="row justify-content-center shadow-md">
+        <!-- Card Ventas Por Cliente -->
+        <div class="card col-md-12">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <button class="btn btn-primary btn-sm" onclick="toggleVentasTable()">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </button>
+
+                <h3 class="h5 m-0 text-end">
+                    <i class="fa-solid fa-cart-shopping pe-2"></i> Ventas Por Cliente
                 </h3>
             </div>
-            <div class="pb-3">
-                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+
+            <div class="pb-3 collapse-transition show" id="ventasTable">
+                <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
@@ -266,17 +271,28 @@
                 </div>
             </div>
         </div>
-        <div class="card ml-2 shadow-sm col-md-5 ">
-            <h3 class="card-header bg-white text-end">
-                <i class="fa-solid fa-users pe-2"></i>ROLES 
-            </h3>
-            <div class="card-body">
-                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+    </div>
+
+    <div class="row justify-content-center pt-2 shadow-md">
+        <!-- Card Roles -->
+        <div class="card col-md-12">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <button class="btn btn-primary btn-sm" onclick="toggleRolesTable()">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </button>
+
+                <h3 class="h5 m-0 text-end">
+                    <i class="fa-solid fa-users pe-2"></i> Roles
+                </h3>
+            </div>
+
+            <div class="pb-3 collapse-transition show" id="rolesTable">
+                <div class="table-responsive" style="height: 350px; overflow-y: auto;">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="text-center" style="width: 15%;">Rol</th>
-                                <th class="text-end">Nombre</th>
+                                <th style="width: 15%;">Rol</th>
+                                <th class="text-center">Nombre</th>
                                 <th class="text-center">Email</th>
                             </tr>
                         </thead>
@@ -284,12 +300,9 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </div>
 
 @section Scripts {

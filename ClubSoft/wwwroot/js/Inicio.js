@@ -83,8 +83,8 @@ function InformePorRol() {
                     contenidoTabla += `
                         <tr>
                             <td></td>
-                            <td class="text-end">${Persona.nombre} ${Persona.apellido}</td>
-                            <td class="text-end">${Persona.email}</td>
+                            <td class="text-center">${Persona.apellido}, ${Persona.nombre} </td>
+                            <td class="text-center">${Persona.email}</td>
                         </tr>
                     `;
                 });
@@ -96,4 +96,16 @@ function InformePorRol() {
             alert('Disculpe, existió un problema al cargar los datos');
         }
     });
+}
+
+// Función para mostrar/ocultar la tabla de Ventas con transición
+function toggleVentasTable() {
+    const ventasTable = document.getElementById("ventasTable");
+    ventasTable.classList.toggle("show");
+}
+
+// Función para mostrar/ocultar la tabla de Roles con transición
+function toggleRolesTable() {
+    const rolesTable = document.getElementById("rolesTable");
+    rolesTable.classList.toggle("show");
 }

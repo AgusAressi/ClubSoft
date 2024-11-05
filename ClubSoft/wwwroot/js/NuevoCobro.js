@@ -152,7 +152,7 @@ function ListadoCobros() {
                         <td># ${cobro.cobroID}</td>
                         <td>${cobro.cliente}</td>
                         <td>${fechaFormateada}</td>
-                        <td>${totalFormateado}</td>
+                        <td class="text-end">${totalFormateado}</td>
                     </tr>`;
             });
 

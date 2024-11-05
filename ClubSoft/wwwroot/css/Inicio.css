@@ -40,3 +40,17 @@
 body{
     background-color: #f7f7f7;
 }
+
+/* Estilo para la transición de las cards de Ventas y Roles */
+.collapse-transition {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Estado visible */
+.collapse-transition.show {
+    opacity: 1;
+    max-height: 500px; 
+}
