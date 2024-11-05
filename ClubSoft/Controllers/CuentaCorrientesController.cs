@@ -45,7 +45,7 @@ namespace ClubSoft.Controllers
                     Ingreso = cuentaCorrientes.Ingreso,
                     Egreso = cuentaCorrientes.Egreso,
                     Descripcion = cuentaCorrientes.Descripcion,
-                    Fecha = cuentaCorrientes.Fecha,
+                    Fecha = cuentaCorrientes.Fecha.ToString("dd/MM/yyyy"),
                     NombrePersona = persona.Nombre, 
                     ApellidoPersona = persona.Apellido 
                 };

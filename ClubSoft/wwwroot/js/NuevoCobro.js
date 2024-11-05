@@ -12,8 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     personaIDInput.addEventListener("change", function() {
         if (personaIDInput.value) {
             cargarVentas();
-            personaIDInput.disabled = true;
-            fechaInput.disabled = true;
         }
     });
 
@@ -33,13 +31,35 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    Swal.fire("Aviso", data.error, "info");
+                    Swal.fire({
+                        title: "Aviso",
+                        text: data.error,
+                        icon: "info",
+                        confirmButtonColor: "#0c0c56"
+                    });
                     return;
                 }
 
                 cobroID = data.cobroID;
                 total = 0;
                 totalAcumulado.textContent = "TOTAL: $0.00";
+
+                if (data.ventas.length === 0) {
+                    Swal.fire("Aviso", "No hay ventas para cobrar en la fecha seleccionada.", "info");
+                    
+                    // No deshabilitar los campos si no hay ventas
+                    personaIDInput.disabled = false;
+                    fechaInput.disabled = false;
+
+                    formSection2.style.display = "none";
+                    btnCobrar.style.display = "none";
+                    btnCancelar.style.display = "none";
+                    return;
+                }
+
+                personaIDInput.disabled = true;
+                fechaInput.disabled = true;
+
                 document.getElementById("Tabla-Detalle").innerHTML = data.ventas.map(venta => `
                     <tr>
                         <td><input type="checkbox" class="venta-checkbox" data-venta-id="${venta.ventaID}" data-total="${venta.total}" /></td>
@@ -72,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "¿Estás seguro de cobrar?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#0c0c56",
             cancelButtonColor: "#d33",
             confirmButtonText: "Sí, cobrar",
             cancelButtonText: "Cancelar"
@@ -116,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "¿Estás seguro de cancelar el cobro?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#0c0c56",
             cancelButtonColor: "#d33",
             cancelButtonText: "Cancelar",
             confirmButtonText: "Confirmar"
@@ -131,12 +151,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        Swal.fire("Cobro Cancelado", "El cobro ha sido cancelado correctamente.", "success").then(() => {
+                        Swal.fire({
+                            title: "Cobro Cancelado",
+                            text: "El cobro ha sido cancelado correctamente.",
+                            icon: "success",
+                            confirmButtonColor: "#0c0c56"
+                        }).then(() => {
                             personaIDInput.value = "";
                             total = 0;
                             totalAcumulado.textContent = "Total: $0.00";
                             formSection2.style.display = "none";
-
+                        
                             // Habilitar los campos después de cancelar
                             personaIDInput.disabled = false;
                             fechaInput.disabled = false;
@@ -150,4 +175,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-

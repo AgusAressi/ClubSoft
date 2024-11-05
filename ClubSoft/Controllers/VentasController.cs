@@ -274,8 +274,10 @@ namespace ClubSoft.Controllers
 
         public JsonResult ComboProducto(int TipoProductoID)
         {
-            // BUSCAR PRODUCTOS
-            var productos = (from o in _context.Productos where o.TipoProductoID == TipoProductoID select o).ToList();
+            // BUSCAR PRODUCTOS con TipoProductoID específico y estado activo (estado == true)
+            var productos = (from o in _context.Productos 
+                            where o.TipoProductoID == TipoProductoID && o.Estado == true 
+                            select o).ToList();
 
             return Json(new SelectList(productos, "ProductoID", "Nombre"));
         }

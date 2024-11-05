@@ -32,7 +32,7 @@ public class VistaCuentaCorrientes
     public decimal Ingreso { get; set; }
     public decimal Egreso { get; set; }
     public string? Descripcion { get; set; }
-    public DateTime Fecha { get; set; }
+    public string Fecha { get; set; }
     public string? NombrePersona { get; set; }
     public string? ApellidoPersona { get; set; }
 

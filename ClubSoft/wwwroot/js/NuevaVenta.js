@@ -172,11 +172,21 @@ function ConfirmarVenta() {
     let cliente = $('#PersonaID').val();
 
     if (!ventaID || ventaID === "0") {
-        Swal.fire("No se puede confirmar la venta.", "", "warning");
+        Swal.fire({
+            title: "No se puede confirmar la venta.",
+            text: "",
+            icon: "warning",
+            confirmButtonColor: "#0c0c56"
+        });
         return;
     }
     if (!cliente || cliente === "0") {
-        Swal.fire("No se puede confirmar la venta.", "Debe seleccionar un cliente", "warning");
+        Swal.fire({
+            title: "No se puede confirmar la venta.",
+            text: "Debe seleccionar un cliente",
+            icon: "warning",
+            confirmButtonColor: "#0c0c56"
+        });
         return;
     }
 
@@ -185,6 +195,8 @@ function ConfirmarVenta() {
         text: "¿Desea confirmar esta venta?",
         icon: "warning",
         showCancelButton: true,
+        confirmButtonColor: "#0c0c56",
+        cancelButtonColor: "#d33",
         confirmButtonText: "Sí, confirmar",
         cancelButtonText: "Cancelar"
     }).then((result) => {
@@ -205,11 +217,21 @@ function ConfirmarVenta() {
                             window.location.href = result.redirectUrl;
                         });
                     } else {
-                        Swal.fire("Error", result.message, "error");
+                        Swal.fire({
+                            title: "Error",
+                            text: result.message,
+                            icon: "error",
+                            confirmButtonColor: "#0c0c56"
+                        });
                     }
                 },
                 error: function () {
-                    Swal.fire("Error", "No se pudo confirmar la venta.", "error");
+                    Swal.fire({
+                        title: "Error",
+                        text: "No se pudo confirmar la venta.",
+                        icon: "error",
+                        confirmButtonColor: "#0c0c56"
+                    });
                 }
             });
         }
@@ -244,7 +266,12 @@ function CancelarVenta() {
                     $('#total-price').text('$0.00');
                 });
             } else {
-                Swal.fire("Error", result.message, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: result.message,
+                    icon: "error",
+                    confirmButtonColor: "#0c0c56"
+                });
             }
         },
         error: function () {

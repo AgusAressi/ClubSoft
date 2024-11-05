@@ -91,6 +91,8 @@ function EliminarCobro(cobroID) {
         text: "Esto marcará el cobro como eliminado.",
         icon: "warning",
         showCancelButton: true,
+        confirmButtonColor: "#0c0c56",
+        cancelButtonColor: "#d33",
         confirmButtonText: "Sí, eliminar",
         cancelButtonText: "Cancelar"
     }).then((result) => {
@@ -101,12 +103,22 @@ function EliminarCobro(cobroID) {
                 data: { cobroID: cobroID },
                 success: function (response) {
                     if (response.success) {
-                        Swal.fire("Cobro eliminado", "", "success").then(() => {
+                        Swal.fire({
+                            title: "Cobro eliminado",
+                            text: "",
+                            icon: "success",
+                            confirmButtonColor: "#0c0c56"
+                        }).then(() => {
                             // Opcionalmente redirigir o actualizar la vista
                             location.reload();
                         });
                     } else {
-                        Swal.fire("Error", response.message, "error");
+                        Swal.fire({
+                            title: "Error",
+                            text: response.message,
+                            icon: "error",
+                            confirmButtonColor: "#0c0c56"
+                        });
                     }
                 },
                 error: function () {

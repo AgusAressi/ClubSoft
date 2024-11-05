@@ -14,6 +14,11 @@
                         data-bs-toggle="modal" data-bs-target="#ModalCuentaCorrientes">
                         <i class="fa-solid fa-plus fa-2x"></i>
                     </button>
+                    <div class="search shadow-sm">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre...">
+                        <button class="btn btn-primary "><i class="fa fa-search"></i></button>
+
+                    </div>
                 </div>
                 <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
                     <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>CUENTAS CORRIENTES</h3>
@@ -25,11 +30,11 @@
                         <thead>
                             <tr>
                                 <th>Socio</th>
-                                <th>Saldo</th>
-                                <th>Ingreso</th>
-                                <th>Egreso</th>
-                                <th>Descripcion</th>
                                 <th>Fecha</th>
+                                <th class="text-end">Ingreso</th>
+                                <th class="text-end">Egreso</th>
+                                <th class="text-end">Saldo</th>
+                                <th class="text-end">Descripcion</th>
                                 <th style="width: 70px"></th>
                                 <th style="width: 70px"></th>
                             </tr>

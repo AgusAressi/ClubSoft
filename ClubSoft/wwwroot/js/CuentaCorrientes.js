@@ -13,14 +13,22 @@ function ListadoCuentaCorrientes() {
             let contenidoTabla = ``;
 
             $.each(MostrarCuentaCorrientes, function (index, MostrarCuentaCorrientes) {
+
+                let saldoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.saldo);
+                let ingresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.ingreso);
+                let egresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.egreso);
+                
+
                 contenidoTabla += `
+                
                 <tr>
                     <td>${MostrarCuentaCorrientes.nombrePersona}, ${MostrarCuentaCorrientes.apellidoPersona}</td>
-                    <td>${MostrarCuentaCorrientes.saldo}</td>
-                    <td>${MostrarCuentaCorrientes.ingreso}</td>
-                    <td>${MostrarCuentaCorrientes.egreso}</td>
-                    <td>${MostrarCuentaCorrientes.descripcion}</td>
                     <td>${MostrarCuentaCorrientes.fecha}</td>
+                    <td class="text-end">${ingresoFormateado}</td>
+                    <td class="text-end">${egresoFormateado}</td>
+                    <td class="text-end">${saldoFormateado}</td>
+                    <td class="text-end">${MostrarCuentaCorrientes.descripcion}</td>
+                    
                    
                     <td class="text-center">
                     <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarCuentaCorrientes.cuentaCorrienteID})">
@@ -38,6 +46,20 @@ function ListadoCuentaCorrientes() {
 
             document.getElementById("tbody-CuentaCorrientes").innerHTML = contenidoTabla;
 
+            // Filtro de búsqueda
+            document.getElementById('searchInput').addEventListener('input', function () {
+                var filter = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#tbody-Personas tr');
+
+                rows.forEach(function (row) {
+                    var nombreCompleto = row.cells[0].textContent.toLowerCase();
+                    if (nombreCompleto.includes(filter)) {
+                        row.style.display = ''; // muestra la fila si coincide
+                    } else {
+                        row.style.display = 'none'; // ocultar la fila si no coincide
+                    }
+                });
+            });
             
         },
         error: function (xhr, status) {
