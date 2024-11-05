@@ -180,30 +180,42 @@ function ConfirmarVenta() {
         return;
     }
 
-    $.ajax({
-        url: '/Ventas/ConfirmarVenta',
-        type: 'POST',
-        data: { ventaID: ventaID },
-        success: function (result) {
-            if (result.success) {
-                Swal.fire({
-                    title: "Venta confirmada",
-                    text: "La venta ha sido confirmada exitosamente.",
-                    icon: "success",
-                    timer: 2500, 
-                    showConfirmButton: false 
-                }).then(() => {
-                    window.location.href = result.redirectUrl;
-                });
-            } else {
-                Swal.fire("Error", result.message, "error");
-            }
-        },
-        error: function () {
-            Swal.fire("Error", "No se pudo confirmar la venta.", "error");
+    Swal.fire({
+        title: "¿Está seguro?",
+        text: "¿Desea confirmar esta venta?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, confirmar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Ventas/ConfirmarVenta',
+                type: 'POST',
+                data: { ventaID: ventaID },
+                success: function (result) {
+                    if (result.success) {
+                        Swal.fire({
+                            title: "Venta confirmada",
+                            text: "La venta ha sido confirmada exitosamente.",
+                            icon: "success",
+                            timer: 2500, 
+                            showConfirmButton: false 
+                        }).then(() => {
+                            window.location.href = result.redirectUrl;
+                        });
+                    } else {
+                        Swal.fire("Error", result.message, "error");
+                    }
+                },
+                error: function () {
+                    Swal.fire("Error", "No se pudo confirmar la venta.", "error");
+                }
+            });
         }
     });
 }
+
 
 // Función para cancelar la venta
 function CancelarVenta() {
