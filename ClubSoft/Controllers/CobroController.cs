@@ -20,30 +20,33 @@ namespace ClubSoft.Controllers
         {
             return View();
         }
- public JsonResult ListadoCobros()
-{
-    // Obtenemos los cobros y sus respectivos clientes
-    var cobrosMostrar = _context.Cobros
-        .Where(c => c.EstadoCobro == EstadoCobro.Confirmado) // Ejemplo de filtro para cobros confirmados
-        .Select(c => new
-        {
-            CobroID = c.CobroID,
-            Cliente = c.Persona.Apellido + ", " + c.Persona.Nombre,
-            Fecha = c.Fecha, // Enviar como DateTime
-            Total = c.Total
-        })
-        .ToList();
 
-    return Json(cobrosMostrar);
-}
+        public JsonResult ListadoCobros()
+        {
+            // Obtenemos los cobros y sus respectivos clientes
+            var cobrosMostrar = _context.Cobros
+                .Where(c => c.EstadoCobro == EstadoCobro.Confirmado) // Ejemplo de filtro para cobros confirmados
+                .Select(c => new
+                {
+                    CobroID = c.CobroID,
+                    Cliente = c.Persona.Apellido + ", " + c.Persona.Nombre,
+                    Fecha = c.Fecha, // Enviar como DateTime
+                    Total = c.Total
+                })
+                .ToList();
+
+            return Json(cobrosMostrar);
+        }
 
 
         public IActionResult NuevoCobro()
         {
-            ViewBag.PersonaID = new SelectList(_context.Personas.Select(p => new {
+            ViewBag.PersonaID = new SelectList(_context.Personas.Select(p => new
+            {
                 p.PersonaID,
                 NombreCompleto = p.Apellido + " " + p.Nombre
             }), "PersonaID", "NombreCompleto");
+            
             return View();
         }
 
@@ -57,7 +60,7 @@ namespace ClubSoft.Controllers
                     .Select(v => new
                     {
                         ventaID = v.VentaID,
-                        fecha = v.Fecha.ToString("yyyy-MM-dd"),
+                        fecha = v.Fecha.ToString("dd-MM-yyyy"),
                         total = v.Total ?? 0
                     })
                     .ToList();
@@ -91,36 +94,36 @@ namespace ClubSoft.Controllers
             }
         }
 
-       [HttpPost]
-public JsonResult ConfirmarCobro([FromBody] ConfirmarCobroRequest request)
-{
-    try
-    {
-        var cobro = _context.Cobros.Find(request.CobroID);
-        if (cobro == null)
+        [HttpPost]
+        public JsonResult ConfirmarCobro([FromBody] ConfirmarCobroRequest request)
         {
-            return Json(new { success = false, message = "Cobro no encontrado" });
+            try
+            {
+                var cobro = _context.Cobros.Find(request.CobroID);
+                if (cobro == null)
+                {
+                    return Json(new { success = false, message = "Cobro no encontrado" });
+                }
+
+                // Solo actualizar las ventas que fueron seleccionadas
+                var ventasSeleccionadas = _context.Ventas
+                    .Where(v => request.VentaIDs.Contains(v.VentaID) && v.PersonaID == cobro.PersonaID && v.Estado == Estado.Confirmado)
+                    .ToList();
+
+                // Actualizar el estado de cada venta seleccionada
+                ventasSeleccionadas.ForEach(v => v.Estado = Estado.Pagado);
+
+                cobro.EstadoCobro = EstadoCobro.Confirmado;
+                cobro.Total = request.Total;
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al confirmar el cobro: " + ex.Message });
+            }
         }
-
-        // Solo actualizar las ventas que fueron seleccionadas
-        var ventasSeleccionadas = _context.Ventas
-            .Where(v => request.VentaIDs.Contains(v.VentaID) && v.PersonaID == cobro.PersonaID && v.Estado == Estado.Confirmado)
-            .ToList();
-
-        // Actualizar el estado de cada venta seleccionada
-        ventasSeleccionadas.ForEach(v => v.Estado = Estado.Pagado);
-
-        cobro.EstadoCobro = EstadoCobro.Confirmado;
-        cobro.Total = request.Total;
-        _context.SaveChanges();
-
-        return Json(new { success = true });
-    }
-    catch (Exception ex)
-    {
-        return Json(new { success = false, message = "Error al confirmar el cobro: " + ex.Message });
-    }
-}
 
 
         [HttpPost]
@@ -144,11 +147,11 @@ public JsonResult ConfirmarCobro([FromBody] ConfirmarCobroRequest request)
         }
 
         public class ConfirmarCobroRequest
-{
-    public int CobroID { get; set; }
-    public decimal Total { get; set; }
-    public List<int> VentaIDs { get; set; } // Lista de VentaID seleccionadas
-}
+        {
+            public int CobroID { get; set; }
+            public decimal Total { get; set; }
+            public List<int> VentaIDs { get; set; } // Lista de VentaID seleccionadas
+        }
 
         public class CancelarCobroRequest
         {

@@ -31,18 +31,20 @@
 
                         <div class="mb-2 col-md-4">
                             <label for="fecha" class="form-label fw-bold">Fecha</label>
-                            <input type="date" id="fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <input type="date" id="fecha" class="form-control"
+                                value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                         </div>
                     </div>
-
+                    
                     <!-- Tabla de Ventas y Botones Cobrar/Cancelar (Sección 2) -->
                     <div class="mt-4" id="form-section-2" style="display:none;">
-                        <h5>Ventas del Cliente</h5>
+                        <hr class="mb-3">
+                        <h5>Ventas por cobrar</h5>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Seleccionar</th>
+                                        <th></th>
                                         <th>Número de Venta</th>
                                         <th>Fecha de Venta</th>
                                         <th class="text-end">Total</th>
@@ -51,14 +53,20 @@
                                 <tbody id="Tabla-Detalle"></tbody>
                             </table>
                         </div>
-                        <!-- Botones Cobrar y Cancelar -->
-                        <div class="text-end mt-3">
-                            <button type="button" class="btn boton-color" id="btnCobrar" style="display:none;">Cobrar</button>
-                            <button type="button" class="btn btn-danger" id="btnCancelar" style="display:none;">Cancelar</button>
-                        </div>
-                        <p id="totalAcumulado" class="fw-bold mt-2">Total: $0.00</p>
                     </div>
                 </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4><span id="totalAcumulado">TOTAL: $0.00</span></h4>
+                    </div>
+                    <!-- Botones Cobrar y Cancelar -->
+                    <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-danger" id="btnCancelar">Cancelar</button>
+                        <button type="button" class="btn boton-color" id="btnCobrar">Cobrar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

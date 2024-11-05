@@ -103,7 +103,7 @@ function GuardarRegistro() {
         success: function (response) {
             if (response.success) {
                 Swal.fire({
-                    position: "bottom-end",
+                    position: "center",
                     icon: "success",
                     title: response.message,
                     showConfirmButton: false,

@@ -126,7 +126,7 @@ function GuardarSocioTitular() {
             if (response.success) {
                 // Mostrar alerta de éxito
                 Swal.fire({
-                    position: "bottom-end",
+                    position: "center",
                     icon: "success",
                     title: response.mensaje,
                     showConfirmButton: false,

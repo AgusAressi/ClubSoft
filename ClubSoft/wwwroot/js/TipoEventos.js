@@ -97,7 +97,7 @@ function GuardarRegistro() {
         success: function (resultado) {
             if (resultado.success) {
                 Swal.fire({
-                    position: "center", // Cambiado a "center"
+                    position: "center",
                     icon: "success",
                     title: "Registro guardado correctamente!",
                     showConfirmButton: false,
@@ -107,12 +107,12 @@ function GuardarRegistro() {
                 
                 ListadoTipoEventos();
             } else {
-                // Mostrar alerta si el tipo de evento ya existe
+                
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: resultado.message, // Mensaje de error devuelto por el servidor
-                    position: "center" // Cambiado a "center"
+                    text: resultado.message,
+                    position: "center" 
                 });
             }
         },
