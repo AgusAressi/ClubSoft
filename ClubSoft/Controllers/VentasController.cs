@@ -34,6 +34,7 @@ namespace ClubSoft.Controllers
             List<VistaVentas> VentasMostrar = new List<VistaVentas>();
             var listadoVentas = _context.Ventas
             .Where(v => v.Estado != Estado.Eliminado) // Excluir ventas eliminadas
+            .OrderByDescending(v => v.Fecha)
             .ToList();
 
 
@@ -48,7 +49,7 @@ namespace ClubSoft.Controllers
                     NombrePersona = venta.Persona.Nombre,
                     ApellidoPersona = venta.Persona.Apellido,
                     Total = venta.Total,
-                    Fecha = venta.Fecha.ToString("dd/MM/yyyy"),
+                    Fecha = venta.Fecha.ToString("dd/MM/yyyy HH:mm"),
                     Estado = venta.Estado.ToString()
 
 
@@ -197,7 +198,7 @@ namespace ClubSoft.Controllers
 
         // Método para confirmar la venta
         [HttpPost]
-        public IActionResult ConfirmarVenta(int ventaID)
+        public IActionResult ConfirmarVenta(int ventaID, int personaID, DateTime fecha)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -216,7 +217,7 @@ namespace ClubSoft.Controllers
                     var detallesVenta = _context.DetalleVentas
                         .Where(dv => dv.VentaID == ventaID).ToList();
 
-                    if (!detallesVenta.Any())
+                    if (detallesVenta.Count == 0)
                     {
                         return Json(new { success = false, message = "No se han agregado productos a la venta." });
                     }
@@ -230,8 +231,28 @@ namespace ClubSoft.Controllers
                     // Cambiar el estado de la venta a Confirmado
                     venta.Estado = Estado.Confirmado;
 
-                    // Guardar los cambios
+                    // Guardar la venta en la base de datos
                     _context.SaveChanges();
+
+                    // Crear un nuevo registro en CuentaCorriente
+                    var cuentaCorriente = new CuentaCorriente
+                    {
+                        PersonaID = personaID,
+                        Saldo = 0, 
+                        Ingreso = totalVenta,
+                        Egreso = 0,
+                        Descripcion = $"Venta #{ventaID}",
+                        Fecha = fecha,
+                        VentaID = ventaID, 
+                    };
+
+                    _context.CuentaCorrientes.Add(cuentaCorriente);
+                    _context.SaveChanges();
+
+                    // Llamar a RecalcularCtaCte para actualizar los saldos
+                    RecalcularCtaCte(personaID);
+
+                    // Confirmar la transacción
                     transaction.Commit();
 
                     return Json(new { success = true, redirectUrl = Url.Action("Index", "Ventas") });
@@ -239,11 +260,31 @@ namespace ClubSoft.Controllers
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return Json(new { success = false, message = "Error al confirmar la venta: " + ex.Message });
+                    var innerExceptionMessage = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                    return Json(new { success = false, message = "Error al confirmar la venta: " + innerExceptionMessage });
                 }
             }
         }
 
+        public void RecalcularCtaCte(int personaID)
+        {
+            decimal saldo = 0;
+
+            // Recalculo de saldos acumulados en cada registro ordenado por fecha ascendente 
+            var movimientosCtaCte = _context.CuentaCorrientes
+                                            .Where(cam => cam.PersonaID == personaID)
+                                            .OrderBy(o => o.Fecha)
+                                            .ThenBy(o => o.CuentaCorrienteID)
+                                            .ToList();
+
+            foreach (var m in movimientosCtaCte)
+            {
+                saldo = m.Ingreso - m.Egreso + saldo;
+                m.Saldo = saldo;
+            }
+
+            _context.SaveChanges();
+        }
 
 
         // Método para cancelar la venta
@@ -275,9 +316,9 @@ namespace ClubSoft.Controllers
         public JsonResult ComboProducto(int TipoProductoID)
         {
             // BUSCAR PRODUCTOS con TipoProductoID específico y estado activo (estado == true)
-            var productos = (from o in _context.Productos 
-                            where o.TipoProductoID == TipoProductoID && o.Estado == true 
-                            select o).ToList();
+            var productos = (from o in _context.Productos
+                             where o.TipoProductoID == TipoProductoID && o.Estado == true
+                             select o).ToList();
 
             return Json(new SelectList(productos, "ProductoID", "Nombre"));
         }
@@ -317,6 +358,8 @@ namespace ClubSoft.Controllers
             }
         }
 
+
+
         [HttpPost]
         public JsonResult InformeVentasPorCliente()
         {
@@ -326,14 +369,14 @@ namespace ClubSoft.Controllers
             var listadoVentas = _context.Ventas.Where(v => v.Estado != Estado.Eliminado).ToList();
             var listadoPersonas = _context.Personas.ToList();
 
-         
+
             foreach (var venta in listadoVentas)
             {
-                
+
                 var persona = listadoPersonas.SingleOrDefault(p => p.PersonaID == venta.PersonaID);
                 if (persona != null)
                 {
-                
+
                     var ventaMostrar = new VistaVentas
                     {
                         VentaID = venta.VentaID,

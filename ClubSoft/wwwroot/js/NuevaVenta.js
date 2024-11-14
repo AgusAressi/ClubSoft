@@ -26,13 +26,6 @@ $(document).ready(function () {
     });
 });
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    var fechaInput = document.getElementById('fecha');
-    fechaInput.valueAsDate = new Date();
-});
-
-
 // Función para agregar un producto
 function AgregarProducto() {
     let productoID = $("#ProductoID").val();
@@ -169,7 +162,8 @@ function GuardarVentaTemporal() {
 // Función para confirmar la venta
 function ConfirmarVenta() {
     let ventaID = $('#VentaID').val();
-    let cliente = $('#PersonaID').val();
+    let personaID = $('#PersonaID').val();
+    let fecha = $('#fecha').val();
 
     if (!ventaID || ventaID === "0") {
         Swal.fire({
@@ -180,7 +174,7 @@ function ConfirmarVenta() {
         });
         return;
     }
-    if (!cliente || cliente === "0") {
+    if (!personaID || personaID === "0") {
         Swal.fire({
             title: "No se puede confirmar la venta.",
             text: "Debe seleccionar un cliente",
@@ -204,7 +198,10 @@ function ConfirmarVenta() {
             $.ajax({
                 url: '/Ventas/ConfirmarVenta',
                 type: 'POST',
-                data: { ventaID: ventaID },
+                data: { ventaID: ventaID,
+                    personaID: personaID,
+                    fecha: fecha
+                 },
                 success: function (result) {
                     if (result.success) {
                         Swal.fire({
@@ -215,7 +212,8 @@ function ConfirmarVenta() {
                             showConfirmButton: false 
                         }).then(() => {
                             window.location.href = result.redirectUrl;
-                        });
+                    });
+                        GuardarEnCuentaCorriente();
                     } else {
                         Swal.fire({
                             title: "Error",

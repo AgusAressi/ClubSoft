@@ -23,13 +23,12 @@ function ListadoCuentaCorrientes() {
                 
                 <tr>
                     <td>${MostrarCuentaCorrientes.nombrePersona}, ${MostrarCuentaCorrientes.apellidoPersona}</td>
-                    <td>${MostrarCuentaCorrientes.fecha}</td>
+                    <td class="text-center">${MostrarCuentaCorrientes.fecha}</td>
+                    <td>${MostrarCuentaCorrientes.descripcion}</td>
                     <td class="text-end">${ingresoFormateado}</td>
                     <td class="text-end">${egresoFormateado}</td>
                     <td class="text-end">${saldoFormateado}</td>
-                    <td class="text-end">${MostrarCuentaCorrientes.descripcion}</td>
                     
-                   
                     <td class="text-center">
                     <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarCuentaCorrientes.cuentaCorrienteID})">
                     <i class="fa-solid fa-pen-to-square"></i>

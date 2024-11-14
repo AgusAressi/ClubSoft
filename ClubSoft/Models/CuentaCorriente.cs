@@ -14,14 +14,13 @@ public class CuentaCorriente
     public decimal Egreso { get; set; }
     public string? Descripcion { get; set; }
     public DateTime Fecha { get; set; }
-    public int VentaID { get; set; }
-    public int CobroID { get; set; }
+    public int? VentaID { get; set; }
+    public int? CobroID { get; set; }
 
 
     public virtual Persona Persona { get; set; }
-    public virtual Venta Venta { get; set; }
-    public virtual Cobro Cobro { get; set; }
-
+    public virtual Venta? Venta { get; set; }
+    public virtual Cobro? Cobro { get; set; }
 }
 
 public class VistaCuentaCorrientes

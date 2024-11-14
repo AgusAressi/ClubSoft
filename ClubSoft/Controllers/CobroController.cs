@@ -26,6 +26,7 @@ namespace ClubSoft.Controllers
             // Obtenemos los cobros y sus respectivos clientes
             var cobrosMostrar = _context.Cobros
                 .Where(c => c.EstadoCobro == EstadoCobro.Confirmado) // Ejemplo de filtro para cobros confirmados
+                .OrderByDescending(c => c.Fecha)
                 .Select(c => new
                 {
                     CobroID = c.CobroID,
@@ -60,7 +61,7 @@ namespace ClubSoft.Controllers
                     .Select(v => new
                     {
                         ventaID = v.VentaID,
-                        fecha = v.Fecha.ToString("dd-MM-yyyy"),
+                        fecha = v.Fecha.ToString("dd-MM-yyyy HH:mm"),
                         total = v.Total ?? 0
                     })
                     .ToList();
@@ -97,32 +98,84 @@ namespace ClubSoft.Controllers
         [HttpPost]
         public JsonResult ConfirmarCobro([FromBody] ConfirmarCobroRequest request)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                var cobro = _context.Cobros.Find(request.CobroID);
-                if (cobro == null)
+                try
                 {
-                    return Json(new { success = false, message = "Cobro no encontrado" });
+                    // Buscar el cobro
+                    var cobro = _context.Cobros.Find(request.CobroID);
+                    if (cobro == null)
+                    {
+                        return Json(new { success = false, message = "Cobro no encontrado" });
+                    }
+
+                    // Buscar y actualizar las ventas seleccionadas
+                    var ventasSeleccionadas = _context.Ventas
+                        .Where(v => request.VentaIDs.Contains(v.VentaID) && v.PersonaID == cobro.PersonaID && v.Estado == Estado.Confirmado)
+                        .ToList();
+
+                    if (ventasSeleccionadas.Count == 0)
+                    {
+                        return Json(new { success = false, message = "No se encontraron ventas seleccionadas para actualizar." });
+                    }
+
+                    // Cambiar el estado de cada venta seleccionada a 'Pagado'
+                    ventasSeleccionadas.ForEach(v => v.Estado = Estado.Pagado);
+
+                    // Actualizar el estado y total del cobro
+                    cobro.EstadoCobro = EstadoCobro.Confirmado;
+                    cobro.Total = request.Total;
+                    _context.SaveChanges();
+
+                    // Registrar el cobro en CuentaCorriente
+                    var cuentaCorriente = new CuentaCorriente
+                    {
+                        PersonaID = cobro.PersonaID,
+                        Saldo = 0,
+                        Ingreso = 0,
+                        Egreso = request.Total,
+                        Descripcion = $"Cobro #{request.CobroID}",
+                        Fecha = DateTime.Now,
+                        CobroID = request.CobroID
+                    };
+
+                    _context.CuentaCorrientes.Add(cuentaCorriente);
+                    _context.SaveChanges();
+
+                    // Recalcular saldos en CuentaCorriente
+                    RecalcularCtaCte(cobro.PersonaID);
+
+                    // Confirmar la transacción
+                    transaction.Commit();
+
+                    return Json(new { success = true });
                 }
-
-                // Solo actualizar las ventas que fueron seleccionadas
-                var ventasSeleccionadas = _context.Ventas
-                    .Where(v => request.VentaIDs.Contains(v.VentaID) && v.PersonaID == cobro.PersonaID && v.Estado == Estado.Confirmado)
-                    .ToList();
-
-                // Actualizar el estado de cada venta seleccionada
-                ventasSeleccionadas.ForEach(v => v.Estado = Estado.Pagado);
-
-                cobro.EstadoCobro = EstadoCobro.Confirmado;
-                cobro.Total = request.Total;
-                _context.SaveChanges();
-
-                return Json(new { success = true });
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return Json(new { success = false, message = "Error al confirmar el cobro: " + ex.Message });
+                }
             }
-            catch (Exception ex)
+        }
+
+        public void RecalcularCtaCte(int personaID)
+        {
+            decimal saldo = 0;
+
+            // Recalculo de saldos acumulados en cada registro ordenado por fecha ascendente 
+            var movimientosCtaCte = _context.CuentaCorrientes
+                                            .Where(cam => cam.PersonaID == personaID)
+                                            .OrderBy(o => o.Fecha)
+                                            .ThenBy(o => o.CuentaCorrienteID)
+                                            .ToList();
+
+            foreach (var m in movimientosCtaCte)
             {
-                return Json(new { success = false, message = "Error al confirmar el cobro: " + ex.Message });
+                saldo = m.Ingreso - m.Egreso + saldo;
+                m.Saldo = saldo;
             }
+
+            _context.SaveChanges();
         }
 
 

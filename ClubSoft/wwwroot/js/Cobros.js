@@ -24,23 +24,24 @@ function ListadoCobros(pagina = 1) {
             datosPagina.forEach(cobro => {
                 // Formatear el total como moneda en ARS
                 let totalFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(cobro.total);
-                // Formatear la fecha
-                let fechaFormateada = formatDate(cobro.fecha);
-
+            
+                // Formatear la fecha con hora y minutos
+                let fecha = new Date(cobro.fecha);
+                let fechaFormateada = fecha.toLocaleDateString('es-AR') + ' ' + fecha.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            
                 contenidoTabla += `
                     <tr>
                         <td class="text-center"># ${cobro.cobroID}</td>
-                        <td  class="text-center">${cobro.cliente}</td>
-                        <td  class="text-center">${fechaFormateada}</td>
+                        <td class="text-center">${cobro.cliente}</td>
+                        <td class="text-center">${fechaFormateada}</td>
                         <td class="text-end">${totalFormateado}</td>
                         <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarCobro(${cobro.cobroID})">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
+                            <button type="button" class="btn btn-danger" onclick="EliminarCobro(${cobro.cobroID})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
                     </tr>`;
             });
-
             document.getElementById("tbody-Cobros").innerHTML = contenidoTabla;
 
             // Generar la paginación

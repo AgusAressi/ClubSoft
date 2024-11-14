@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
 using static ClubSoft.Models.CuentaCorriente;
+using System.Linq;
 
 namespace ClubSoft.Controllers
 {
@@ -17,23 +18,23 @@ namespace ClubSoft.Controllers
             _context = context;
         }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-        
+        public IActionResult Index()
+        {
+            return View();
+        }
+
 
         public JsonResult ListadoCuentaCorrientes()
         {
             List<VistaCuentaCorrientes> MostrarCuentaCorrientes = new List<VistaCuentaCorrientes>();
-            var listadoCuentaCorrientes = _context.CuentaCorrientes.ToList();
+            var listadoCuentaCorrientes = _context.CuentaCorrientes.OrderByDescending(o => o.Fecha).ThenBy(o => o.CuentaCorrienteID).ToList();
             var listadoPersonas = _context.Personas.ToList();
 
             foreach (var cuentaCorrientes in listadoCuentaCorrientes)
             {
                 var cuentaCorriente = listadoCuentaCorrientes
                 .Where(cc => cc.CuentaCorrienteID == cuentaCorrientes.CuentaCorrienteID)
-                .Single(); 
+                .Single();
                 var persona = listadoPersonas
                 .Where(p => p.PersonaID == cuentaCorrientes.PersonaID)
                 .Single();
@@ -46,86 +47,14 @@ namespace ClubSoft.Controllers
                     Egreso = cuentaCorrientes.Egreso,
                     Descripcion = cuentaCorrientes.Descripcion,
                     Fecha = cuentaCorrientes.Fecha.ToString("dd/MM/yyyy"),
-                    NombrePersona = persona.Nombre, 
-                    ApellidoPersona = persona.Apellido 
+                    NombrePersona = persona.Nombre,
+                    ApellidoPersona = persona.Apellido
                 };
                 MostrarCuentaCorrientes.Add(cuentaCorrientesMostrar);
             }
+            
             return Json(MostrarCuentaCorrientes);
         }
 
-        public JsonResult GuardarCuentaCorriente(
-            int CuentaCorrienteID,
-            int PersonaID,
-            decimal Saldo,
-            decimal Ingreso,
-            decimal Egreso,
-            string? Descripcion,
-            DateTime Fecha
-        )
-        {
-            string resultado = "";
-            Descripcion = Descripcion.ToUpper();
-
-            if (CuentaCorrienteID == 0)
-            {
-                var cuentaCorriente = new CuentaCorriente
-                {
-                    CuentaCorrienteID = CuentaCorrienteID,
-                    PersonaID = PersonaID,
-                    Saldo = Saldo,
-                    Ingreso = Ingreso,
-                    Egreso = Egreso,
-                    Descripcion = Descripcion,
-                    Fecha = Fecha
-                };
-                _context.Add(cuentaCorriente);
-                _context.SaveChanges();
-
-                resultado = "EL REGISTRO SE GUARDÓ CORRECTAMENTE";
-            }
-            else
-            {
-                var editarCuentaCorriente = _context.CuentaCorrientes
-                    .Where(cc => cc.CuentaCorrienteID == CuentaCorrienteID)
-                    .SingleOrDefault();
-
-                if (editarCuentaCorriente != null)
-                {
-                    editarCuentaCorriente.CuentaCorrienteID = CuentaCorrienteID;
-                    editarCuentaCorriente.PersonaID = PersonaID;
-                    editarCuentaCorriente.Saldo = Saldo;
-                    editarCuentaCorriente.Ingreso = Ingreso;
-                    editarCuentaCorriente.Egreso = Egreso;
-                    editarCuentaCorriente.Descripcion = Descripcion;
-                    editarCuentaCorriente.Fecha = Fecha;
-                    _context.SaveChanges();
-                }
-            }
-
-            return Json(resultado);
-        }
-
-        public JsonResult TraerCuentaCorriente(int? CuentaCorrienteID)
-        {
-            var cuentaCorrientesConId = _context.CuentaCorrientes.ToList();
-            if (cuentaCorrientesConId != null)
-            {
-                cuentaCorrientesConId = cuentaCorrientesConId
-                    .Where(p => p.CuentaCorrienteID == CuentaCorrienteID)
-                    .ToList();
-            }
-
-            return Json(cuentaCorrientesConId.ToList());
-        }
-
-        public JsonResult EliminarCuentaCorriente(int CuentaCorrienteID)
-        {
-            var cuentaCorriente = _context.CuentaCorrientes.Find(CuentaCorrienteID);
-            _context.Remove(cuentaCorriente);
-            _context.SaveChanges();
-
-            return Json(true);
-        }
-    }
+    }        
 }
