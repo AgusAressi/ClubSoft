@@ -1,65 +1,60 @@
-window.onload = ListadoCuentaCorrientes();
 
-function ListadoCuentaCorrientes() {
+let itemsPerPage = 10;
+let totalPages = 0;
+let currentPage = 1; 
+
+let nombrePersona = '';
+
+function ListadoCuentaCorrientes(pagina = 1) {
+    let personaID = document.getElementById("PersonaID").value;
+    currentPage = pagina;
+
+    // Obtener el nombre de la persona seleccionada
+    nombrePersona = $("#PersonaID option:selected").text();
+
     $.ajax({
         url: '../../CuentaCorrientes/ListadoCuentaCorrientes',
-        data: {
-        },
+        data: { PersonaID: personaID },
         type: 'POST',
         dataType: 'json',
         success: function (MostrarCuentaCorrientes) {
             $("#ModalCuentaCorrientes").modal("hide");
-            LimpiarModal();
+
+            // Calcular total de páginas
+            totalPages = Math.ceil(MostrarCuentaCorrientes.length / itemsPerPage);
+
+            // Obtener los registros de la página actual
+            const startIndex = (pagina - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const datosPagina = MostrarCuentaCorrientes.slice(startIndex, endIndex);
+
             let contenidoTabla = ``;
 
-            $.each(MostrarCuentaCorrientes, function (index, MostrarCuentaCorrientes) {
+            datosPagina.forEach((item) => {
+                let saldoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(item.saldo);
+                let ingresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(item.ingreso);
+                let egresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(item.egreso);
 
-                let saldoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.saldo);
-                let ingresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.ingreso);
-                let egresoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(MostrarCuentaCorrientes.egreso);
-                
+                // Determinar las clases para colores según las condiciones
+                let saldoColor = item.saldo > 0 ? "text-danger" : item.saldo < 0 ? "text-success" : "text-dark";
+                let ingresoColor = item.ingreso > 0 ? "text-danger" : "text-dark";
+                let egresoColor = item.egreso > 0 ? "text-success" : "text-dark";
 
                 contenidoTabla += `
-                
                 <tr>
-                    <td>${MostrarCuentaCorrientes.nombrePersona}, ${MostrarCuentaCorrientes.apellidoPersona}</td>
-                    <td class="text-center">${MostrarCuentaCorrientes.fecha}</td>
-                    <td>${MostrarCuentaCorrientes.descripcion}</td>
-                    <td class="text-end">${ingresoFormateado}</td>
-                    <td class="text-end">${egresoFormateado}</td>
-                    <td class="text-end">${saldoFormateado}</td>
-                    
-                    <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarCuentaCorrientes.cuentaCorrienteID})">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarCuentaCorriente(${MostrarCuentaCorrientes.cuentaCorrienteID})">
-                    <i class="fa-solid fa-trash"></i>
-                    </button>
-                    </td> 
-                </tr>
-             `;
+                    <td>${item.nombrePersona}, ${item.apellidoPersona}</td>
+                    <td>${item.fecha}</td>
+                    <td>${item.descripcion}</td>
+                    <td class="text-end ${ingresoColor}">${ingresoFormateado}</td>
+                    <td class="text-end ${egresoColor}">${egresoFormateado}</td>
+                    <td class="text-end ${saldoColor}">${saldoFormateado}</td>
+                </tr>`;
             });
 
             document.getElementById("tbody-CuentaCorrientes").innerHTML = contenidoTabla;
 
-            // Filtro de búsqueda
-            document.getElementById('searchInput').addEventListener('input', function () {
-                var filter = this.value.toLowerCase();
-                var rows = document.querySelectorAll('#tbody-Personas tr');
-
-                rows.forEach(function (row) {
-                    var nombreCompleto = row.cells[0].textContent.toLowerCase();
-                    if (nombreCompleto.includes(filter)) {
-                        row.style.display = ''; // muestra la fila si coincide
-                    } else {
-                        row.style.display = 'none'; // ocultar la fila si no coincide
-                    }
-                });
-            });
-            
+            // Generar la paginación
+            generarPaginacion(totalPages, currentPage);
         },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');
@@ -67,168 +62,107 @@ function ListadoCuentaCorrientes() {
     });
 }
 
-function LimpiarModal() {
-    document.getElementById("CuentaCorrienteID").value = 0;
-    document.getElementById("PersonaID").value = "";
-    document.getElementById("CuentaCorrienteSaldo").value = "";
-    document.getElementById("CuentaCorrienteIngreso").value = "";
-    document.getElementById("CuentaCorrienteEgreso").value = "";
-    document.getElementById("CuentaCorrienteDescripcion").value = "";
-    document.getElementById("CuentaCorrienteFecha").value = "";
-    document.getElementById("errorMensajeSaldo").style.display = "none";
-    document.getElementById("errorMensajeIngreso").style.display = "none";
-    document.getElementById("errorMensajeEgreso").style.display = "none";
-    document.getElementById("errorMensajeDescripcion").style.display = "none";
-    document.getElementById("errorMensajeFecha").style.display = "none";
+function generarPaginacion(totalPages, currentPage) {
+    let paginacion = `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoCuentaCorrientes(${currentPage - 1})">Anterior</a>
+            </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginacion += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="ListadoCuentaCorrientes(${i})">${i}</a>
+            </li>`;
+    }
+
+    paginacion += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="ListadoCuentaCorrientes(${currentPage + 1})">Siguiente</a>
+            </li>
+        </ul>
+    </nav>`;
+
+    document.getElementById("paginacion-CuentaCorrientes").innerHTML = paginacion;
 }
 
-function NuevaCuentaCorriente() {
-    $("#ModalTitulo").text("Nueva Cuenta Corriente");
-}
-
-function GuardarRegistro() {
-    let cuentaCorrienteID = document.getElementById("CuentaCorrienteID").value;
-    let personaID = document.getElementById("PersonaID").value;
-    let saldo = document.getElementById("CuentaCorrienteSaldo").value;
-    let ingreso = document.getElementById("CuentaCorrienteIngreso").value;
-    let egreso = document.getElementById("CuentaCorrienteEgreso").value;
-    let descripcion = document.getElementById("CuentaCorrienteDescripcion").value;
-    let fecha = document.getElementById("CuentaCorrienteFecha").value;
-
-    let isValid = true;
-
-    if (saldo === "") {
-        document.getElementById("errorMensajeSaldo").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeSaldo").style.display = "none";
-    }
-    if (ingreso === "") {
-        document.getElementById("errorMensajeIngreso").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeIngreso").style.display = "none";
-    }
-    if (egreso === "") {
-        document.getElementById("errorMensajeEgreso").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeEgreso").style.display = "none";
-    }
-    if (descripcion === "") {
-        document.getElementById("errorMensajeDescripcion").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeDescripcion").style.display = "none";
-    }
-    if (fecha === "") {
-        document.getElementById("errorMensajeFecha").style.display = "block";
-        isValid = false;
-    } else {
-        document.getElementById("errorMensajeFecha").style.display = "none";
-    }
-
-    if (!isValid) {
-        return;
-    }
 
 
-    $.ajax({
-        url: '../../CuentaCorrientes/GuardarCuentaCorriente',
-        data: {
-            CuentaCorrienteID: cuentaCorrienteID,
-            PersonaID: personaID,
-            Saldo: saldo,
-            Ingreso: ingreso,
-            Egreso: egreso,
-            Descripcion: descripcion,
-            Fecha: fecha,
-        },
-        type: 'POST',
-        dataType: 'json',
-        success: function (resultado) {
-            console.log(resultado);
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Registro guardado correctamente!",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            ListadoCuentaCorrientes();
-        },
-        error: function (xhr, status, error) {
-            console.log('Disculpe, existió un problema al guardar el registro');
+function Imprimir() {
+    var doc = new jsPDF('l', 'mm', 'a4');
+    var totalPagesExp = "{total_pages_count_string}";
+
+    // Título dinámico
+    var titulo = "Cuenta Corriente de: " + nombrePersona;
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(titulo, 14, 20);
+
+    // Función para agregar contenido de página, incluyendo el pie de página
+    var pageContent = function (data) {
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+        // Pie de página con el número de página y la fecha
+        var str = "Página " + data.pageCount;
+        if (typeof doc.putTotalPages === 'function') {
+            str = str + " de " + totalPagesExp;
         }
+
+        // Fecha de creación del informe
+        var fechaInforme = "Fecha de Creación: " + new Date().toLocaleDateString();
+
+        doc.setLineWidth(8);
+        doc.line(14, pageHeight - 11, pageWidth - 14, pageHeight - 11);
+
+        // Agregar el texto del pie de página (número de página y fecha)
+        doc.setFontSize(10);
+        doc.setFontStyle('normal');
+        doc.text(str, 17, pageHeight - 10);
+        doc.text(fechaInforme, pageWidth - 90, pageHeight - 10); // Ajusta la posición de la fecha
+
+    };
+
+    var elem = document.getElementById("tabla-imprimir");
+    var res = doc.autoTableHtmlToJson(elem);
+
+    // Eliminar la columna de SOCIO
+    res.columns.shift(); 
+    res.data.forEach(function(row) {
+        row.shift(); 
     });
-}
 
-function AbrirEditar(CuentaCorrienteID) {
-
-    $.ajax({
-        url: '../../CuentaCorrientes/TraerCuentaCorriente',
-        data: {
-            cuentaCorrienteID: CuentaCorrienteID,
+    doc.autoTable(res.columns, res.data, {
+        startY: 30,
+        addPageContent: pageContent,
+        headStyles: {
+            fillColor: [12, 12, 86], 
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
         },
-        type: 'POST',
-        dataType: 'json',
-        success: function (cuentaCorrientesConId) {
-            let cuentaCorriente = cuentaCorrientesConId[0];
-
-
-            document.getElementById("CuentaCorrienteID").value = cuentaCorriente.cuentaCorrienteID;
-            document.getElementById("PersonaID").value = cuentaCorriente.personaID;
-            document.getElementById("CuentaCorrienteSaldo").value = cuentaCorriente.saldo;
-            document.getElementById("CuentaCorrienteIngreso").value = cuentaCorriente.ingreso;
-            document.getElementById("CuentaCorrienteEgreso").value = cuentaCorriente.egreso;
-            document.getElementById("CuentaCorrienteDescripcion").value = cuentaCorriente.descripcion;
-            document.getElementById("CuentaCorrienteFecha").value = cuentaCorriente.fecha;
-
-
-            $("#ModalCuentaCorrientes").modal("show");
-            $("#ModalTitulo").text("Editar Cuenta Corriente");
+        bodyStyles: {
+            fillColor: [255, 255, 255], 
+            textColor: [0, 0, 0],
+            fontSize: 10
         },
-
-        error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al consultar el registro para ser modificado.');
-        }
+        columnStyles: {
+            3: { haling : 'right' },  
+            4: { textAlign: "right" },
+            5: { textAlign: "right" },  
+        },
+        margin: { top: 10 },
     });
-}
 
-function EliminarCuentaCorriente(CuentaCorrienteID) {
+    if (typeof doc.putTotalPages === 'function') {
+        doc.putTotalPages(totalPagesExp);
+    }
 
-    Swal.fire({
-        title: "¿Esta seguro que quiere eliminar la cuenta corriente?",
-        text: "No podrás recuperarla!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!",
-        cancelButtonText: "Cancelar"
-    }).then((result) => {
-        if (result.isConfirmed) {
+    var string = doc.output('datauristring');
+    var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>";
 
-            $.ajax({
-                url: '../../CuentaCorrientes/EliminarCuentaCorriente',
-                data: {
-                    cuentaCorrienteID: CuentaCorrienteID,
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (resultado) {
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: "La cuenta corriente se elimino correctamente",
-                        icon: "success",
-                        confirmButtonColor: "#3085d6"
-                    });
-                    ListadoCuentaCorrientes();
-                },
-                error: function (xhr, status) {
-                    console.log('Disculpe, existió un problema al eliminar el registro.');
-                }
-            });
-        }
-    });
+    var x = window.open();
+    x.document.open();
+    x.document.write(iframe);
+    x.document.close();
 }

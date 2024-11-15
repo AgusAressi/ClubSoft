@@ -185,7 +185,7 @@ function EliminarSocioTitular(SocioTitularID){
 }
 
 function Imprimir() {
-    // Cambiar la orientación de la hoja a horizontal ('l')
+   
     var doc = new jsPDF('l', 'mm', 'a4');
 
     var totalPagesExp = "{total_pages_count_string}";
@@ -196,14 +196,12 @@ function Imprimir() {
     doc.setFont("helvetica", "bold");  
     doc.text(titulo, 14, 20); 
     
-
-    // Función para agregar contenido de página, incluyendo el pie de página
     var pageContent = function (data) {
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
 
         // FOOTER
-        var str = "Pagina " + data.pageCount;
+        var str = "Página " + data.pageCount;
         if (typeof doc.putTotalPages === 'function') {
             str = str + " de " + totalPagesExp;
         }
@@ -213,31 +211,30 @@ function Imprimir() {
         doc.line(14, pageHeight - 11, pageWidth - 14, pageHeight - 11);
 
         doc.setFontSize(10);
-        doc.setFontStyle('bold');
+        doc.setFont("helvetica", "bold");
         doc.text(str, 17, pageHeight - 10);
     };
 
     var elem = document.getElementById("tabla-imprimirsocios");
     var res = doc.autoTableHtmlToJson(elem);
 
-    // Eliminar las últimas dos columnas de "editar" y "eliminar"
-    res.columns.splice(-1, 1); 
+    // Eliminar la última columna
+    res.columns.splice(-1, 1);
     res.data = res.data.map(row => row.slice(0, -1));
 
     // Configurar autoTable
     doc.autoTable(res.columns, res.data, {
         startY: 30, 
         addPageContent: pageContent,
-        theme: 'grid',
         headStyles: {
             fillColor: [64, 64, 64],  
             textColor: [255, 0, 0],   
             fontStyle: 'bold',        
         },
         columnStyles: {
-            0: { halign: 'center', cellWidth: 'auto', fontSize: 7 },
-            1: { fontSize: 7, overflow: 'hidden' },
-            2: { fontSize: 7, overflow: 'hidden' },
+            0: { cellWidth: 'auto', fontSize: 10 },
+            1: { fontSize: 10, overflow: 'hidden' },
+            2: { fontSize: 10, overflow: 'hidden' },
         },
         margin: { top: 10 },
     });
@@ -256,4 +253,3 @@ function Imprimir() {
     x.document.write(iframe);
     x.document.close();
 }
-

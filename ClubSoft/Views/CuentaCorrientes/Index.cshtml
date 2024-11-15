@@ -10,15 +10,18 @@
         <div class="card shadow-sm">
             <div class="card-header row m-0 p-2">
                 <div class="col-md-6 d-flex align-items-center">
-                    <button type="button" class="btn boton-color" onclick="NuevaCuentaCorriente()"
-                        data-bs-toggle="modal" data-bs-target="#ModalCuentaCorrientes">
-                        <i class="fa-solid fa-plus fa-2x"></i>
-                    </button>
-                    <div class="search shadow-sm">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre...">
-                        <button class="btn btn-primary "><i class="fa fa-search"></i></button>
-
+                    <div class="shadow-sm">
+                        <div class="input-group">
+                            @Html.DropDownList("PersonaID", null, new
+                                {
+                                    @class = "form-control fw-bold",
+                                    @id = "PersonaID",
+                                    @onchange = "ListadoCuentaCorrientes()"
+                                })
+                        </div>
                     </div>
+                    <button class="btn btn-primary boton-imprimir" onclick="Imprimir()"><i
+                            class="fa-solid fa-print"></i></button>
                 </div>
                 <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
                     <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>CUENTAS CORRIENTES</h3>
@@ -26,17 +29,15 @@
             </div>
             <div class="card-body mb-5">
                 <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="tabla-imprimir">
                         <thead>
                             <tr>
                                 <th>Socio</th>
-                                <th class="text-center">Fecha</th>
+                                <th>Fecha</th>
                                 <th>Movimiento</th>
-                                <th class="text-end">Ingreso</th>
-                                <th class="text-end">Egreso</th>
+                                <th class="text-end">Ventas</th>
+                                <th class="text-end">Cobros</th>
                                 <th class="text-end">Saldo</th>
-                                <th style="width: 70px"></th>
-                                <th style="width: 70px"></th>
                             </tr>
                         </thead>
                         <tbody id="tbody-CuentaCorrientes">
@@ -44,85 +45,10 @@
                     </table>
                 </div>
             </div>
+            <div id="paginacion-CuentaCorrientes" class="card-footer" style="min-height: 71px;"></div>
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" id="ModalCuentaCorrientes">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content container-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title text-color" id="ModalTitulo">Cuentas Corrientes</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <p><b>Los campos marcados con un asterisco (*) son obligatorios</b></p>
-                            <input type="hidden" id="CuentaCorrienteID" value="0" />
-
-                            <div class="mb-2 col-6">
-                                <label for="PersonaID" class="form-label fw-bold">Persona ID *</label>
-                                <input type="number" class="form-control" id="PersonaID">
-                            </div>
-
-                            <div class="mb-2 col-6">
-                                <label for="Saldo" class="form-label fw-bold">Saldo *</label>
-                                <input type="decimal" class="form-control" id="CuentaCorrienteSaldo">
-                                <span id="errorMensajeSaldo"
-                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar el monto
-                                </span>
-                            </div>
-
-                            <div class="mb-2 col-6">
-                                <label for="Ingreso" class="form-label fw-bold">Ingreso *</label>
-                                <input type="decimal" class="form-control" id="CuentaCorrienteIngreso">
-                                <span id="errorMensajeIngreso"
-                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar el monto
-                                </span>
-                            </div>
-
-                            <div class="mb-2 col-6">
-                                <label for="Egreso" class="form-label fw-bold">Egreso *</label>
-                                <input type="decimal" class="form-control" id="CuentaCorrienteEgreso">
-                                <span id="errorMensajeEgreso"
-                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar el monto
-                                </span>
-                            </div>
-
-                            <div class="mb-2 col-12">
-                                <label for="Descripcion" class="form-label fw-bold">Descripcion *</label>
-                                <input type="text" class="form-control" id="CuentaCorrienteDescripcion"
-                                    style="text-transform: uppercase">
-                                <span id="errorMensajeDescripcion"
-                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una descripcion
-                                </span>
-                            </div>
-
-                            <div class="mb-2 col-12">
-                                <label for="Fecha" class="form-label fw-bold">Fecha *</label>
-                                <input type="datetime-local" class="form-control" id="CuentaCorrienteFecha"
-                                    value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" />
-                                <span id="errorMensajeFecha"
-                                    style="color:red; display:none; font-size: 15px; padding-left: 4px;">
-                                    <i class="fa-solid fa-circle-exclamation pe-1"></i>Debe ingresar una fecha
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary boton-color2"
-                        data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" onclick="GuardarRegistro()" class="btn boton-color">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     @section Scripts {

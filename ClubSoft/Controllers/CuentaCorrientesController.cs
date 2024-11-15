@@ -20,41 +20,70 @@ namespace ClubSoft.Controllers
 
         public IActionResult Index()
         {
+            // Obtener las personas que tienen al menos una cuenta corriente asociada
+            var personasConCuentaCorriente = _context.CuentaCorrientes
+                .Select(cc => cc.PersonaID) // Seleccionamos los IDs de las personas con cuentas corrientes
+                .Distinct()                 // Eliminamos duplicados
+                .ToList();                  // Convertimos a una lista
+
+            // Filtrar las personas según los IDs obtenidos
+            var personas = _context.Personas
+                .Where(p => personasConCuentaCorriente.Contains(p.PersonaID))
+                .ToList();
+
+            personas.Add(new Persona { PersonaID = 0, Apellido = "[SELECCIONE LA PERSONA PARA VER SU CUENTA CORRIENTE]", Nombre = "" });
+
+            // Crear la lista
+            var listaPersonas = personas.Select(p => new
+            {
+                p.PersonaID,
+                NombreCompleto = p.Apellido + " " + p.Nombre
+            });
+
+            ViewBag.PersonaID = new SelectList(listaPersonas.OrderBy(c => c.NombreCompleto), "PersonaID", "NombreCompleto");
+
             return View();
         }
 
 
-        public JsonResult ListadoCuentaCorrientes()
+        public JsonResult ListadoCuentaCorrientes(int PersonaID)
         {
             List<VistaCuentaCorrientes> MostrarCuentaCorrientes = new List<VistaCuentaCorrientes>();
-            var listadoCuentaCorrientes = _context.CuentaCorrientes.OrderByDescending(o => o.Fecha).ThenBy(o => o.CuentaCorrienteID).ToList();
-            var listadoPersonas = _context.Personas.ToList();
 
-            foreach (var cuentaCorrientes in listadoCuentaCorrientes)
+            // Filtrar solo las cuentas corrientes que correspondan a la PersonaID pasada como parámetro
+            var listadoCuentaCorrientes = _context.CuentaCorrientes
+                .Where(cc => cc.PersonaID == PersonaID)
+                .OrderByDescending(o => o.Fecha)
+                .ThenBy(o => o.CuentaCorrienteID)
+                .ToList();
+
+            // Obtener solo las personas necesarias para evitar cargar datos innecesarios
+            var persona = _context.Personas
+                .FirstOrDefault(p => p.PersonaID == PersonaID);
+
+            // Verificar si la persona existe
+            if (persona != null)
             {
-                var cuentaCorriente = listadoCuentaCorrientes
-                .Where(cc => cc.CuentaCorrienteID == cuentaCorrientes.CuentaCorrienteID)
-                .Single();
-                var persona = listadoPersonas
-                .Where(p => p.PersonaID == cuentaCorrientes.PersonaID)
-                .Single();
-                var cuentaCorrientesMostrar = new VistaCuentaCorrientes
+                foreach (var cuentaCorrientes in listadoCuentaCorrientes)
                 {
-                    CuentaCorrienteID = cuentaCorrientes.CuentaCorrienteID,
-                    PersonaID = cuentaCorrientes.PersonaID,
-                    Saldo = cuentaCorrientes.Saldo,
-                    Ingreso = cuentaCorrientes.Ingreso,
-                    Egreso = cuentaCorrientes.Egreso,
-                    Descripcion = cuentaCorrientes.Descripcion,
-                    Fecha = cuentaCorrientes.Fecha.ToString("dd/MM/yyyy"),
-                    NombrePersona = persona.Nombre,
-                    ApellidoPersona = persona.Apellido
-                };
-                MostrarCuentaCorrientes.Add(cuentaCorrientesMostrar);
+                    var cuentaCorrientesMostrar = new VistaCuentaCorrientes
+                    {
+                        CuentaCorrienteID = cuentaCorrientes.CuentaCorrienteID,
+                        PersonaID = cuentaCorrientes.PersonaID,
+                        Saldo = cuentaCorrientes.Saldo,
+                        Ingreso = cuentaCorrientes.Ingreso,
+                        Egreso = cuentaCorrientes.Egreso,
+                        Descripcion = cuentaCorrientes.Descripcion,
+                        Fecha = cuentaCorrientes.Fecha.ToString("dd/MM/yyyy HH:mm"),
+                        NombrePersona = persona.Nombre,
+                        ApellidoPersona = persona.Apellido
+                    };
+                    MostrarCuentaCorrientes.Add(cuentaCorrientesMostrar);
+                }
             }
-            
+
             return Json(MostrarCuentaCorrientes);
         }
 
-    }        
+    }
 }
