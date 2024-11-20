@@ -167,6 +167,7 @@ function ConfirmarVenta() {
     let ventaID = $('#VentaID').val();
     let personaID = $('#PersonaID').val();
     let fecha = $('#fecha').val();
+    let contado = $('#contado').prop('checked');
 
     if (!ventaID || ventaID === "0") {
         Swal.fire({
@@ -203,7 +204,8 @@ function ConfirmarVenta() {
                 type: 'POST',
                 data: { ventaID: ventaID,
                     personaID: personaID,
-                    fecha: fecha
+                    fecha: fecha,
+                    contado : contado
                  },
                 success: function (result) {
                     if (result.success) {
@@ -253,7 +255,6 @@ function CancelarVenta() {
                 Swal.fire("Venta cancelada", "", "warning").then(() => {
                     // Aquí vacías los campos de los inputs
                     $('#VentaID').val('0');
-                   
                     $('#PersonaID').val('0'); // Reemplaza con el ID correcto de tu input de cliente
                     // Habilitar los inputs de fecha y PersonaID
                     $('#fecha').prop('disabled', false);

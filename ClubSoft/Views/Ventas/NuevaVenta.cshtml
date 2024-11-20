@@ -12,7 +12,7 @@
                     <form id="formVentaTemporal">
                         <input type="hidden" id="VentaID" value="0" />
                         <input type="hidden" id="UsuarioID" value="@User.Identity?.Name" />
-                        
+
                         <!-- Sección 1: Cliente y Fecha (no se ocultan) -->
                         <div id="form-section-1">
                             <div class="row">
@@ -21,17 +21,25 @@
                                     <label for="PersonaID" class="form-label fw-bold">Cliente</label>
                                     <div class="input-group">
                                         @Html.DropDownList("PersonaID", null, new
-                                        {
-                                            @class = "form-control",
-                                            @id = "PersonaID"
-                                        })
+                                            {
+                                                @class = "form-control",
+                                                @id = "PersonaID"
+                                            })
                                     </div>
                                 </div>
-                                <!-- Fecha y Botón Continuar en la misma fila -->
+                                <!-- Fecha -->
                                 <div class="mb-2 col-md-4 d-flex align-items-end">
                                     <div class="w-100">
                                         <label for="fecha" class="form-label fw-bold">Fecha</label>
-                                        <input type="datetime-local" id="fecha" name="fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")">
+                                        <input type="datetime-local" id="fecha" name="fecha" class="form-control"
+                                            value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")">
+                                    </div>
+                                </div>
+                                <!-- Checkbox Contado -->
+                                <div class="mb-2 col-md-4 d-flex align-items-end">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="contado" name="contado" class="form-check-input" />
+                                        <label class="form-check-label fw-bold" for="contado">Contado</label>
                                     </div>
                                 </div>
                             </div>
