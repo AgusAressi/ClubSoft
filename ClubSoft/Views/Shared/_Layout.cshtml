@@ -30,20 +30,23 @@
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home"
                         asp-action="Inicio"><i class="fa-solid fa-house pe-2"></i>Inicio</a>
-<div class="list-group-item p-0">
-    <a class="list-group-item text-light d-flex align-items-center justify-content-between"
-        data-bs-toggle="collapse" href="#personasMenu" role="button" aria-expanded="false"
-        aria-controls="personasMenu">
-        <span><i class="fas fa-users pe-2"></i>Personas</span>
-        <i class="fa-solid fa-chevron-down"></i>
-    </a>
-    <div class="collapse bg-light mx-2 rounded" id="personasMenu">
-        <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
-            asp-action="Index">Administrar Personas</a>
-        <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
-            asp-action="InformeRol">Informe Rol</a>
-    </div>
-</div>
+                <div class="list-group-item p-0">
+                    <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                        data-bs-toggle="collapse" href="#personasMenu" role="button" aria-expanded="false"
+                        aria-controls="personasMenu">
+                        <span><i class="fas fa-users pe-2"></i>Personas</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse bg-light mx-2 rounded" id="personasMenu">
+                        <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
+                            asp-action="Index">Administrar Personas</a>
+                        @if (User.IsInRole("ADMINISTRADOR")){
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Personas"
+                            asp-action="InformeRol">Informe Rol</a>
+                        }
+                        
+                    </div>
+                </div>
 
 
                     <!-- Dropdown para Socios -->
@@ -59,8 +62,11 @@
                                 asp-action="Index">Socios Titulares</a>
                             <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="SocioAdherentes"
                                 asp-action="Index">Socios Adherentes</a>
-                                 <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="SocioAdherentes"
+                             @if (User.IsInRole("ADMINISTRADOR")){
+                                <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="SocioAdherentes"
                                 asp-action="InformeSocios">Informe Socios</a>
+                             }
+                            
                         </div>
                     </div>
 
@@ -77,8 +83,11 @@
                                 asp-action="Index">Administrar eventos</a>
                             <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="TipoEventos"
                                 asp-action="Index">Tipos de Eventos</a>
+                            @if (User.IsInRole("ADMINISTRADOR")){
                                 <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Eventos"
                                 asp-action="InformeEventos">Informe Eventos</a>
+                             }
+                            
                         </div>
                     </div>
 
@@ -95,8 +104,11 @@
                                 asp-action="Index">Administrar productos</a>
                             <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="TipoProductos"
                                 asp-action="Index">Tipos de Productos</a>
-                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Productos"
+                             @if (User.IsInRole("ADMINISTRADOR")){
+                                <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Productos"
                                 asp-action="InformeProductos">Informe Productos</a>
+                             }
+                            
                         </div>
                     </div>
 
@@ -113,8 +125,11 @@
                                 asp-action="NuevaVenta">Nueva Venta</a>
                             <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Ventas"
                                 asp-action="Index">Listado</a>
+                            @if (User.IsInRole("ADMINISTRADOR")){
                             <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Ventas"
-                                asp-action="InformesVentas">Informe Ventas</a>                          
+                                asp-action="InformesVentas">Informe Ventas</a>
+                            }
+                                                     
                         </div>
                     </div>
 
@@ -138,7 +153,7 @@
                         asp-controller="CuentaCorrientes" asp-action="Index"><i
                             class="fa-solid fa-pen-to-square pe-2"></i>Cta. Cte.</a>
                     
-                    
+                    @if (User.IsInRole("ADMINISTRADOR")){
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias"
                         asp-action="Index"><i class="fas fa-map-marker-alt pe-2"></i>Provincias</a>
 
@@ -150,9 +165,7 @@
 
                     <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Graficos"
                         asp-action="Index"><i class="fas fa-chart-pie pe-2"></i>Graficos</a>
-
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Home"
-                        asp-action="Privacy">Privacy</a>
+                    }
                 </div>
             </div>
             <!-- Page content wrapper-->

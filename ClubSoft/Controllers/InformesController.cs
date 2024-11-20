@@ -7,6 +7,7 @@ using ClubSoft.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
+[Authorize (Roles = "ADMINISTRADOR")]
 
 public class InformesController : Controller
 {

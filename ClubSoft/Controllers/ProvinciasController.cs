@@ -7,7 +7,7 @@ using ClubSoft.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
-
+[Authorize (Roles = "ADMINISTRADOR")]
 public class ProvinciasController : Controller
 {
     private  ApplicationDbContext _context;

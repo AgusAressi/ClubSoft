@@ -9,7 +9,7 @@ function ListadoTipoEventos(pagina = 1) {
         type: 'POST',
         dataType: 'json',
         success: function (traerTodosLosTiposDeEventos) {
-            LimpiarInput();
+            LimpiarInputTipoEventos();
 
             // Calcular el total de páginas
             totalPagesTipoEventos = Math.ceil(traerTodosLosTiposDeEventos.length / itemsPerPageTipoEventos);
@@ -27,7 +27,7 @@ function ListadoTipoEventos(pagina = 1) {
                 <tr>
                     <td>${tipoEvento.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${tipoEvento.tipoEventoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarTipoEvento(${tipoEvento.tipoEventoID})">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
@@ -75,7 +75,7 @@ function generarPaginacionTipoEventos(totalPages, currentPage) {
     document.getElementById("paginacion").innerHTML = paginacion;
 }
 
-function LimpiarInput() {
+function LimpiarInputTipoEventos() {
     document.getElementById("TipoEventoID").value = 0;
     document.getElementById("TipoEventoNombre").value = "";
 }
@@ -128,7 +128,7 @@ function GuardarRegistro() {
 }
 
 
-function AbrirEditar(tipoEventoID){
+function AbrirEditarTipoEvento(tipoEventoID){
     
     $.ajax({
         url: '../../TipoEventos/TraerTipoEvento',

@@ -7,7 +7,7 @@ using ClubSoft.Data;
 using static ClubSoft.Models.Producto;
 
 namespace ClubSoft.Controllers;
-
+[Authorize]
 public class ProductosController : Controller
 {
     private ApplicationDbContext _context;

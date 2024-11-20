@@ -10,7 +10,7 @@ function ListadoLugaresEventos(pagina = 1) {
         type: 'POST',
         dataType: 'json',
         success: function (traerLugaresEventos) {
-            LimpiarInput();
+            LimpiarInputLugares();
 
             // Calcular el total de páginas
             totalPagesLugares = Math.ceil(traerLugaresEventos.length / itemsPerPageLugares);
@@ -28,7 +28,7 @@ function ListadoLugaresEventos(pagina = 1) {
                 <tr>
                     <td>${lugarEvento.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${lugarEvento.lugarID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarLugar(${lugarEvento.lugarID})">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
@@ -76,7 +76,7 @@ function generarPaginacionLugares(totalPages, currentPage) {
     document.getElementById("paginacion-lugares").innerHTML = paginacion;
 }
 
-function LimpiarInput() {
+function LimpiarInputLugares() {
     document.getElementById("LugarID").value = 0;
     document.getElementById("LugarNombre").value = "";
 }
@@ -125,7 +125,7 @@ function GuardarRegistroLugar() {
 
 
 
-function AbrirEditar(lugarID){
+function AbrirEditarLugar(lugarID){
     
     $.ajax({
         url: '../../TipoEventos/TraerLugarEvento',

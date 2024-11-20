@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ClubSoft.Data;
 using static ClubSoft.Models.Evento;
 
-namespace ClubSoft.Controllers;
 
+namespace ClubSoft.Controllers;
+[Authorize]
 public class EventosController : Controller
 {
     private ApplicationDbContext _context;

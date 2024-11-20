@@ -8,7 +8,7 @@ using static ClubSoft.Models.Localidad;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
-
+[Authorize (Roles = "ADMINISTRADOR")]
 public class LocalidadesController : Controller
 {
     private ApplicationDbContext _context;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using static ClubSoft.Models.SocioAdherente;
 
 namespace ClubSoft.Controllers;
-
+[Authorize]
 public class SocioAdherentesController : Controller
 {
     private ApplicationDbContext _context;

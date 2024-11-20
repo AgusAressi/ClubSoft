@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ClubSoft.Data;
 using ClubSoft.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubSoft.Controllers;
-
+[Authorize]
 public class TipoEventosController : Controller
 {
     private ApplicationDbContext _context;

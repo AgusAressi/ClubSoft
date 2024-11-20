@@ -6,9 +6,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubSoft.Controllers
 {
+    [Authorize]
     public class VentasController : Controller
     {
         private readonly ApplicationDbContext _context;

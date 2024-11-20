@@ -4,9 +4,12 @@ using ClubSoft.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubSoft.Controllers
+
 {
+    [Authorize]
     public class CobrosController : Controller
     {
         private readonly ApplicationDbContext _context;

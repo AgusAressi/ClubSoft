@@ -7,7 +7,7 @@ using ClubSoft.Data;
 using static ClubSoft.Models.SocioTitular;
 
 namespace ClubSoft.Controllers;
-
+[Authorize]
 public class SocioTitularesController : Controller
 {
     private ApplicationDbContext _context;

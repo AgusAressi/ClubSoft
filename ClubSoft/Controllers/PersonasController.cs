@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubSoft.Controllers;
 
+[Authorize]
 public class PersonasController : Controller
 {
     private ApplicationDbContext _context;

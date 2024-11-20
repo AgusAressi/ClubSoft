@@ -7,8 +7,10 @@ using ClubSoft.Data;
 using static ClubSoft.Models.CuentaCorriente;
 using System.Linq;
 
+
 namespace ClubSoft.Controllers
 {
+    [Authorize]
     public class CuentaCorrientesController : Controller
     {
         private ApplicationDbContext _context;

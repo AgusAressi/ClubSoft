@@ -4,9 +4,11 @@ using ClubSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubSoft.Controllers
 {
+    [Authorize (Roles = "ADMINISTRADOR")]
     public class GraficosController : Controller
     {
         private readonly ApplicationDbContext _context;
