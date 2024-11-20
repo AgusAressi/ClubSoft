@@ -198,7 +198,7 @@ namespace ClubSoft.Controllers
 
         // Método para confirmar la venta
         [HttpPost]
-        public IActionResult ConfirmarVenta(int ventaID, int personaID, DateTime fecha)
+        public IActionResult ConfirmarVenta(int ventaID, int personaID, DateTime fecha, bool contado)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -231,10 +231,6 @@ namespace ClubSoft.Controllers
                     // Cambiar el estado de la venta a Confirmado
                     venta.Estado = Estado.Confirmado;
 
-                    // Guardar la venta en la base de datos
-                    _context.SaveChanges();
-
-                    // Crear un nuevo registro en CuentaCorriente
                     var cuentaCorriente = new CuentaCorriente
                     {
                         PersonaID = personaID,
@@ -248,6 +244,38 @@ namespace ClubSoft.Controllers
 
                     _context.CuentaCorrientes.Add(cuentaCorriente);
                     _context.SaveChanges();
+
+                    // Guardar el cobro si es de contado
+                    if (contado == true) {
+                        venta.Estado = Estado.Pagado;
+                        var cobro = new Cobro
+                        {
+                            Fecha = fecha,
+                            PersonaID = personaID,
+                            EstadoCobro = EstadoCobro.Confirmado,
+                            Total = totalVenta,
+                            UsuarioID = User.Identity.Name,
+                        }; 
+                        _context.Cobros.Add(cobro);
+                        _context.SaveChanges();
+
+                        var cuentaCorrienteCobro = new CuentaCorriente
+                    {
+                        PersonaID = personaID,
+                        Saldo = 0, 
+                        Ingreso = 0,
+                        Egreso = totalVenta,
+                        Descripcion = "Cobro de contado",
+                        Fecha = fecha, 
+                    };
+                    _context.CuentaCorrientes.Add(cuentaCorrienteCobro);
+                    _context.SaveChanges();
+
+
+                    }
+
+                    // Crear un nuevo registro en CuentaCorriente
+                    
 
                     // Llamar a RecalcularCtaCte para actualizar los saldos
                     RecalcularCtaCte(personaID);
