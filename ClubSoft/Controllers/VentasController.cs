@@ -236,19 +236,20 @@ namespace ClubSoft.Controllers
                     var cuentaCorriente = new CuentaCorriente
                     {
                         PersonaID = personaID,
-                        Saldo = 0, 
+                        Saldo = 0,
                         Ingreso = totalVenta,
                         Egreso = 0,
                         Descripcion = $"Venta #{ventaID}",
                         Fecha = fecha,
-                        VentaID = ventaID, 
+                        VentaID = ventaID,
                     };
 
                     _context.CuentaCorrientes.Add(cuentaCorriente);
                     _context.SaveChanges();
 
                     // Guardar el cobro si es de contado
-                    if (contado == true) {
+                    if (contado == true)
+                    {
                         venta.Estado = Estado.Pagado;
                         var cobro = new Cobro
                         {
@@ -257,23 +258,21 @@ namespace ClubSoft.Controllers
                             EstadoCobro = EstadoCobro.Confirmado,
                             Total = totalVenta,
                             UsuarioID = User.Identity.Name,
-                        }; 
+                        };
                         _context.Cobros.Add(cobro);
                         _context.SaveChanges();
 
                         var cuentaCorrienteCobro = new CuentaCorriente
-                    {
-                        PersonaID = personaID,
-                        Saldo = 0, 
-                        Ingreso = 0,
-                        Egreso = totalVenta,
-                        Descripcion = "Cobro de contado",
-                        Fecha = fecha, 
-                    };
-                    _context.CuentaCorrientes.Add(cuentaCorrienteCobro);
-                    _context.SaveChanges();
-
-
+                        {
+                            PersonaID = personaID,
+                            Saldo = 0,
+                            Ingreso = 0,
+                            Egreso = totalVenta,
+                            Descripcion = "Cobro de contado",
+                            Fecha = fecha,
+                        };
+                        _context.CuentaCorrientes.Add(cuentaCorrienteCobro);
+                        _context.SaveChanges();
                     }
 
                     // Confirmar la transacción
