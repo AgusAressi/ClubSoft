@@ -276,14 +276,11 @@ namespace ClubSoft.Controllers
 
                     }
 
-                    // Crear un nuevo registro en CuentaCorriente
-                    
+                    // Confirmar la transacción
+                    transaction.Commit();
 
                     // Llamar a RecalcularCtaCte para actualizar los saldos
                     RecalcularCtaCte(personaID);
-
-                    // Confirmar la transacción
-                    transaction.Commit();
 
                     return Json(new { success = true, redirectUrl = Url.Action("Index", "Ventas") });
                 }
