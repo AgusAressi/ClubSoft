@@ -2,18 +2,24 @@
     ViewData["Title"] = "Informe Ventas por Personas";
 }
 
+<link rel="stylesheet" href="~/css/Socios.css" asp-append-version="true" />
+
 <div class="p-3">
     @*TABLA*@
     <div class="mt-2" style="height: 100%;">
         <div class="card shadow-sm">
             <div class="card-header row m-0 p-2">
-                <div class="col-md-6 offset-md-6 text-end">
+                <div class="col-md-4 d-flex align-items-center">
+                    <button class="btn btn-primary boton-imprimir" onclick="Imprimir()"><i
+                            class="fa-solid fa-print"></i></button>
+                </div>
+                <div class="col-md-8 text-end d-flex align-items-center justify-content-end">
                     <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>INFORME VENTAS</h3>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-                    <table class="table table-hover align-middle">
+                    <table id="tabla-imprimir" class="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>CLIENTE</th>
