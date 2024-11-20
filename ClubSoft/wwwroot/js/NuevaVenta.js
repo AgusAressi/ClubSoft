@@ -25,7 +25,6 @@ $(document).ready(function () {
         });
     });
 });
-
 // Función para agregar un producto
 function AgregarProducto() {
     let productoID = $("#ProductoID").val();
@@ -34,7 +33,7 @@ function AgregarProducto() {
 
     // Validar que la cantidad no sea menor a 1
     if (productoID === "0" || cantidad < 1 || ventaID === "0" || ventaID === "") {
-        Swal.fire( "Ups!","La cantidad del producto no puede ser menor a 1", "warning");
+        Swal.fire("Ups!", "La cantidad del producto no puede ser menor a 1", "warning");
         return;
     }
 
@@ -69,6 +68,9 @@ function AgregarProducto() {
                 // Actualizar el total de la venta
                 actualizarTotalVenta();
 
+                // Deshabilitar el campo de PersonaID
+                $("#PersonaID").prop('disabled', true);
+
                 // Limpiar el formulario
                 LimpiarFormularioProducto();
             } else {
@@ -80,6 +82,7 @@ function AgregarProducto() {
         }
     });
 }
+
 
 
 // Función para actualizar el total de la venta
@@ -143,7 +146,7 @@ function GuardarVentaTemporal() {
                 $("#VentaID").val(response.ventaID); // Asegúrate de que aquí se guarda el ID de la venta temporal
 
                 // Deshabilitar los campos de cliente y fecha
-                $("#PersonaID").prop('disabled', true);
+                // $("#PersonaID").prop('disabled', true);
                 $("#fecha").prop('disabled', true);
 
                 // Mostrar la segunda sección del formulario
