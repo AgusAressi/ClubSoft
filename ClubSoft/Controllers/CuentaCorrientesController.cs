@@ -56,7 +56,7 @@ namespace ClubSoft.Controllers
             var listadoCuentaCorrientes = _context.CuentaCorrientes
                 .Where(cc => cc.PersonaID == PersonaID)
                 .OrderByDescending(o => o.Fecha)
-                .ThenBy(o => o.CuentaCorrienteID)
+                .ThenByDescending(o => o.CuentaCorrienteID)
                 .ToList();
 
             // Obtener solo las personas necesarias para evitar cargar datos innecesarios
