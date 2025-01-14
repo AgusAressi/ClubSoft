@@ -5,23 +5,56 @@
 <link rel="stylesheet" href="~/css/Eventos.css" asp-append-version="true" />
 
 <div class="p-3">
-    @* TABLA *@
-   <div class="mt-2" style="height: 100%;">
-    <div class="card shadow-sm">
-        <div class="card-header row m-0 p-2">
-            <div class="col-md-6 d-flex align-items-center">
-                <button type="button" class="btn boton-color" onclick="NuevoEvento()" data-bs-toggle="modal" data-bs-target="#ModalEventos">
-                    <i class="fa-solid fa-plus fa-2x"></i>
-                </button>
-            </div>
-            <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
-                <h3 class="m-0"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+    <div class="filtros row">
+        <div class="col-md-3">
+            <label for="FechaDesde" class="form-label fw-bold">Fecha Desde</label>
+            <input type="date" class="form-control" id="FechaDesde" style="text-transform:uppercase" placeholder="">
+        </div>
+        <div class="col-md-3">
+            <label for="FechaHasta" class="form-label fw-bold">Fecha Hasta</label>
+            <input type="date" class="form-control" id="FechaHasta" style="text-transform:uppercase" placeholder="">
+        </div>
+        <div class="col-md-3">
+            <label for="TipoEventoID" class="form-label fw-bold">Tipo de evento</label>
+            <div class="input-group">
+                @Html.DropDownList("TipoEventoID", null, htmlAttributes: new
+                    {
+                        @class =
+                         "form-control"
+                    })
             </div>
         </div>
+        <div class="col-md-3">
+            <label for="LugarID" class="form-label fw-bold">Lugar</label>
+            <div class="input-group">
+                @Html.DropDownList("LugarID", null, htmlAttributes: new
+                    {
+                        @class =
+                         "form-control"
+                    })
+            </div>
+        </div>
+    </div>
 
-        <div class="card-body">
-            <div class="table-responsive" style="height: 450px; overflow-y: auto;">
-                <div class="d-flex justify-content-center flex-wrap" id="card-Eventos"></div>
+    @* TABLA *@
+    <div class="mt-2" style="height: 100%;">
+        <div class="card shadow-sm">
+            <div class="card-header row m-0 p-2">
+                <div class="col-md-6 d-flex align-items-center">
+                    <button type="button" class="btn boton-color" onclick="NuevoEvento()" data-bs-toggle="modal"
+                        data-bs-target="#ModalEventos">
+                        <i class="fa-solid fa-plus fa-2x"></i>
+                    </button>
+                </div>
+                <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+                    <h3 class="m-0"><i class="fas fa-calendar-days pe-2"></i>EVENTOS</h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                    <div class="d-flex justify-content-center flex-wrap" id="card-Eventos"></div>
+                </div>
             </div>
         </div>
     </div>

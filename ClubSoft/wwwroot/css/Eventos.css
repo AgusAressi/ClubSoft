@@ -1,7 +1,7 @@
 .boton-color {
-    background-color: rgb(12, 12, 86);
+    background-color: #10273e;
     color: white;
-    border-color: rgb(12, 12, 86);
+    border-color: #10273e;
 }
 
 .boton-color:hover {
@@ -25,7 +25,7 @@
 
 
 .modal-header {
-    background-color: rgb(12, 12, 86);
+    background-color: #10273e;
 }
 
 .text-color {

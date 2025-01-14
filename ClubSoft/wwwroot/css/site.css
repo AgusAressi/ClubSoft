@@ -47,3 +47,13 @@ body {
   margin-right: 5px;
   margin-left: 5px;
 }
+
+.filtros {
+  color: white;
+  margin-left: 0.07rem !important;
+  margin-right: 0.07rem !important;
+  padding: 5px;
+  background-color: #10273e;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px rgba(195, 195, 195, 0.06);
+}
