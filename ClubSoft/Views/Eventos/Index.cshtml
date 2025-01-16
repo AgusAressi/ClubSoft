@@ -8,16 +8,16 @@
     <div class="filtros row">
         <div class="col-md-3">
             <label for="FechaDesde" class="form-label fw-bold">Fecha Desde</label>
-            <input type="date" class="form-control" id="FechaDesde" style="text-transform:uppercase" placeholder="">
+            <input type="datetime-local" class="form-control" id="FechaDesde" style="text-transform:uppercase" placeholder="">
         </div>
         <div class="col-md-3">
             <label for="FechaHasta" class="form-label fw-bold">Fecha Hasta</label>
-            <input type="date" class="form-control" id="FechaHasta" style="text-transform:uppercase" placeholder="">
+            <input type="datetime-local" class="form-control" id="FechaHasta" style="text-transform:uppercase" placeholder="">
         </div>
         <div class="col-md-3">
-            <label for="TipoEventoID" class="form-label fw-bold">Tipo de evento</label>
+            <label for="BuscarPorTipoEventoID" class="form-label fw-bold">Tipo de evento</label>
             <div class="input-group">
-                @Html.DropDownList("TipoEventoID", null, htmlAttributes: new
+                @Html.DropDownList("BuscarPorTipoEventoID", null, htmlAttributes: new
                     {
                         @class =
                          "form-control"
@@ -25,15 +25,20 @@
             </div>
         </div>
         <div class="col-md-3">
-            <label for="LugarID" class="form-label fw-bold">Lugar</label>
+            <label for="BuscarPorLugarID" class="form-label fw-bold">Lugar</label>
             <div class="input-group">
-                @Html.DropDownList("LugarID", null, htmlAttributes: new
+                @Html.DropDownList("BuscarPorLugarID", null, htmlAttributes: new
                     {
                         @class =
                          "form-control"
                     })
             </div>
         </div>
+        <div class="col-md-12 text-center p-2">
+        <button type="button" class="btn btn-light" onclick="ListadoEventos()">
+          Buscar
+        </button>
+      </div>
     </div>
 
     @* TABLA *@

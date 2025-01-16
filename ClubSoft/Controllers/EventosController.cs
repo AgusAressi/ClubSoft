@@ -20,7 +20,6 @@ public class EventosController : Controller
 
     public IActionResult Index()
     {
-
         var tipoEventos = _context.TipoEventos.ToList();
 
         tipoEventos.Add(new TipoEvento { TipoEventoID = 0, Nombre = "[SELECCIONE EL TIPO DE EVENTO...]" });
@@ -30,6 +29,16 @@ public class EventosController : Controller
 
         lugares.Add(new Lugar { LugarID = 0, Nombre = "[SELECCIONE UN LUGAR...]" });
         ViewBag.LugarID = new SelectList(lugares.OrderBy(c => c.Nombre), "LugarID", "Nombre");
+
+        var buscarPorTipoEventoID = _context.TipoEventos.ToList();
+
+        buscarPorTipoEventoID.Add(new TipoEvento { TipoEventoID = 0, Nombre = "[BUSCAR TODOS...]" });
+        ViewBag.BuscarPorTipoEventoID = new SelectList(buscarPorTipoEventoID.OrderBy(c => c.Nombre), "TipoEventoID", "Nombre");
+
+        var buscarPorLugarID = _context.Lugares.ToList();
+
+        buscarPorLugarID.Add(new Lugar { LugarID = 0, Nombre = "[BUSCAR TODOS...]" });
+        ViewBag.BuscarPorLugarID = new SelectList(buscarPorLugarID.OrderBy(c => c.Nombre), "LugarID", "Nombre");
 
         return View();
 
@@ -41,10 +50,32 @@ public class EventosController : Controller
 
     }
 
-    public JsonResult ListadoEventos()
+    public JsonResult ListadoEventos(int? ID, DateTime? FechaDesde, DateTime? FechaHasta, int? BuscarPorTipoEventoID, int? BuscarPorLugarID)
     {
         List<VistaTipoEventos> EventosMostar = new List<VistaTipoEventos>();
         var listadoEventos = _context.Eventos.ToList();
+
+         if (ID != null)
+         {
+             listadoEventos = listadoEventos.Where(t => t.EventoID == ID).ToList();
+         }
+
+        if (FechaDesde != null && FechaHasta != null)
+        {
+            listadoEventos = listadoEventos.Where(e => e.FechaEvento >= FechaDesde && e.FechaEvento <= FechaHasta).ToList();
+        }
+
+        if (BuscarPorTipoEventoID != 0)
+        {
+            listadoEventos = listadoEventos.Where(e => e.TipoEventoID == BuscarPorTipoEventoID).ToList();
+        }
+
+        if (BuscarPorLugarID != 0)
+        {
+            listadoEventos = listadoEventos.Where(e => e.LugarID == BuscarPorLugarID).ToList();
+        }
+
+        
         var listadoTipoEventos = _context.TipoEventos.ToList();
         var listadoLugares = _context.Lugares.ToList();
 

@@ -1,8 +1,25 @@
 window.onload = ListadoEventos;
 
 function ListadoEventos() {
+
+    let fechaDesde = document.getElementById("FechaDesde").value;
+    let fechaHasta = document.getElementById("FechaHasta").value;
+    let buscarPorTipoEventoID = document.getElementById("BuscarPorTipoEventoID").value;
+    let buscarPorLugarID = document.getElementById("BuscarPorLugarID").value;
+
+    // console.log("Fecha Desde:", fechaDesde);
+    // console.log("Fecha Hasta:", fechaHasta);
+    // console.log("Tipo Evento ID:", buscarPorTipoEventoID);
+    // console.log("Lugar ID:", buscarPorLugarID);
+
     $.ajax({
         url: '/Eventos/ListadoEventos',
+        data: {
+            FechaDesde: fechaDesde,
+            FechaHasta: fechaHasta,
+            BuscarPorTipoEventoID: buscarPorTipoEventoID,
+            BuscarPorLugarID : buscarPorLugarID,
+        },
         type: 'POST',
         dataType: 'json',
         success: function (EventosMostar) {
