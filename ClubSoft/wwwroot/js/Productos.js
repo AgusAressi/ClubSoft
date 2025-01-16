@@ -5,8 +5,15 @@ const itemsPerPageProductos = 7;
 let totalPagesProductos = 1;
 
 function ListadoProductos(pagina = 1) {
+    let filtroTipoProductosID = document.getElementById("FiltroTipoProductosID").value;
+    let estado = document.getElementById("Estado").value;
+
     $.ajax({
         url: '../../Productos/ListadoProductos',
+        data: {
+            FiltroTipoProductosID: filtroTipoProductosID,
+            Estado : estado
+        },
         type: 'POST',
         dataType: 'json',
         success: function (MostarProductos) {
@@ -69,6 +76,21 @@ function ListadoProductos(pagina = 1) {
 
             // Generar la paginación
             generarPaginacionProductos(totalPagesProductos, pagina);
+
+            // Filtro de búsqueda
+            document.getElementById('searchInput').addEventListener('input', function () {
+                var filter = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#tbody-Productos tr');
+
+                rows.forEach(function (row) {
+                    var nombreCompleto = row.cells[0].textContent.toLowerCase();
+                    if (nombreCompleto.includes(filter)) {
+                        row.style.display = ''; // muestra la fila si coincide
+                    } else {
+                        row.style.display = 'none'; // ocultar la fila si no coincide
+                    }
+                });
+            });
         },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al cargar los productos');
