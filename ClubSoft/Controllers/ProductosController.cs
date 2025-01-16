@@ -19,8 +19,12 @@ public class ProductosController : Controller
 
     public IActionResult Index()
     {
+        var filtroTipoProductos = _context.TipoProductos.ToList();
+        filtroTipoProductos.Add(new TipoProducto { TipoProductoID = 0, Nombre = "[TODOS]" });
+        ViewBag.FiltroTipoProductosID = new SelectList(filtroTipoProductos.OrderBy(t => t.Nombre), "TipoProductoID", "Nombre");
+        
+        
         var tipoProductos = _context.TipoProductos.ToList();
-
         tipoProductos.Add(new TipoProducto { TipoProductoID = 0, Nombre = "[SELECCIONE EL TIPO DE PRODUCTO...]" });
         ViewBag.TipoProductoID = new SelectList(tipoProductos.OrderBy(t => t.Nombre), "TipoProductoID", "Nombre");
 
@@ -31,10 +35,30 @@ public class ProductosController : Controller
         return View();
     }
 
-    public JsonResult ListadoProductos(int? id)
+    public JsonResult ListadoProductos(int? id, int? FiltroTipoProductosID, string Estado)
     {
+        
         List<VistaTipoProductos> MostrarProductos = new List<VistaTipoProductos>();
         var listadoProductos = _context.Productos.OrderBy(n => n.Nombre).ToList();
+
+        if (id != null)
+        {
+            listadoProductos = listadoProductos.Where(p => p.ProductoID == id).ToList();
+        }
+        
+        if (FiltroTipoProductosID != 0)
+        {
+            listadoProductos = listadoProductos.Where(p => p.TipoProductoID == FiltroTipoProductosID).ToList();
+        }
+        if (Estado == "Habilitado")
+        {
+            listadoProductos = listadoProductos.Where(p => p.Estado == true).ToList();
+        }
+        else if (Estado == "Deshabilitado")
+        {
+            listadoProductos = listadoProductos.Where(p => p.Estado == false).ToList();
+        }    
+
         var listadoTipoProducto = _context.TipoProductos.ToList();
         foreach (var productos in listadoProductos)
         {

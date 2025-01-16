@@ -5,6 +5,29 @@
 <link rel="stylesheet" href="~/css/Productos.css" asp-append-version="true" />
 
 <div class="p-3">
+
+  <div class="filtros row">
+    <div class="col-md-3">
+      <label for="FiltroTipoProductosID" class="form-label fw-bold">Tipo de Productos</label>
+      @Html.DropDownList("FiltroTipoProductosID", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <div class="col-md-3">
+      <label for="FiltroEstado" class="form-label fw-bold">Estado</label>
+      <select name="Estado" id="Estado" class="form-control">
+        <option value="Todos">[TODOS]</option>
+        <option value="Habilitado">HABILITADO</option>
+        <option value="Deshabilitado">DESHABILITADO</option>
+      </select>
+    </div>
+    <div class="col-md-12 text-center p-2">
+        <button type="button" class="btn btn-light" onclick="ListadoProductos()">
+          Buscar
+        </button>
+      </div>
+
+  </div>
+
+
   @*TABLA*@
   <div class="mt-2" style="heigth: 100%;">
     <div class="card shadow-sm">
@@ -14,6 +37,11 @@
             data-bs-target="#ModalProductos">
             <i class="fa-solid fa-plus fa-2x"></i>
           </button>
+          <div class="search shadow-sm">
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar producto...">
+            <button class="btn"><i class="fa fa-search"></i></button>
+
+          </div>
         </div>
         <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
           <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i> PRODUCTOS</h3>
@@ -41,7 +69,7 @@
           </table>
         </div>
       </div>
-      <div id="paginacion" class="card-footer"></div> 
+      <div id="paginacion" class="card-footer"></div>
     </div>
   </div>
 
@@ -93,9 +121,9 @@
                 </span>
               </div>
 
-             
+
               <input type="hidden" class="form-check-input" id="ProductoEstado" value="true" />
-             
+
 
               <div class="mb-2">
                 <label for="TipoProductoID" class="form-label fw-bold">Tipo de Productos</label>
