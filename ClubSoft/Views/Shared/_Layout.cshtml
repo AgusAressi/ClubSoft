@@ -153,18 +153,40 @@
                         asp-controller="CuentaCorrientes" asp-action="Index"><i
                             class="fa-solid fa-pen-to-square pe-2"></i>Cta. Cte.</a>
                     
+                    <!-- Dropdown para Localidades y Provincias -->
                     @if (User.IsInRole("ADMINISTRADOR")){
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Provincias"
-                        asp-action="Index"><i class="fas fa-map-marker-alt pe-2"></i>Provincias</a>
+                    <div class="list-group-item p-0">
+                        <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                            data-bs-toggle="collapse" href="#geoMenu" role="button" aria-expanded="false"
+                            aria-controls="geoMenu">
+                            <span><i class="fas fa-map-marker-alt pe-2"></i>Ubicaciones</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse bg-light mx-2 rounded" id="geoMenu">
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Provincias"
+                                asp-action="Index">Provincias</a>
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Localidades"
+                                asp-action="Index">Localidades</a>
+                        </div>
+                    </div>
+                    }
 
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Localidades"
-                        asp-action="Index"><i class="fas fa-city pe-2"></i>Localidades</a>
-                    
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Informes"
-                        asp-action="Index"><i class="fa-regular fa-folder-open pe-2"></i>Informes</a>
-
-                    <a class="list-group-item list-group-item-action text-light" asp-area="" asp-controller="Graficos"
-                        asp-action="Index"><i class="fas fa-chart-pie pe-2"></i>Graficos</a>
+                    <!-- Dropdown para Informes y Gráficos -->
+                    @if (User.IsInRole("ADMINISTRADOR")){
+                    <div class="list-group-item p-0">
+                        <a class="list-group-item text-light d-flex align-items-center justify-content-between"
+                            data-bs-toggle="collapse" href="#analyticsMenu" role="button" aria-expanded="false"
+                            aria-controls="analyticsMenu">
+                            <span><i class="fa-regular fa-folder-open pe-2"></i>Resultados</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse bg-light mx-2 rounded" id="analyticsMenu">
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Informes"
+                                asp-action="Index">Informes</a>
+                            <a class="list-group-item text-dark menuhover" asp-area="" asp-controller="Graficos"
+                                asp-action="Index">Gráficos</a>
+                        </div>
+                    </div>
                     }
                 </div>
             </div>

@@ -4,6 +4,27 @@
 
 <link rel="stylesheet" href="~/css/Cobros.css" asp-append-version="true" />
 
+<div class="p-3">
+    <div class="filtros row">
+        <div class="col-md-3">
+            <label for="FechaDesde" class="form-label fw-bold">Fecha Desde</label>
+            <input type="datetime-local" class="form-control" id="FechaDesde" style="text-transform:uppercase" placeholder="">
+        </div>
+        <div class="col-md-3">
+            <label for="FechaHasta" class="form-label fw-bold">Fecha Hasta</label>
+            <input type="datetime-local" class="form-control" id="FechaHasta" style="text-transform:uppercase" placeholder="">
+        </div>
+                    <div class="search shadow-sm col-md-3">
+                        <label for="BuscarNombre" class="form-label fw-bold">Buscar por Nombre</label>
+                        <input type="text" class="form-control" id="BuscarNombre" placeholder="Ingrese un cliente...">
+                    </div>
+        <div class="col-md-12 text-center p-2">
+        <button type="button" class="btn btn-light" onclick="ListadoCobros()">
+          Buscar
+        </button>
+      </div>
+    </div>
+
 
 <div class="p-3">
     <div class="mt-2" style="height: 100%;">

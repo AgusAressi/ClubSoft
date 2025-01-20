@@ -5,8 +5,18 @@ const itemsPerPageVentas = 7;
 let totalPagesVentas = 1;
 
 function ListadoVentas(pagina = 1) {
+
+    let fechaDesde = document.getElementById("FechaDesde").value;
+    let fechaHasta = document.getElementById("FechaHasta").value;
+    let buscarNombre = document.getElementById("BuscarNombre").value;
+
     $.ajax({
         url: '../../Ventas/ListadoVentas',
+        data: {
+            FechaDesde: fechaDesde,
+            FechaHasta: fechaHasta,
+            BuscarNombre: buscarNombre,
+        },
         type: 'GET',
         dataType: 'json',
         success: function (VentasMostrar) {

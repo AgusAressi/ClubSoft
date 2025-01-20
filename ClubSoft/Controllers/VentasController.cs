@@ -31,13 +31,25 @@ namespace ClubSoft.Controllers
         }
 
         [HttpGet]
-        public JsonResult ListadoVentas()
+        public JsonResult ListadoVentas(DateTime? FechaDesde, DateTime? FechaHasta, string? BuscarNombre)
         {
             List<VistaVentas> VentasMostrar = new List<VistaVentas>();
             var listadoVentas = _context.Ventas
             .Where(v => v.Estado != Estado.Eliminado) // Excluir ventas eliminadas
+            .Include(v => v.Persona)
             .OrderByDescending(v => v.Fecha)
             .ToList();
+
+            if (FechaDesde != null && FechaHasta != null)
+        {
+            listadoVentas = listadoVentas.Where(e => e.Fecha >= FechaDesde && e.Fecha <= FechaHasta).ToList();
+        }
+
+       if (!string.IsNullOrEmpty(BuscarNombre))
+        {
+            BuscarNombre = BuscarNombre.ToLower();
+            listadoVentas = listadoVentas.Where(v => (v.Persona.Nombre.ToLower() + " " + v.Persona.Apellido.ToLower()).Contains(BuscarNombre)).ToList();
+        }
 
 
             var listadoPersonas = _context.Personas.ToList();

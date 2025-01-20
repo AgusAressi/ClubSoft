@@ -24,7 +24,7 @@ namespace ClubSoft.Controllers
             return View();
         }
 
-        public JsonResult ListadoCobros()
+        public JsonResult ListadoCobros(DateTime? FechaDesde, DateTime? FechaHasta, string? BuscarNombre)
         {
             // Obtenemos los cobros y sus respectivos clientes
             var cobrosMostrar = _context.Cobros
@@ -38,6 +38,17 @@ namespace ClubSoft.Controllers
                     Total = c.Total
                 })
                 .ToList();
+
+                if (FechaDesde != null && FechaHasta != null)
+        {
+            cobrosMostrar = cobrosMostrar.Where(e => e.Fecha >= FechaDesde && e.Fecha <= FechaHasta).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(BuscarNombre))
+    {
+        BuscarNombre = BuscarNombre.ToLower();
+        cobrosMostrar = cobrosMostrar.Where(c => c.Cliente.ToLower().Contains(BuscarNombre)).ToList();
+    }
 
             return Json(cobrosMostrar);
         }

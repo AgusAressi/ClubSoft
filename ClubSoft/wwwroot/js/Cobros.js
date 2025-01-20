@@ -5,8 +5,18 @@ let itemsPerPageCobros = 7;
 let totalPagesCobros = 0;
 
 function ListadoCobros(pagina = 1) {
+
+    let fechaDesde = document.getElementById("FechaDesde").value;
+    let fechaHasta = document.getElementById("FechaHasta").value;
+    let buscarNombre = document.getElementById("BuscarNombre").value;
+
     $.ajax({
         url: '/Cobros/ListadoCobros',
+        data: {
+            FechaDesde: fechaDesde,
+            FechaHasta: fechaHasta,
+            BuscarNombre: buscarNombre,
+        },
         type: 'GET',
         dataType: 'json',
         success: function (cobros) {
