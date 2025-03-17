@@ -39,7 +39,7 @@ function ListadoProductos(pagina = 1) {
                     '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',1)"><i class="fa-solid fa-eye-slash"></i></button>';
             
                 if (producto.estado) {
-                    botonOcultar = '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',0)" ><i class="fa-solid fa-eye-slash"></i></button>';
+                    botonOcultar = '<button type="button" class="btn btn-primary boton-color" onclick="OcultarActivarProducto(' + producto.productoID + ',0)" title="Ocultar"><i class="fa-solid fa-eye-slash"></i></button>';
                 }
             
                 // Usar la clase 'estado-inactivo' solo si el producto está inactivo (estado === 0)
@@ -59,12 +59,14 @@ function ListadoProductos(pagina = 1) {
                     botonOcultar +
                     `</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${producto.productoID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarProducto(${producto.productoID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarProducto(${producto.productoID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td> 

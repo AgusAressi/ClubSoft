@@ -30,12 +30,14 @@ function ListadoSociosAdherentes(pagina = 1) {
                     <td>${MostrarSociosAdherentes.personaApellido}, ${MostrarSociosAdherentes.personaNombre}</td>
                     <td>${MostrarSociosAdherentes.socioTitularNombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarSociosAdherentes.socioAdherenteID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${MostrarSociosAdherentes.socioAdherenteID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarSocioAdherente(${MostrarSociosAdherentes.socioAdherenteID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarSocioAdherente(${MostrarSociosAdherentes.socioAdherenteID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td> 

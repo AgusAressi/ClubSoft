@@ -33,11 +33,12 @@
                         <thead>
                             <tr>
                                 <th>Apellido y Nombre</th>
-                                <th class="ocultar-en-768px">DNI</th>
+                                @* <th class="ocultar-en-768px">DNI</th>
                                 <th class="ocultar-en-768px">Dirección</th>
                                 <th class="ocultar-en-768px">Telefono</th>
                                 <th class="ocultar-en-768px">Usuario</th>
-                                <th class="ocultar-en-768px">Rol</th>
+                                <th class="ocultar-en-768px">Rol</th> *@
+                                <th style="width: 70px"></th>
                                 <th style="width: 70px"></th>
                                 <th style="width: 70px"></th>
                             </tr>
@@ -50,6 +51,68 @@
             <div id="paginacion" class="card-footer"></div>
         </div>
     </div>
+
+
+    @* MODAL DATOS PERSONALES *@
+
+  <div class="modal fade" id="datosPersonalesModal" tabindex="-1" aria-labelledby="datosPersonalesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content container-modal">
+            <div class="modal-header">
+                <h5 class="modal-title text-color" id="datosPersonalesLabel">Datos Personales</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre y Apellido</label>
+                        <input type="text" id="nombre" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">DNI</label>
+                        <input type="text" id="dni" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Dirección</label>
+                        <input type="text" id="direccion" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" id="telefono" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="text" id="email" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Rol</label>
+                        <input type="text" id="rol" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Saldo Cta Cte</label>
+                        <input type="text" id="saldoCtaCte" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Socios Adherentes</label>
+                        <select id="sociosAdherentes" class="form-select">
+                            <option value="">Sin adherentes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn boton-color" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     @* MODAL AGREGAR *@
     <div class="modal" tabindex="-1" id="ModalPersonas" data-bs-backdrop="static">

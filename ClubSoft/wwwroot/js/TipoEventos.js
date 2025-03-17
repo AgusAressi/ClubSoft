@@ -27,12 +27,14 @@ function ListadoTipoEventos(pagina = 1) {
                 <tr>
                     <td>${tipoEvento.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarTipoEvento(${tipoEvento.tipoEventoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarTipoEvento(${tipoEvento.tipoEventoID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarTipoEvento(${tipoEvento.tipoEventoID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarTipoEvento(${tipoEvento.tipoEventoID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

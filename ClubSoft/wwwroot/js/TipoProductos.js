@@ -28,12 +28,14 @@ function ListadoTipoProductos(pagina = 1) {
                 <tr>
                     <td>${tipoProducto.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${tipoProducto.tipoProductoID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${tipoProducto.tipoProductoID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarTipoProducto(${tipoProducto.tipoProductoID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarTipoProducto(${tipoProducto.tipoProductoID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

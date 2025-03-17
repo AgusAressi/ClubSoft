@@ -42,12 +42,14 @@ function ListadoVentas(pagina = 1) {
                     <td>${VentaMostrar.fecha}</td>
                     <td class="text-end">${totalFormateado}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirDetalleVenta(${VentaMostrar.ventaID})"
+                        title="Detalle">
                             <i class="fa-solid fa-list"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarVenta(${VentaMostrar.ventaID})">
+                    <button type="button" class="btn btn-danger" onclick="EliminarVenta(${VentaMostrar.ventaID})"
+                    title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

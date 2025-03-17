@@ -1,0 +1,51 @@
+@model VistaDatosPersonales
+
+@{
+    ViewData["Title"] = "Datos Personales";
+}
+
+<link rel="stylesheet" href="~/css/Personas.css" asp-append-version="true" />
+
+<div class="mt-2" style="height: 100%;">
+    <div class="card shadow-sm">
+        <div class="card-header row m-0 p-2">
+            <div class="col-md-8 d-flex align-items-center">
+                <a href="../../Personas" class="btn btn-primary boton-color">
+                    <i class="fa-solid fa-arrow-left fa-2x"></i>
+                </a>
+            </div>
+            <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
+                <h3 class="m-0"><i class="fa-solid fa-table pe-2"></i>DATOS PERSONALES</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" style="overflow-y: auto;">
+                <table class="table table-hover align-middle" style="min-height: 450px">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.Apellido, @Model.Nombre</td>
+                            <td>@Model.DNI</td>
+                            <td>@Model.Direccion, @Model.NombreLocalidad, @Model.NombreProvincia</td>
+                            <td>@Model.Telefono</td>
+                            <td>@Model.Email</td>
+                            <td>@Model.RolNombre</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="../../Personas"</a>
+        </div>
+    </div>
+</div>

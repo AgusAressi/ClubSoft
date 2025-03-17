@@ -51,55 +51,61 @@ public class EventosController : Controller
     }
 
     public JsonResult ListadoEventos(int? ID, DateTime? FechaDesde, DateTime? FechaHasta, int? BuscarPorTipoEventoID, int? BuscarPorLugarID)
+{
+    List<VistaTipoEventos> EventosMostar = new List<VistaTipoEventos>();
+    var listadoEventos = _context.Eventos.ToList();
+
+    // Obtener la fecha actual sin la hora para comparar solo fechas
+    DateTime fechaHoy = DateTime.Today;
+
+    // Filtrar solo eventos futuros o del día actual
+    listadoEventos = listadoEventos.Where(e => e.FechaEvento.Date >= fechaHoy).ToList();
+
+    if (ID != null)
     {
-        List<VistaTipoEventos> EventosMostar = new List<VistaTipoEventos>();
-        var listadoEventos = _context.Eventos.ToList();
-
-         if (ID != null)
-         {
-             listadoEventos = listadoEventos.Where(t => t.EventoID == ID).ToList();
-         }
-
-        if (FechaDesde != null && FechaHasta != null)
-        {
-            listadoEventos = listadoEventos.Where(e => e.FechaEvento >= FechaDesde && e.FechaEvento <= FechaHasta).ToList();
-        }
-
-        if (BuscarPorTipoEventoID != 0)
-        {
-            listadoEventos = listadoEventos.Where(e => e.TipoEventoID == BuscarPorTipoEventoID).ToList();
-        }
-
-        if (BuscarPorLugarID != 0)
-        {
-            listadoEventos = listadoEventos.Where(e => e.LugarID == BuscarPorLugarID).ToList();
-        }
-
-        
-        var listadoTipoEventos = _context.TipoEventos.ToList();
-        var listadoLugares = _context.Lugares.ToList();
-
-        foreach (var evento in listadoEventos)
-        {
-            var tipoEvento = listadoTipoEventos.Where(t => t.TipoEventoID == evento.TipoEventoID).Single();
-            var lugar = listadoLugares.Where(t => t.LugarID == evento.LugarID).Single();
-
-            var eventoMostar = new VistaTipoEventos
-            {
-                EventoID = evento.EventoID,
-                Descripcion = evento.Descripcion,
-                FechaEvento = evento.FechaEvento.ToString("dd/MM/yyyy"),
-                HoraEvento = evento.FechaEvento.ToString("HH:mm"),
-                LugarID = evento.LugarID,
-                TipoEventoID = evento.TipoEventoID,
-                NombreTipoEvento = tipoEvento.Nombre,
-                NombreLugar = lugar.Nombre
-
-            };
-            EventosMostar.Add(eventoMostar);
-        }
-        return Json(EventosMostar);
+        listadoEventos = listadoEventos.Where(t => t.EventoID == ID).ToList();
     }
+
+    if (FechaDesde != null && FechaHasta != null)
+    {
+        listadoEventos = listadoEventos.Where(e => e.FechaEvento >= FechaDesde && e.FechaEvento <= FechaHasta).ToList();
+    }
+
+    if (BuscarPorTipoEventoID != 0)
+    {
+        listadoEventos = listadoEventos.Where(e => e.TipoEventoID == BuscarPorTipoEventoID).ToList();
+    }
+
+    if (BuscarPorLugarID != 0)
+    {
+        listadoEventos = listadoEventos.Where(e => e.LugarID == BuscarPorLugarID).ToList();
+    }
+
+    var listadoTipoEventos = _context.TipoEventos.ToList();
+    var listadoLugares = _context.Lugares.ToList();
+
+    foreach (var evento in listadoEventos)
+    {
+        var tipoEvento = listadoTipoEventos.Where(t => t.TipoEventoID == evento.TipoEventoID).Single();
+        var lugar = listadoLugares.Where(t => t.LugarID == evento.LugarID).Single();
+
+        var eventoMostar = new VistaTipoEventos
+        {
+            EventoID = evento.EventoID,
+            Descripcion = evento.Descripcion,
+            FechaEvento = evento.FechaEvento.ToString("dd/MM/yyyy"),
+            HoraEvento = evento.FechaEvento.ToString("HH:mm"),
+            LugarID = evento.LugarID,
+            TipoEventoID = evento.TipoEventoID,
+            NombreTipoEvento = tipoEvento.Nombre,
+            NombreLugar = lugar.Nombre
+        };
+        EventosMostar.Add(eventoMostar);
+    }
+
+    return Json(EventosMostar);
+}
+
 public JsonResult GuardarEvento(
     int EventoID,
     string Descripcion,

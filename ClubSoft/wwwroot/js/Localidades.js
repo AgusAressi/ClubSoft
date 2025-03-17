@@ -29,12 +29,14 @@ function ListadoLocalidades(pagina = 1) {
                     <td>${localidad.nombre}</td>
                     <td>${localidad.nombreProvincia}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${localidad.localidadID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${localidad.localidadID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${localidad.localidadID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarLocalidad(${localidad.localidadID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td> 

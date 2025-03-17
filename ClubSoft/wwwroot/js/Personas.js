@@ -26,21 +26,24 @@ function ListadoPersonas(pagina = 1) {
                 contenidoTabla += `
                 <tr>
                     <td>${persona.apellido}, ${persona.nombre}</td>
-                    <td class="ocultar-en-768px">${persona.dni}</td>
-                    <td class="ocultar-en-768px">${persona.direccion}, ${persona.nombreLocalidad}, ${persona.nombreProvincia}</td>
-                    <td class="ocultar-en-768px">${persona.telefono}</td>
-                    <td class="ocultar-en-768px">${persona.email}</td>
-                    <td class="ocultar-en-768px">${persona.rolNombre}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${persona.personaID}, '${persona.usuarioID}')">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${persona.personaID}, '${persona.usuarioID}')"
+                    title="Editar">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="EliminarPersona(${persona.personaID}, '${persona.usuarioID}')">
+                    <button type="button" class="btn btn-danger" onclick="EliminarPersona(${persona.personaID}, '${persona.usuarioID}')"
+                    title="Eliminar">
                     <i class="fa-solid fa-trash"></i>
                     </button>
-                    </td> 
+                    </td>
+                    <td class="text-center">
+                    <button type="button" class="btn btn-primary boton-color" onclick="AbrirDatosPersonales(${persona.personaID})"
+                    title="Datos Personales">
+                    <i class="fa-solid fa-eye"></i>
+                    </button>
+                    </td>
                 </tr>`;
             });
 
@@ -66,6 +69,55 @@ function ListadoPersonas(pagina = 1) {
         },
         error: function (xhr, status) {
             alert('Disculpe, existió un problema al deshabilitar');
+        }
+    });
+}
+
+function AbrirDatosPersonales(personaID) {
+    $.ajax({
+        url: '../../Personas/DatosPersonales', 
+        data: { personaID: personaID },
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            console.log(response); // Debug: Ver qué datos llegan en la consola
+
+            if (response.success) {
+                let detalle = response.data; // Acceder a los datos correctamente
+
+                // Asignar los valores a los inputs
+                $('#nombre').val(`${detalle.nombre} ${detalle.apellido}`);
+                $('#dni').val(detalle.dni);
+                $('#direccion').val(`${detalle.direccion}, ${detalle.nombreLocalidad}, ${detalle.nombreProvincia}`);
+                $('#telefono').val(detalle.telefono);
+                $('#email').val(detalle.email);
+                $('#rol').val(detalle.rolNombre);
+
+                // Formatear el saldo de la Cuenta Corriente
+                let saldoFormateado = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(detalle.saldoCtaCte ?? 0);
+                $('#saldoCtaCte').val(saldoFormateado);
+
+                // Cargar el dropdown de Socios Adherentes
+                let adherentesDropdown = $('#sociosAdherentes');
+                adherentesDropdown.empty(); // Limpiar opciones previas
+                if (detalle.adherentes && detalle.adherentes.length > 0) {
+                    detalle.adherentes.forEach(adherente => {
+                        adherentesDropdown.append(
+                            `<option value="${adherente.socioAdherenteID}">${adherente.personaNombre} ${adherente.personaApellido}</option>`
+                        );
+                    });
+                } else {
+                    adherentesDropdown.append('<option value="">Sin adherentes</option>');
+                }
+
+                // Mostrar el modal
+                $('#datosPersonalesModal').modal('show'); 
+            } else {
+                alert("No se encontraron datos.");
+            }
+        },
+        error: function () {
+            alert('Error al cargar los datos personales');
         }
     });
 }

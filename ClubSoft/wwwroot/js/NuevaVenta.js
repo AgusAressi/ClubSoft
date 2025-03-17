@@ -57,7 +57,8 @@ function AgregarProducto() {
                         <td>$${precio.toFixed(2)}</td>
                         <td>${cantidad}</td>
                         <td>$${totalProducto.toFixed(2)}</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="EliminarProducto(this)">
+                        <td><button class="btn btn-danger btn-sm" onclick="EliminarProducto(this)"
+                        title="Eliminar">
                         <i class="fa-solid fa-trash"></i>
                         </button>
                         </td>
@@ -206,7 +207,7 @@ function ConfirmarVenta() {
                     personaID: personaID,
                     fecha: fecha,
                     contado : contado
-                 },
+                },
                 success: function (result) {
                     if (result.success) {
                         Swal.fire({

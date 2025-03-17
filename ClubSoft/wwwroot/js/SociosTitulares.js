@@ -29,7 +29,8 @@ function ListadoSociosTitulares(pagina = 1) {
                 <tr>
                     <td>${MostrarSociosTitulares.personaApellido}, ${MostrarSociosTitulares.personaNombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarSocioTitular(${MostrarSociosTitulares.socioTitularID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarSocioTitular(${MostrarSociosTitulares.socioTitularID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td> 

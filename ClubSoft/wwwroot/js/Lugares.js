@@ -28,12 +28,14 @@ function ListadoLugaresEventos(pagina = 1) {
                 <tr>
                     <td>${lugarEvento.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarLugar(${lugarEvento.lugarID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditarLugar(${lugarEvento.lugarID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="EliminarLugarEvento(${lugarEvento.lugarID})">
+                        <button type="button" class="btn btn-danger" onclick="EliminarLugarEvento(${lugarEvento.lugarID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

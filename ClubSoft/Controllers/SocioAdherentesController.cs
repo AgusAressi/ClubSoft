@@ -106,23 +106,23 @@ public class SocioAdherentesController : Controller
     {
         List<VistaSociosAdherentes> MostrarSociosAdherentes = new List<VistaSociosAdherentes>();
         var listadoPersonas = _context.Personas.OrderBy(n => n.Nombre).ToList();
-        var listadoSociosTitulares = _context.SocioTitulares.ToList();
+        var listadoSociosTitulares = _context.SocioTitulares.Include(t => t.Persona).ToList(); 
         var listadoSociosAdherentes = _context.SocioAdherentes.ToList();
 
         foreach (var socioAdherente in listadoSociosAdherentes)
         {
             var sociosTitulares = listadoSociosTitulares.FirstOrDefault(t => t.SocioTitularID == socioAdherente.SocioTitularID);
-            var personasTitulares = sociosTitulares != null ? listadoPersonas.FirstOrDefault(t => t.PersonaID == sociosTitulares.PersonaID) : null;
+            var personasTitulares = sociosTitulares?.Persona; // Validamos que SociosTitulares no sea null
             var personasAdherentes = listadoPersonas.FirstOrDefault(t => t.PersonaID == socioAdherente.PersonaID);
 
-            if (personasTitulares != null)
+            if (personasTitulares != null && personasAdherentes != null) // Validamos que ambas personas existan
             {
                 var socioAdherenteMostar = new VistaSociosAdherentes
                 {
                     SocioAdherenteID = socioAdherente.SocioAdherenteID,
-                    PersonaNombre = personasAdherentes.Nombre,
-                    PersonaApellido = personasAdherentes.Apellido,
-                    SocioTitularNombre = sociosTitulares != null ? sociosTitulares.Persona.Apellido + " " + sociosTitulares.Persona.Nombre : "",
+                    PersonaNombre = personasAdherentes.Nombre ?? "Sin nombre", // Evitar valores nulos
+                PersonaApellido = personasAdherentes.Apellido ?? "Sin apellido",
+                SocioTitularNombre = $"{personasTitulares.Apellido ?? "Sin apellido"} {personasTitulares.Nombre ?? "Sin nombre"}"
                 };
                 MostrarSociosAdherentes.Add(socioAdherenteMostar);
             }

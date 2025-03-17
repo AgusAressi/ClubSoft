@@ -28,12 +28,14 @@ function ListadoProvincias(pagina = 1) {
                 <tr>
                     <td>${provincia.nombre}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${provincia.provinciaID})">
+                        <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${provincia.provinciaID})"
+                        title="Editar">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${provincia.provinciaID})">
+                        <button type="button" class="btn btn-danger boton-color2" onclick="EliminarProvnicia(${provincia.provinciaID})"
+                        title="Eliminar">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

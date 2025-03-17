@@ -46,7 +46,8 @@ function ListadoCobros(pagina = 1) {
                         <td class="text-center">${fechaFormateada}</td>
                         <td class="text-end">${totalFormateado}</td>
                         <td class="text-center">
-                            <button type="button" class="btn btn-danger" onclick="EliminarCobro(${cobro.cobroID})">
+                            <button type="button" class="btn btn-danger" onclick="EliminarCobro(${cobro.cobroID})"
+                            title="Eliminar">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>

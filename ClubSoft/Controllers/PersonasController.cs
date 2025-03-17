@@ -65,6 +65,102 @@ public class PersonasController : Controller
     }
 
 
+public IActionResult DatosPersonales(int personaID)
+{
+    var persona = _context.Personas
+        .Include(p => p.Localidad)
+        .ThenInclude(l => l.Provincia)
+        .FirstOrDefault(p => p.PersonaID == personaID);
+
+    if (persona == null)
+    {
+        return NotFound();
+    }
+
+    var usuario = _context.Users.FirstOrDefault(u => u.Id == persona.UsuarioID);
+    var userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == usuario.Id);
+    var rol = userRole != null ? _context.Roles.FirstOrDefault(r => r.Id == userRole.RoleId) : null;
+
+    // Obtener el saldo de la cuenta corriente del cliente
+    var saldoCtaCte = _context.CuentaCorrientes
+        .Where(cc => cc.PersonaID == personaID)
+        .Sum(cc => cc.Saldo);
+
+    // Verificar si es un Socio Titular y obtener sus Socios Adherentes
+    var socioTitular = _context.SocioTitulares
+        .Include(st => st.SocioAdherentes)
+        .FirstOrDefault(st => st.PersonaID == personaID);
+
+    var adherentes = socioTitular?.SocioAdherentes
+        .Select(sa => new 
+        {
+            SocioAdherenteID = sa.SocioAdherenteID,
+            PersonaNombre = _context.Personas.FirstOrDefault(p => p.PersonaID == sa.PersonaID)?.Nombre,
+            PersonaApellido = _context.Personas.FirstOrDefault(p => p.PersonaID == sa.PersonaID)?.Apellido
+        })
+        .ToList();
+
+    var datosPersonalesMostrar = new 
+    {
+        PersonaID = persona.PersonaID,
+        Nombre = persona.Nombre,
+        Apellido = persona.Apellido,
+        Direccion = persona.Direccion,
+        Telefono = persona.Telefono,
+        DNI = persona.DNI,
+        NombreLocalidad = persona.Localidad?.Nombre ?? "Sin localidad",
+        NombreProvincia = persona.Localidad?.Provincia?.Nombre ?? "Sin provincia",
+        Email = usuario?.Email ?? "Sin email",
+        RolNombre = rol != null ? rol.Name : "Sin Rol",
+        SaldoCtaCte = saldoCtaCte,
+        Adherentes = adherentes
+    };
+
+    return Json(new { success = true, data = datosPersonalesMostrar });
+}
+// [HttpPost]
+// public JsonResult ListadoDatosPersonales()
+// {
+//     List<VistaDatosPersonales> MostrarDatosPersonales = new List<VistaDatosPersonales>();
+//     var listadoDatosPersonales = _context.Personas.OrderBy(p => p.Apellido).ThenBy(p => p.Nombre).ToList();
+//         var listadoLocalidades = _context.Localidades.ToList();
+//         var listadoProvincias = _context.Provincias.ToList();
+//         var listadoUsuarios = _context.Users.ToList();
+//         var listadoUserRoles = _context.UserRoles.ToList();
+//         var listadoRoles = _context.Roles.ToList();
+
+//      foreach (var personas in listadoDatosPersonales)
+//         {
+//             var localidades = listadoLocalidades.FirstOrDefault(t => t.LocalidadID == personas.LocalidadID);
+//             var provincias = localidades != null ? listadoProvincias.FirstOrDefault(t => t.ProvinciaID == localidades.ProvinciaID) : null;
+//             var usuarios = listadoUsuarios.FirstOrDefault(t => t.Id == personas.UsuarioID);
+//             var userRole = listadoUserRoles.FirstOrDefault(ur => ur.UserId == usuarios.Id);
+//             var rol = userRole != null ? listadoRoles.FirstOrDefault(r => r.Id == userRole.RoleId) : null;
+
+//             if (localidades != null && provincias != null && usuarios != null)
+//             {
+//                 var datosPersonalesMostrar = new VistaDatosPersonales
+//                 {
+//                     PersonaID = personas.PersonaID,
+//                     Nombre = personas.Nombre,
+//                     Apellido = personas.Apellido,
+//                     Direccion = personas.Direccion,
+//                     Telefono = personas.Telefono,
+//                     DNI = personas.DNI,
+//                     LocalidadID = personas.LocalidadID,
+//                     NombreLocalidad = localidades.Nombre,
+//                     NombreProvincia = provincias.Nombre,
+//                     UsuarioID = personas.UsuarioID,
+//                     Email = usuarios.Email,
+//                     RolNombre = rol != null ? rol.Name : "Sin Rol"
+//                 };
+//                 MostrarDatosPersonales.Add(datosPersonalesMostrar);
+//             }
+//         }
+
+//         return Json(MostrarDatosPersonales);
+// }
+
     public JsonResult ListadoPersonas()
     {
         List<VistaPersonas> MostrarPersonas = new List<VistaPersonas>();
@@ -90,15 +186,15 @@ public class PersonasController : Controller
                     PersonaID = personas.PersonaID,
                     Nombre = personas.Nombre,
                     Apellido = personas.Apellido,
-                    Direccion = personas.Direccion,
-                    Telefono = personas.Telefono,
-                    DNI = personas.DNI,
-                    LocalidadID = personas.LocalidadID,
-                    NombreLocalidad = localidades.Nombre,
-                    NombreProvincia = provincias.Nombre,
-                    UsuarioID = personas.UsuarioID,
-                    Email = usuarios.Email,
-                    RolNombre = rol != null ? rol.Name : "Sin Rol"
+                    // Direccion = personas.Direccion,
+                    // Telefono = personas.Telefono,
+                    // DNI = personas.DNI,
+                    // LocalidadID = personas.LocalidadID,
+                    // NombreLocalidad = localidades.Nombre,
+                    // NombreProvincia = provincias.Nombre,
+                    // UsuarioID = personas.UsuarioID,
+                    // Email = usuarios.Email,
+                    // RolNombre = rol != null ? rol.Name : "Sin Rol"
                 };
                 MostrarPersonas.Add(personaMostar);
             }
@@ -106,6 +202,7 @@ public class PersonasController : Controller
 
         return Json(MostrarPersonas);
     }
+
 
     public async Task<JsonResult> GuardarRegistro(
         int PersonaID,

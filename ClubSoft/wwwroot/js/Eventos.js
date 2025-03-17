@@ -1,16 +1,10 @@
 window.onload = ListadoEventos;
 
 function ListadoEventos() {
-
     let fechaDesde = document.getElementById("FechaDesde").value;
     let fechaHasta = document.getElementById("FechaHasta").value;
     let buscarPorTipoEventoID = document.getElementById("BuscarPorTipoEventoID").value;
     let buscarPorLugarID = document.getElementById("BuscarPorLugarID").value;
-
-    // console.log("Fecha Desde:", fechaDesde);
-    // console.log("Fecha Hasta:", fechaHasta);
-    // console.log("Tipo Evento ID:", buscarPorTipoEventoID);
-    // console.log("Lugar ID:", buscarPorLugarID);
 
     $.ajax({
         url: '/Eventos/ListadoEventos',
@@ -18,7 +12,7 @@ function ListadoEventos() {
             FechaDesde: fechaDesde,
             FechaHasta: fechaHasta,
             BuscarPorTipoEventoID: buscarPorTipoEventoID,
-            BuscarPorLugarID : buscarPorLugarID,
+            BuscarPorLugarID: buscarPorLugarID,
         },
         type: 'POST',
         dataType: 'json',
@@ -27,31 +21,42 @@ function ListadoEventos() {
             LimpiarModal();
             let contenidoCard = '';
 
-            $.each(EventosMostar, function (index, evento) {
-                contenidoCard += `
-                <div class="col-md-4">
-                    <div class="card mb-4" style="width: 24rem;">
-                        <div class="card-header fw-bolder card-color">
-                            ${evento.nombreTipoEvento}
-                        </div>
-                        <div class="card-body body-color">
-                            <h5 class="card-title text-center">${evento.descripcion}</h5>
-                            <p class="card-text"><b>Fecha:</b> ${evento.fechaEvento}</p>
-                            <p class="card-text"><b>Hora:</b> ${evento.horaEvento}</p>
-                            <p class="card-text"><b>Lugar:</b> ${evento.nombreLugar}</p>
-                        </div>
-                        <div class="card-footer text-center card-color">
-                            <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${evento.eventoID})">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger ms-4" onclick="EliminarEvento(${evento.eventoID})">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+            if (EventosMostar.length === 0) {
+                contenidoCard = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-warning" role="alert">
+                            No hay eventos próximos.
                         </div>
                     </div>
-                </div>    
                 `;
-            });
+            } else {
+                $.each(EventosMostar, function (index, evento) {
+                    contenidoCard += `
+                    <div class="col-md-4">
+                        <div class="card mb-4" style="width: 24rem;">
+                            <div class="card-header fw-bolder card-color">
+                                ${evento.nombreTipoEvento}
+                            </div>
+                            <div class="card-body body-color">
+                                <h5 class="card-title text-center">${evento.descripcion}</h5>
+                                <p class="card-text"><b>Fecha:</b> ${evento.fechaEvento}</p>
+                                <p class="card-text"><b>Hora:</b> ${evento.horaEvento}</p>
+                                <p class="card-text"><b>Lugar:</b> ${evento.nombreLugar}</p>
+                            </div>
+                            <div class="card-footer text-center card-color">
+                                <button type="button" class="btn btn-primary boton-color" onclick="AbrirEditar(${evento.eventoID})"
+                                title="Editar">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger ms-4" onclick="EliminarEvento(${evento.eventoID})"
+                                title="Eliminar">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            }
 
             document.getElementById("card-Eventos").innerHTML = contenidoCard;
         },
@@ -60,6 +65,7 @@ function ListadoEventos() {
         }
     });
 }
+
 
 function LimpiarModal(){
     document.getElementById("EventoID").value = 0;
